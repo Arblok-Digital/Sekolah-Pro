@@ -1,0 +1,133 @@
+<!-- partials/laporan.html — HTML halaman laporan + modal milik modul laporan (id/class dipertahankan) -->
+<div id="laporan-page" class="page">
+  <div class="page-body">
+
+    <!-- Reminder/Alert Panel -->
+    <div class="card" id="lap-reminder-panel">
+      <div class="card-title" style="color:var(--yel)">🔔 Reminder Piutang Jatuh Tempo</div>
+      <div id="lap-reminder-list">
+        <div style="font-size:12px;color:var(--t3)">Tidak ada piutang jatuh tempo</div>
+      </div>
+    </div>
+
+    <!-- Grafik Absensi Kelas -->
+    <div class="card">
+      <div class="card-title" style="flex-wrap:wrap;gap:8px">
+        <span>📊 Grafik Absensi Kelas</span>
+        <div style="display:flex;gap:6px">
+          <select class="ts" id="grafik-kelas-sel" style="font-size:12px" data-action="renderGrafikAbsensi">
+            <option value="">Semua Kelas</option>
+            <option value="1A">1A</option><option value="1B">1B</option>
+            <option value="2A">2A</option><option value="2B">2B</option>
+            <option value="3A">3A</option><option value="3B">3B</option>
+            <option value="4A">4A</option><option value="4B">4B</option>
+            <option value="5A">5A</option><option value="5B">5B</option>
+            <option value="6A">6A</option><option value="6B">6B</option>
+          </select>
+          <select class="ts" id="grafik-bulan-sel" style="font-size:12px" data-action="renderGrafikAbsensi">
+            <option value="0">Januari</option><option value="1">Februari</option><option value="2">Maret</option>
+            <option value="3">April</option><option value="4">Mei</option><option value="5">Juni</option>
+            <option value="6">Juli</option><option value="7">Agustus</option><option value="8">September</option>
+            <option value="9">Oktober</option><option value="10">November</option><option value="11">Desember</option>
+          </select>
+        </div>
+      </div>
+      <div id="grafik-absensi-wrap"></div>
+    </div>
+
+    <!-- Rekap Nilai Per Kelas -->
+    <div class="card">
+      <div class="card-title" style="flex-wrap:wrap;gap:8px">
+        <span>🏆 Ranking Nilai Per Kelas</span>
+        <div style="display:flex;gap:6px">
+          <select class="ts" id="ranking-kelas-sel" style="font-size:12px" data-action="renderRankingNilai">
+            <option value="">Semua Kelas</option>
+            <option value="1A">1A</option><option value="1B">1B</option>
+            <option value="2A">2A</option><option value="2B">2B</option>
+            <option value="3A">3A</option><option value="3B">3B</option>
+          </select>
+          <select class="ts" id="ranking-sem-sel" style="font-size:12px" data-action="renderRankingNilai">
+            <option value="1">Semester 1</option>
+            <option value="2">Semester 2</option>
+          </select>
+        </div>
+      </div>
+      <div id="ranking-nilai-list"></div>
+    </div>
+
+    <!-- Laporan yang tersedia -->
+    <div class="card">
+      <div class="card-title">📄 Cetak & Ekspor Laporan</div>
+      <div style="display:flex;flex-direction:column;gap:8px">
+
+        <div class="lap-card" data-action="cetakRekap" data-args='["spp"]'>
+          <div class="lap-icon" style="background:var(--grn-bg)">💳</div>
+          <div class="lap-info">
+            <div class="lap-title">Rekap Pembayaran SPP</div>
+            <div class="lap-desc">Daftar lengkap pembayaran & tunggakan seluruh siswa</div>
+          </div>
+          <div class="lap-arrow">🖨️</div>
+        </div>
+
+        <div class="lap-card" data-action="cetakRekap" data-args='["absensi"]'>
+          <div class="lap-icon" style="background:var(--blu-bg)">📅</div>
+          <div class="lap-info">
+            <div class="lap-title">Rekap Absensi Bulanan</div>
+            <div class="lap-desc">Rekapitulasi kehadiran per kelas per bulan</div>
+          </div>
+          <div class="lap-arrow">🖨️</div>
+        </div>
+
+        <div class="lap-card" data-action="cetakRekap" data-args='["nilai"]'>
+          <div class="lap-icon" style="background:var(--cyn-bg)">📊</div>
+          <div class="lap-info">
+            <div class="lap-title">Rekap Nilai Akademik</div>
+            <div class="lap-desc">Rata-rata nilai per mapel & ranking siswa</div>
+          </div>
+          <div class="lap-arrow">🖨️</div>
+        </div>
+
+        <div class="lap-card" data-action="cetakRekap" data-args='["gaji"]'>
+          <div class="lap-icon" style="background:var(--pur-bg)">💸</div>
+          <div class="lap-info">
+            <div class="lap-title">Rekap Penggajian Guru</div>
+            <div class="lap-desc">Slip gaji dan total pengeluaran gaji seluruh guru</div>
+          </div>
+          <div class="lap-arrow">🖨️</div>
+        </div>
+
+        <div class="lap-card" data-action="cetakRekap" data-args='["bos"]'>
+          <div class="lap-icon" style="background:var(--amb-bg)">🏦</div>
+          <div class="lap-info">
+            <div class="lap-title">Laporan Dana BOS</div>
+            <div class="lap-desc">Rincian penyerapan dan sisa anggaran BOS</div>
+          </div>
+          <div class="lap-arrow">🖨️</div>
+        </div>
+
+        <div class="lap-card" data-action="openModal" data-args='["modal-kartu-spp"]'>
+          <div class="lap-icon" style="background:var(--yel-bg)">🪪</div>
+          <div class="lap-info">
+            <div class="lap-title">Cetak Kartu SPP Siswa</div>
+            <div class="lap-desc">Kartu pembayaran SPP per siswa format fisik</div>
+          </div>
+          <div class="lap-arrow">🖨️</div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODALS -->
+<div id="modal-print" class="modal-bg">
+  <div class="sheet" style="max-width:700px">
+    <div class="mhdr"><h2 id="print-modal-title">📄 Preview Laporan</h2><button class="mclose" data-action="closeModal" data-args='["modal-print"]'>✕</button></div>
+    <div style="padding:12px 16px;border-bottom:1px solid var(--bdr);display:flex;gap:8px;flex-wrap:wrap">
+      <button class="abtn abtn-g" data-action="__windowPrint">🖨️ Print</button>
+      <button class="abtn abtn-b" data-action="eksporCSV">📊 Ekspor CSV</button>
+      <button class="abtn abtn-b" data-action="eksporJSON">📦 Ekspor JSON</button>
+    </div>
+    <div id="print-modal-content" style="padding:16px;max-height:60vh;overflow-y:auto"></div>
+  </div>
+</div>

@@ -1,0 +1,94 @@
+<!-- partials/bos.html — HTML halaman bos + modal milik modul bos (id/class dipertahankan) -->
+<div id="bos-page" class="page">
+  <div class="page-body">
+    <!-- BOS Overview -->
+    <div class="card">
+      <div class="card-title">🏦 Dana BOS — Pagu Tahunan</div>
+      <div style="display:flex;gap:12px;margin-bottom:12px;flex-wrap:wrap">
+        <div class="pnlb" style="background:var(--yel-bg);border:1px solid rgba(255,202,40,.2);flex:1;min-width:100px">
+          <div style="font-size:10px;color:var(--yel);font-weight:700;margin-bottom:4px">PAGU</div>
+          <div style="font-size:16px;font-weight:900;color:var(--yel);font-family:'Courier New',monospace" id="bos-pagu-display">Rp 0</div>
+        </div>
+        <div class="pnlb" style="background:var(--amb-bg);border:1px solid rgba(255,152,0,.2);flex:1;min-width:100px">
+          <div style="font-size:10px;color:var(--amb);font-weight:700;margin-bottom:4px">TERPAKAI</div>
+          <div style="font-size:16px;font-weight:900;color:var(--amb);font-family:'Courier New',monospace" id="bos-terpakai-display">Rp 0</div>
+        </div>
+        <div class="pnlb" style="background:var(--grn-bg);border:1px solid rgba(0,230,118,.2);flex:1;min-width:100px">
+          <div style="font-size:10px;color:var(--grn);font-weight:700;margin-bottom:4px">SISA</div>
+          <div style="font-size:16px;font-weight:900;color:var(--grn);font-family:'Courier New',monospace" id="bos-sisa-display">Rp 0</div>
+        </div>
+      </div>
+      <!-- Progress bar -->
+      <div style="margin-bottom:6px">
+        <div class="bos-seg" style="height:18px">
+          <div id="bos-bar-big" class="bos-used" style="width:0%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#fff">0%</div>
+        </div>
+      </div>
+      <div style="font-size:10px;color:var(--t3);text-align:center">Penggunaan Dana BOS</div>
+    </div>
+
+    <!-- Toolbar -->
+    <div class="card">
+      <div class="toolbar">
+        <button class="abtn abtn-a" data-action="openModal" data-args='["modal-bos-keluar"]'>+ Catat Pengeluaran</button>
+        <button class="abtn abtn-b" data-action="openModal" data-args='["modal-bos-pagu"]'>⚙️ Set Pagu</button>
+      </div>
+    </div>
+
+    <!-- Log Pengeluaran -->
+    <div class="card">
+      <div class="card-title">📋 Log Pengeluaran BOS</div>
+      <div id="bos-log-list">
+        <div class="empty-state"><span class="empty-icon">📄</span><span class="empty-text">Belum ada pengeluaran BOS</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODALS -->
+<div id="modal-bos-keluar" class="modal-bg">
+  <div class="sheet">
+    <div class="mhdr"><h2>🏦 Pengeluaran BOS</h2><button class="mclose" data-action="closeModal" data-args='["modal-bos-keluar"]'>✕</button></div>
+    <div class="msec">
+      <div class="fg">
+        <div class="fg-full">
+          <div class="mlbl">Deskripsi</div>
+          <input class="ti" id="bos-desc-inp" placeholder="Keperluan pengeluaran..." />
+        </div>
+        <div>
+          <div class="mlbl">Jumlah (Rp)</div>
+          <input class="ti" id="bos-jumlah-inp" type="number" placeholder="0"/>
+        </div>
+        <div>
+          <div class="mlbl">Kategori</div>
+          <select class="ts" id="bos-kat-inp">
+            <option>Alat Tulis</option>
+            <option>Sarana Prasarana</option>
+            <option>Kegiatan Siswa</option>
+            <option>Honor GTT</option>
+            <option>Pemeliharaan</option>
+            <option>Lainnya</option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <div class="mact">
+      <button class="mbtn mbtn-c" data-action="closeModal" data-args='["modal-bos-keluar"]'>Batal</button>
+      <button class="mbtn mbtn-s" data-action="keluarBOS">✅ Catat</button>
+    </div>
+  </div>
+</div>
+<div id="modal-bos-pagu" class="modal-bg">
+  <div class="sheet">
+    <div class="mhdr"><h2>⚙️ Set Pagu BOS</h2><button class="mclose" data-action="closeModal" data-args='["modal-bos-pagu"]'>✕</button></div>
+    <div class="msec">
+      <div class="mlbl">Pagu Tahunan (Rp)</div>
+      <input class="ti" id="bos-pagu-inp" type="number" placeholder="0"/>
+      <div style="font-size:11px;color:var(--t3);margin-top:6px">Masukkan total anggaran BOS yang diterima sekolah untuk tahun ini.</div>
+    </div>
+    <div class="mact">
+      <button class="mbtn mbtn-c" data-action="closeModal" data-args='["modal-bos-pagu"]'>Batal</button>
+      <button class="mbtn mbtn-s" data-action="setPaguBOS">✅ Simpan</button>
+    </div>
+  </div>
+</div>

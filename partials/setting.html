@@ -1,0 +1,512 @@
+<!-- partials/setting.html — HTML halaman setting + modal milik modul setting (id/class dipertahankan) -->
+<div id="setting-page" class="page">
+  <div class="page-body">
+
+    <!-- ── MANAJEMEN USER (Admin & Dev) ── -->
+    <div class="card" id="card-user-mgmt" style="border:1px solid rgba(68,138,255,.3);background:linear-gradient(135deg,var(--s1),#060d1a)">
+      <div class="card-title" style="color:var(--blu)">👥 Manajemen User & Akses Google</div>
+      <div style="font-size:12px;color:var(--t2);margin-bottom:14px;line-height:1.7">
+        Daftarkan email user agar bisa <b>Login dengan Google</b>. User yang emailnya tidak terdaftar di sini akan diblokir otomatis.
+      </div>
+
+      <!-- Form tambah user -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px">
+        <div class="inp-group" style="margin-bottom:0">
+          <div class="fl">Nama Lengkap</div>
+          <input class="ti" id="usr-nama" placeholder="Nama user..."/>
+        </div>
+        <div class="inp-group" style="margin-bottom:0">
+          <div class="fl">Email Google *</div>
+          <input class="ti" id="usr-email" type="email" placeholder="user@gmail.com"/>
+        </div>
+        <div class="inp-group" style="margin-bottom:0">
+          <div class="fl">Role</div>
+          <select class="ts" id="usr-role">
+            <option value="guru">👨‍🏫 Guru</option>
+            <option value="admin">🔐 Admin</option>
+            <option value="ortu">👨‍👩‍👦 Orang Tua</option>
+            <option value="siswa">🎒 Siswa</option>
+          </select>
+        </div>
+        <div class="inp-group" style="margin-bottom:0">
+          <div class="fl">School ID</div>
+          <input class="ti" id="usr-schoolid" placeholder="SKL001" readonly style="color:var(--t3)"/>
+        </div>
+      </div>
+      <button data-action="daftarkanUser" style="
+        width:100%;padding:11px;border:none;border-radius:9px;cursor:pointer;
+        background:var(--blu);color:#fff;font-weight:800;font-size:13px;
+        transition:opacity .15s" onmouseover="this.style.opacity='.85'" onmouseout="this.style.opacity='1'">
+        ➕ Daftarkan Email ke Firestore
+      </button>
+
+      <!-- Daftar user terdaftar -->
+      <div style="margin-top:14px;padding-top:12px;border-top:1px solid var(--bdr)">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+          <div style="font-size:11px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.4px">User Terdaftar</div>
+          <button data-action="loadDaftarUser" style="background:transparent;border:1px solid var(--bdr2);border-radius:6px;padding:4px 10px;font-size:10px;color:var(--t2);cursor:pointer">🔄 Refresh</button>
+        </div>
+        <div id="usr-list" style="display:flex;flex-direction:column;gap:6px;max-height:280px;overflow-y:auto">
+          <div style="font-size:12px;color:var(--t3);text-align:center;padding:12px">Klik Refresh untuk muat daftar user</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">🏫 Profil Sekolah</div>
+      <div class="inp-group">
+        <div class="fl">Nama Sekolah</div>
+        <input class="ti" id="set-nama" placeholder="Nama sekolah..." />
+      </div>
+      <div class="inp-group">
+        <div class="fl">Tahun Ajaran</div>
+        <input class="ti" id="set-tahun-ajaran" placeholder="2024/2025" />
+      </div>
+      <div class="inp-group">
+        <div class="fl">Nominal SPP Bulanan (Rp)</div>
+        <input class="ti" id="set-spp-nominal" type="number" placeholder="0" />
+      </div>
+      <div class="inp-group">
+        <div class="fl">Pengumuman / Ticker</div>
+        <input class="ti" id="set-pengumuman" placeholder="Teks pengumuman..." />
+      </div>
+      <button class="abtn abtn-g" style="width:100%;padding:12px;margin-top:8px" data-action="saveSettings">💾 Simpan Pengaturan</button>
+    </div>
+    <!-- PIN Lock & Akses -->
+    <div class="card">
+      <div class="card-title">🔐 Keamanan & Akses</div>
+      <div class="set-row" style="display:flex;flex-direction:column;gap:10px;padding:0">
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--bdr)">
+          <div>
+            <div style="font-size:13px;font-weight:700">PIN Lock</div>
+            <div style="font-size:11px;color:var(--t3);margin-top:2px">Kunci akses dengan 4-digit PIN</div>
+          </div>
+          <label style="position:relative;width:44px;height:24px;flex-shrink:0;cursor:pointer">
+            <input type="checkbox" id="set-pin-toggle" style="opacity:0;width:0;height:0;position:absolute" data-action="togglePinLock" data-args='["@@checked"]'/>
+            <span id="pin-toggle-slider" style="position:absolute;inset:0;background:var(--s3);border-radius:12px;transition:.3s;border:1px solid var(--bdr2)"><span style="position:absolute;width:18px;height:18px;border-radius:50%;background:var(--t3);bottom:2px;left:2px;transition:.3s;display:block" id="pin-toggle-dot"></span></span>
+          </label>
+        </div>
+        <div id="pin-setup-area" style="display:none;padding-bottom:8px">
+          <div class="inp-group" style="margin-bottom:8px">
+            <div class="fl">PIN Baru (4 digit)</div>
+            <input class="ti" id="set-pin-new" type="password" maxlength="4" inputmode="numeric" placeholder="****" style="width:120px;letter-spacing:8px;text-align:center;font-size:18px"/>
+          </div>
+          <div class="inp-group" style="margin-bottom:8px">
+            <div class="fl">Konfirmasi PIN</div>
+            <input class="ti" id="set-pin-confirm" type="password" maxlength="4" inputmode="numeric" placeholder="****" style="width:120px;letter-spacing:8px;text-align:center;font-size:18px"/>
+          </div>
+          <button class="abtn abtn-g" style="padding:8px 16px;font-size:12px" data-action="savePIN">💾 Simpan PIN</button>
+        </div>
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 0">
+          <div>
+            <div style="font-size:13px;font-weight:700">🌙 Tema Gelap / Terang</div>
+            <div style="font-size:11px;color:var(--t3);margin-top:2px">Toggle mode tampilan</div>
+          </div>
+          <div style="display:flex;gap:6px">
+            <button class="abtn" id="theme-dark-btn" style="padding:7px 12px;font-size:11px;background:var(--s2);border:1px solid var(--bdr2);color:var(--t2)" data-action="setTheme" data-args='["dark"]'>🌙 Gelap</button>
+            <button class="abtn" id="theme-light-btn" style="padding:7px 12px;font-size:11px;background:var(--s2);border:1px solid var(--bdr2);color:var(--t2)" data-action="setTheme" data-args='["light"]'>☀️ Terang</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Rapor Digital -->
+    <div class="card">
+      <div class="card-title">📋 Rapor Digital</div>
+      <div style="font-size:12px;color:var(--t2);margin-bottom:12px">Cetak rapor nilai & absensi per siswa dalam format profesional siap print / PDF.</div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px">
+        <select class="ts" id="rapor-siswa-sel" style="flex:1;min-width:160px">
+          <option value="">-- Pilih Siswa --</option>
+        </select>
+        <select class="ts" id="rapor-sem-sel" style="width:120px">
+          <option value="1">Semester 1</option>
+          <option value="2">Semester 2</option>
+        </select>
+      </div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <button class="abtn abtn-g" style="flex:1;padding:11px" data-action="bukaRapor">👁️ Preview Rapor</button>
+        <button class="abtn abtn-b" style="padding:11px 16px" data-action="cetakRapor">🖨️ Cetak / PDF</button>
+      </div>
+    </div>
+
+    <!-- Sinkronisasi -->
+    <div class="card">
+      <div class="card-title">🔄 Sinkronisasi & Backup</div>
+      <div style="display:flex;flex-direction:column;gap:8px">
+
+        <!-- Status bar -->
+        <div style="display:flex;align-items:center;gap:10px;padding:10px 12px;background:var(--s2);border-radius:10px;border:1px solid var(--bdr2)">
+          <div style="width:8px;height:8px;border-radius:50%;background:var(--grn);flex-shrink:0;box-shadow:0 0 8px var(--grn)"></div>
+          <div style="flex:1;min-width:0">
+            <div style="font-size:12px;font-weight:700;color:var(--t1)" id="set-sync-status-lbl">Sinkronisasi Cloud</div>
+            <div style="font-size:10px;color:var(--t3);margin-top:1px" id="set-sync-status-sub">Login dulu untuk mengaktifkan sync</div>
+          </div>
+          <div style="font-size:10px;color:var(--t3);font-family:'Courier New',monospace" id="set-last-sync-time">—</div>
+        </div>
+
+        <!-- 2x2 grid aksi utama -->
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px">
+
+          <button data-action="manualSync" style="
+            display:flex;align-items:center;gap:9px;padding:11px 12px;
+            border-radius:10px;cursor:pointer;border:1.5px solid rgba(0,230,118,.3);
+            background:var(--grn-bg);color:var(--grn);font-weight:700;font-size:11px;
+            transition:all .15s;
+          " onmouseover="this.style.borderColor='var(--grn)'" onmouseout="this.style.borderColor='rgba(0,230,118,.3)'">
+            <span style="font-size:18px;flex-shrink:0">☁️</span>
+            <div style="text-align:left">
+              <div style="font-weight:800">Sync Sekarang</div>
+              <div style="font-size:9px;opacity:.7;margin-top:1px">Push ke Firestore</div>
+            </div>
+          </button>
+
+          <button data-action="pullFromFirestore" style="
+            display:flex;align-items:center;gap:9px;padding:11px 12px;
+            border-radius:10px;cursor:pointer;border:1.5px solid rgba(68,138,255,.3);
+            background:var(--blu-bg);color:var(--blu);font-weight:700;font-size:11px;
+            transition:all .15s;
+          " onmouseover="this.style.borderColor='var(--blu)'" onmouseout="this.style.borderColor='rgba(68,138,255,.3)'">
+            <span style="font-size:18px;flex-shrink:0">⬇️</span>
+            <div style="text-align:left">
+              <div style="font-weight:800">Tarik Data</div>
+              <div style="font-size:9px;opacity:.7;margin-top:1px">Pull dari Cloud</div>
+            </div>
+          </button>
+
+          <button data-action="backupNow" style="
+            display:flex;align-items:center;gap:9px;padding:11px 12px;
+            border-radius:10px;cursor:pointer;border:1.5px solid rgba(192,132,252,.3);
+            background:var(--pur-bg);color:var(--pur);font-weight:700;font-size:11px;
+            transition:all .15s;
+          " onmouseover="this.style.borderColor='var(--pur)'" onmouseout="this.style.borderColor='rgba(192,132,252,.3)'">
+            <span style="font-size:18px;flex-shrink:0">💾</span>
+            <div style="text-align:left">
+              <div style="font-weight:800">Backup Lokal</div>
+              <div style="font-size:9px;opacity:.7;margin-top:1px">Export JSON</div>
+            </div>
+          </button>
+
+          <button data-action="shareViaWA" style="
+            display:flex;align-items:center;gap:9px;padding:11px 12px;
+            border-radius:10px;cursor:pointer;border:1.5px solid rgba(255,202,40,.3);
+            background:var(--yel-bg);color:var(--yel);font-weight:700;font-size:11px;
+            transition:all .15s;
+          " onmouseover="this.style.borderColor='var(--yel)'" onmouseout="this.style.borderColor='rgba(255,202,40,.3)'">
+            <span style="font-size:18px;flex-shrink:0">📱</span>
+            <div style="text-align:left">
+              <div style="font-weight:800">Share WA</div>
+              <div style="font-size:9px;opacity:.7;margin-top:1px">Kirim laporan</div>
+            </div>
+          </button>
+
+        </div>
+
+        <!-- Google Sheets — full row -->
+        <button data-action="openModal" data-args='["modal-sheets-sync"]' style="
+          display:flex;align-items:center;gap:10px;width:100%;
+          padding:10px 14px;border-radius:10px;cursor:pointer;
+          background:var(--s2);border:1px solid var(--bdr2);
+          color:var(--t2);font-size:11px;font-weight:600;
+          text-align:left;transition:border-color .15s;
+        " onmouseover="this.style.borderColor='var(--grn)'" onmouseout="this.style.borderColor='var(--bdr2)'">
+          <span style="font-size:18px">📊</span>
+          <div>
+            <div style="font-weight:700;color:var(--t1)">Export ke Google Sheets</div>
+            <div style="font-size:9px;color:var(--t3);margin-top:1px">Salin URL Google Sheets CSV untuk sync</div>
+          </div>
+          <span style="margin-left:auto;font-size:12px;color:var(--t3)">›</span>
+        </button>
+
+      </div>
+
+      <!-- ══ DIAGNOSTIC PANEL ══ -->
+      <div id="diagnostic-panel" style="padding-top:12px;border-top:1px solid var(--bdr);margin-top:12px">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+          <div style="font-size:12px;font-weight:800;color:var(--cyn);text-transform:uppercase;letter-spacing:.5px">🔬 Diagnostik Firebase</div>
+          <div id="diag-status-badge" style="font-size:9px;font-weight:700;padding:3px 9px;border-radius:12px;background:var(--s2);border:1px solid var(--bdr);color:var(--t3)">Belum dicek</div>
+        </div>
+        <div id="diagnostic-results" style="display:grid;grid-template-columns:1fr;gap:5px;margin-bottom:10px">
+          <div style="font-size:11px;color:var(--t3);font-style:italic;padding:8px;text-align:center">
+            Tekan "Jalankan Cek" untuk mulai diagnostik...
+          </div>
+        </div>
+        <div id="diag-log" style="display:none;background:var(--s2);border:1px solid var(--bdr);border-radius:8px;padding:8px 10px;margin-bottom:10px;max-height:120px;overflow-y:auto;font-family:'Courier New',monospace;font-size:10px;color:var(--t2);line-height:1.7"></div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px">
+          <button data-action="runDiagnostic" style="padding:9px 6px;border-radius:9px;background:var(--cyn-bg);border:1.5px solid var(--cyn);color:var(--cyn);font-size:10px;font-weight:800;cursor:pointer;text-align:center">🔬<br/>Jalankan Cek</button>
+          <button data-action="pullFromFirestore" style="padding:9px 6px;border-radius:9px;background:var(--blu-bg);border:1.5px solid var(--blu);color:var(--blu);font-size:10px;font-weight:800;cursor:pointer;text-align:center">⬇️<br/>Tarik Data</button>
+          <button data-action="manualSync" style="padding:9px 6px;border-radius:9px;background:var(--grn-bg);border:1.5px solid var(--grn);color:var(--grn);font-size:10px;font-weight:800;cursor:pointer;text-align:center">⬆️<br/>Push Data</button>
+        </div>
+      </div>
+
+      <!-- Logout -->
+      <div style="padding-top:12px;border-top:1px solid var(--bdr);margin-top:12px">
+        <button data-action="doLogout" style="width:100%;padding:11px;border-radius:var(--r);background:var(--red-bg);border:1px solid rgba(255,82,82,.25);color:var(--red);font-weight:800;font-size:13px;cursor:pointer">
+          🚪 Logout dari Akun
+        </button>
+        <div style="text-align:center;margin-top:8px;font-size:10px;color:var(--t3)" id="set-login-info">—</div>
+      </div>
+    </div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <button class="abtn abtn-g" data-action="openModal" data-args='["modal-smart-import"]' style="background:linear-gradient(135deg,var(--cyn),var(--blu));color:#fff;border:none">📥 Smart Import</button>
+        <button class="abtn abtn-b" data-action="exportData">📤 Export JSON</button>
+        <button class="abtn abtn-a" data-action="importData">🔄 Import JSON</button>
+        <button class="abtn abtn-r" data-action="resetData">🗑️ Reset Semua</button>
+      </div>
+      <div style="font-size:11px;color:var(--t3);margin-top:10px">💡 <b style="color:var(--cyn)">Smart Import</b> mendukung upload CSV/Excel untuk data Siswa & Guru dengan auto mapping kolom dan validasi duplikat.</div>
+    </div>
+    <div class="card">
+      <div class="card-title">ℹ️ Tentang Aplikasi</div>
+      <!-- App identity -->
+      <div style="display:flex;align-items:center;gap:14px;padding:10px 0 14px;border-bottom:1px solid var(--bdr)">
+        <div style="width:56px;height:56px;border-radius:14px;background:linear-gradient(135deg,#0a1628,#0f1f3a);border:2px solid var(--grn);display:flex;align-items:center;justify-content:center;font-size:26px;flex-shrink:0">🏫</div>
+        <div>
+          <div style="font-size:16px;font-weight:900;color:var(--grn);letter-spacing:.5px">SEKOLAH PRO</div>
+          <div style="font-size:11px;color:var(--t2);margin-top:2px">Sistem Informasi Manajemen Sekolah</div>
+          <div style="font-size:10px;color:var(--t3);margin-top:3px">Versi 2.0 · PWA · Offline Ready</div>
+        </div>
+      </div>
+      <!-- Features list -->
+      <div style="padding:12px 0;border-bottom:1px solid var(--bdr)">
+        <div style="font-size:10px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px">Fitur Tersedia</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px 12px;font-size:11px;color:var(--t2)">
+          <span>📊 Dashboard Real-time</span><span>👤 CRM Siswa Lengkap</span>
+          <span>💳 SPP & Buku Piutang</span><span>🙏 Infak Harian</span>
+          <span>👨‍🏫 Penggajian Guru</span><span>🏦 Dana BOS</span>
+          <span>📅 Jadwal Kelas</span><span>🗓️ Kalender Akademik</span>
+          <span>💬 Komunikasi Ortu</span><span>📦 Inventaris Aset</span>
+          <span>🎓 Kelulusan & Alumni</span><span>📄 Laporan & Cetak</span>
+          <span>📡 Radar Kesehatan</span><span>📱 PWA Installable</span>
+        </div>
+      </div>
+      <!-- Developer -->
+      <div style="padding:12px 0;border-bottom:1px solid var(--bdr)">
+        <div style="font-size:10px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px">Dikembangkan oleh</div>
+        <div style="display:flex;align-items:center;gap:10px">
+          <div style="width:40px;height:40px;border-radius:10px;background:var(--grn-bg);border:1.5px solid var(--grn);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0">⚡</div>
+          <div>
+            <div style="font-size:14px;font-weight:900;color:var(--grn)">Arblok Digital</div>
+            <div style="font-size:11px;color:var(--t2);margin-top:2px">Digital Solutions for Education</div>
+          </div>
+        </div>
+      </div>
+      <!-- License & Copyright -->
+      <div style="padding:14px 0 4px">
+        <div style="font-size:10px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px">Lisensi & Hak Cipta</div>
+        <div style="background:linear-gradient(135deg,#0d0a1a,#1a0a2a);border:1px solid rgba(192,132,252,.3);border-radius:10px;padding:14px">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
+            <span style="font-size:18px">🔒</span>
+            <div style="font-size:13px;font-weight:900;color:var(--pur)">Proprietary License</div>
+          </div>
+          <div style="font-size:13px;font-weight:900;color:var(--t1);margin-bottom:8px">Copyright © 2026 Arblok Digital.<br/>All Rights Reserved.</div>
+          <div style="background:rgba(255,82,82,.08);border:1px solid rgba(255,82,82,.2);border-radius:8px;padding:10px 12px;margin-bottom:10px">
+            <div style="font-size:11px;font-weight:700;color:var(--red);margin-bottom:4px">⛔ DILARANG:</div>
+            <div style="font-size:11px;color:var(--t2);line-height:1.8">
+              • Memperbanyak atau menduplikasi kode ini<br/>
+              • Mendistribusikan dalam bentuk apapun<br/>
+              • Memodifikasi tanpa izin tertulis<br/>
+              • Menggunakan untuk keperluan komersial
+            </div>
+          </div>
+          <div style="font-size:11px;color:var(--t3);line-height:1.7">
+            Dilarang memperbanyak, mendistribusikan, atau memodifikasi kode ini tanpa izin tertulis dari <span style="color:var(--pur);font-weight:700">Arblok Digital</span>. Pelanggaran akan dikenakan tindakan hukum sesuai peraturan perundang-undangan yang berlaku.
+          </div>
+        </div>
+        <!-- Contact -->
+        <div style="margin-top:10px;background:linear-gradient(135deg,#0a1e0d,#0d2a10);border:1px solid rgba(0,230,118,.2);border-radius:10px;padding:12px 14px">
+          <div style="font-size:10px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px">Kontak & Lisensi Resmi</div>
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap">
+            <div>
+              <div style="font-size:12px;font-weight:700;color:var(--t1)">Arblok Digital</div>
+              <div style="font-size:11px;color:var(--t3);margin-top:2px">Digital Solutions for Education</div>
+            </div>
+            <a href="https://wa.me/6289508053795?text=Halo%20Arblok%20Digital%2C%20saya%20ingin%20bertanya%20tentang%20lisensi%20Sekolah%20Pro"
+               target="_blank"
+               style="display:flex;align-items:center;gap:8px;background:#25D366;color:#fff;text-decoration:none;border-radius:9px;padding:9px 14px;font-weight:800;font-size:12px;flex-shrink:0">
+              <span style="font-size:16px">📱</span> 0895-0805-3795
+            </a>
+          </div>
+        </div>
+        <!-- PWA Status -->
+        <div style="margin-top:10px;background:var(--s2);border-radius:10px;padding:12px;display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap">
+          <div>
+            <div style="font-size:11px;font-weight:700;color:var(--t1)">Status PWA</div>
+            <div style="font-size:10px;color:var(--t3);margin-top:2px" id="set-pwa-status">Memeriksa...</div>
+          </div>
+          <button id="set-install-btn" style="display:none;background:var(--grn);color:#000;border:none;border-radius:8px;padding:7px 14px;font-weight:800;font-size:12px;cursor:pointer" data-action="triggerInstall">📲 Install App</button>
+        </div>
+        <div style="text-align:center;margin-top:10px;font-size:10px;color:var(--t3)">
+          Build: <span style="font-family:'Courier New',monospace;color:var(--t2)" id="set-build-date"></span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<!-- MODALS -->
+<div id="modal-smart-import" class="modal-bg">
+  <div class="sheet" style="max-width:600px">
+    <div class="mhdr">
+      <h2 style="display:flex;align-items:center;gap:8px">
+        <span style="background:linear-gradient(135deg,var(--cyn),var(--blu));-webkit-background-clip:text;-webkit-text-fill-color:transparent">📥 Smart Import</span>
+      </h2>
+      <button class="mclose" data-action="closeModal" data-args='["modal-smart-import"]'>✕</button>
+    </div>
+
+    <!-- Step Indicator -->
+    <div style="padding:12px 16px;border-bottom:1px solid var(--bdr);background:var(--s2)">
+      <div style="display:flex;gap:0;align-items:center">
+        <div class="import-step-num" id="imp-s1" style="background:var(--cyn-bg);color:var(--cyn);border:1.5px solid var(--cyn)">1</div>
+        <div id="imp-line1" style="flex:1;height:2px;background:var(--bdr2);margin:0 4px;transition:background .3s"></div>
+        <div class="import-step-num" id="imp-s2" style="background:var(--s2);color:var(--t3);border:1.5px solid var(--bdr2)">2</div>
+        <div id="imp-line2" style="flex:1;height:2px;background:var(--bdr2);margin:0 4px;transition:background .3s"></div>
+        <div class="import-step-num" id="imp-s3" style="background:var(--s2);color:var(--t3);border:1.5px solid var(--bdr2)">3</div>
+        <div id="imp-line3" style="flex:1;height:2px;background:var(--bdr2);margin:0 4px;transition:background .3s"></div>
+        <div class="import-step-num" id="imp-s4" style="background:var(--s2);color:var(--t3);border:1.5px solid var(--bdr2)">4</div>
+      </div>
+      <div style="display:flex;justify-content:space-between;margin-top:4px;font-size:9px;color:var(--t3);font-weight:700;text-transform:uppercase;letter-spacing:.3px">
+        <span>Upload</span><span style="margin-left:-8px">Mapping</span><span>Preview</span><span>Import</span>
+      </div>
+    </div>
+
+    <!-- Step 1: Upload -->
+    <div id="imp-pane-1" class="modal-tab-pane on" style="padding:16px">
+      <div style="margin-bottom:12px">
+        <div style="font-size:14px;font-weight:800;color:var(--t1);margin-bottom:4px">📂 Upload File Data</div>
+        <div style="font-size:12px;color:var(--t3)">Mendukung format <b style="color:var(--cyn)">.CSV</b> dan <b style="color:var(--cyn)">.XLSX / .XLS</b></div>
+      </div>
+
+      <!-- Target type selector -->
+      <div style="display:flex;gap:8px;margin-bottom:14px">
+        <button id="imp-type-siswa" class="abtn" style="flex:1;padding:12px;background:var(--cyn-bg);border:2px solid var(--cyn);color:var(--cyn);font-size:12px" data-action="setImportType" data-args='["siswa"]'>
+          👤 Data Siswa
+        </button>
+        <button id="imp-type-guru" class="abtn" style="flex:1;padding:12px;background:var(--s2);border:2px solid var(--bdr2);color:var(--t3);font-size:12px" data-action="setImportType" data-args='["guru"]'>
+          👨‍🏫 Data Guru
+        </button>
+      </div>
+
+      <!-- Drop Zone -->
+      <div class="import-drop-zone" id="imp-drop-zone" ondragover="event.preventDefault();this.classList.add('drag-over')" ondragleave="this.classList.remove('drag-over')" ondrop="handleFileDrop(event)">
+        <input type="file" id="imp-file-input" accept=".csv,.xlsx,.xls" data-action="handleFileSelect" data-args='["@@event"]'/>
+        <div style="font-size:36px;margin-bottom:10px">📄</div>
+        <div style="font-size:13px;font-weight:700;color:var(--t1);margin-bottom:4px">Drag & drop file di sini</div>
+        <div style="font-size:11px;color:var(--t3)">atau klik untuk pilih file</div>
+        <div style="margin-top:10px;padding:6px 14px;background:var(--s1);border-radius:8px;display:inline-block;font-size:11px;color:var(--t2)">CSV · XLSX · XLS</div>
+      </div>
+
+      <!-- File info after select -->
+      <div id="imp-file-info" style="display:none;margin-top:10px;background:var(--grn-bg);border:1px solid rgba(0,230,118,.2);border-radius:9px;padding:10px 14px;display:none;align-items:center;gap:10px">
+        <span style="font-size:20px">✅</span>
+        <div style="flex:1">
+          <div style="font-size:12px;font-weight:700" id="imp-filename">—</div>
+          <div style="font-size:10px;color:var(--t3);margin-top:2px" id="imp-fileinfo">—</div>
+        </div>
+        <button class="abtn abtn-r" style="padding:6px 10px;font-size:10px" data-action="resetImport">✕</button>
+      </div>
+
+      <!-- Download template -->
+      <div style="margin-top:14px;padding-top:12px;border-top:1px solid var(--bdr)">
+        <div style="font-size:11px;color:var(--t3);margin-bottom:8px">📝 Download template CSV sebagai contoh format:</div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          <button class="abtn abtn-b" style="font-size:11px;padding:7px 12px" data-action="downloadTemplate" data-args='["siswa"]'>⬇️ Template Siswa.csv</button>
+          <button class="abtn abtn-b" style="font-size:11px;padding:7px 12px" data-action="downloadTemplate" data-args='["guru"]'>⬇️ Template Guru.csv</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 2: Column Mapping -->
+    <div id="imp-pane-2" class="modal-tab-pane" style="padding:16px">
+      <div style="margin-bottom:12px">
+        <div style="font-size:14px;font-weight:800;color:var(--t1);margin-bottom:4px">🗺️ Mapping Kolom</div>
+        <div style="font-size:12px;color:var(--t3)">Cocokkan kolom dari file kamu ke field sistem SekolahPro</div>
+      </div>
+      <div style="background:var(--s2);border-radius:9px;padding:4px 12px;max-height:320px;overflow-y:auto" id="imp-mapping-container"></div>
+    </div>
+
+    <!-- Step 3: Preview & Validasi -->
+    <div id="imp-pane-3" class="modal-tab-pane" style="padding:16px">
+      <div style="margin-bottom:10px">
+        <div style="font-size:14px;font-weight:800;color:var(--t1);margin-bottom:4px">👁️ Preview & Validasi</div>
+        <div style="font-size:12px;color:var(--t3)">Baris <span style="color:var(--red);font-weight:700">merah</span> = duplikat · <span style="color:var(--grn);font-weight:700">hijau</span> = data baru</div>
+      </div>
+      <!-- Mode import: Tambah / Timpa -->
+      <div style="display:flex;gap:8px;margin-bottom:10px;background:var(--s2);border-radius:9px;padding:10px 12px;border:1px solid var(--bdr)">
+        <div style="font-size:11px;font-weight:700;color:var(--t2);align-self:center;margin-right:4px">Mode:</div>
+        <button id="imp-mode-add" data-action="setImportMode" data-args='["add"]' class="abtn" style="flex:1;padding:7px;font-size:11px;background:var(--grn-bg);border:1.5px solid var(--grn);color:var(--grn)">
+          ➕ Tambah Baru
+        </button>
+        <button id="imp-mode-overwrite" data-action="setImportMode" data-args='["overwrite"]' class="abtn" style="flex:1;padding:7px;font-size:11px;background:var(--s2);border:1.5px solid var(--bdr2);color:var(--t3)">
+          🔄 Timpa Semua
+        </button>
+        <button id="imp-mode-replace" data-action="setImportMode" data-args='["replace"]' class="abtn" style="flex:1;padding:7px;font-size:11px;background:var(--s2);border:1.5px solid var(--bdr2);color:var(--t3)">
+          💾 Update Duplikat
+        </button>
+      </div>
+      <div id="imp-mode-desc" style="font-size:10px;color:var(--t3);margin-bottom:8px;padding:6px 10px;background:var(--s2);border-radius:6px">
+        ➕ <b>Tambah Baru:</b> Hanya import data yang belum ada (skip duplikat)
+      </div>
+      <div class="import-summary" id="imp-summary"></div>
+      <div style="overflow-x:auto;border-radius:9px;border:1px solid var(--bdr);max-height:300px;overflow-y:auto">
+        <table class="preview-tbl"><thead id="imp-preview-head"></thead><tbody id="imp-preview-body"></tbody></table>
+      </div>
+    </div>
+
+    <!-- Step 4: Hasil Import -->
+    <div id="imp-pane-4" class="modal-tab-pane" style="padding:16px;text-align:center">
+      <div id="imp-result-content">
+        <div style="font-size:48px;margin-bottom:12px">⏳</div>
+        <div style="font-size:16px;font-weight:900;color:var(--t1)" id="imp-result-title">Mengimport data...</div>
+        <div class="import-progress"><div class="import-progress-bar" id="imp-result-bar" style="width:0%"></div></div>
+        <div style="font-size:12px;color:var(--t3)" id="imp-result-sub"></div>
+      </div>
+    </div>
+
+    <!-- Footer Buttons -->
+    <div class="mact" style="justify-content:space-between">
+      <button id="imp-btn-back" style="display:none" class="abtn" data-action="importPrevStep">← Kembali</button>
+      <div style="flex:1"></div>
+      <button class="abtn" data-action="closeModal" data-args='["modal-smart-import"]'>Tutup</button>
+      <button id="imp-btn-next" class="abtn abtn-g" style="background:linear-gradient(135deg,var(--cyn),var(--blu));border:none;color:#fff;font-weight:900" data-action="importNextStep">Lanjut →</button>
+    </div>
+  </div>
+</div>
+<div id="modal-rapor" class="modal-bg">
+  <div class="sheet" style="max-width:640px">
+    <div class="mhdr"><h2>📋 Rapor Digital</h2><button class="mclose" data-action="closeModal" data-args='["modal-rapor"]'>✕</button></div>
+    <div style="padding:10px 16px;border-bottom:1px solid var(--bdr);display:flex;gap:8px;flex-wrap:wrap" class="no-print">
+      <button class="abtn abtn-g" data-action="__windowPrint">🖨️ Print / Simpan PDF</button>
+      <button class="abtn abtn-b" data-action="shareRaporWA">📱 Share WA</button>
+    </div>
+    <div style="padding:16px;max-height:70vh;overflow-y:auto">
+      <div id="rapor-content"></div>
+    </div>
+  </div>
+</div>
+<div id="modal-sheets-sync" class="modal-bg">
+  <div class="sheet">
+    <div class="mhdr"><h2>📊 Sync Google Sheets</h2><button class="mclose" data-action="closeModal" data-args='["modal-sheets-sync"]'>✕</button></div>
+    <div class="msec">
+      <div style="background:var(--blu-bg);border:1px solid rgba(68,138,255,.2);border-radius:9px;padding:12px;margin-bottom:12px;font-size:11px;color:var(--t2);line-height:1.7">
+        📌 <b>Cara setup:</b><br/>
+        1. Buat Google Sheet baru<br/>
+        2. File → Share → "Anyone with link can view"<br/>
+        3. Salin link, ganti <code style="color:var(--cyn)">/edit</code> dengan <code style="color:var(--cyn)">/export?format=csv</code><br/>
+        4. Tempel URL di bawah ini
+      </div>
+      <div class="inp-group">
+        <div class="fl">URL Google Sheets (CSV Export)</div>
+        <input class="ti" id="sheets-url-inp" placeholder="https://docs.google.com/spreadsheets/d/.../export?format=csv" style="font-size:11px"/>
+      </div>
+      <div class="inp-group">
+        <div class="fl">Tipe Data</div>
+        <select class="ts" id="sheets-type-sel">
+          <option value="siswa">Data Siswa</option>
+          <option value="guru">Data Guru</option>
+        </select>
+      </div>
+    </div>
+    <div class="mact">
+      <button class="mbtn mbtn-c" data-action="closeModal" data-args='["modal-sheets-sync"]'>Batal</button>
+      <button class="mbtn mbtn-s" data-action="importFromSheets">🔄 Import dari Sheets</button>
+    </div>
+  </div>
+</div>

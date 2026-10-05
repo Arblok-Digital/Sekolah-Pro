@@ -1,0 +1,440 @@
+<!-- partials/crm.html — HTML halaman crm + modal milik modul crm (id/class dipertahankan) -->
+<div id="crm-page" class="page">
+  <div class="page-body">
+    <!-- Stats — Clickable -->
+    <div class="stats-row">
+      <div class="sc" data-action="setCRMFilter" data-args='["all","@@sel:#crm-filter-chips .fchip"]' style="cursor:pointer;transition:border-color .15s,transform .12s" onmouseover="this.style.borderColor='var(--cyn)';this.style.transform='translateY(-2px)'" onmouseout="this.style.borderColor='';this.style.transform=''">
+        <div class="sc-l">👥 Total Siswa</div>
+        <div class="sc-v" id="crm-stat-total">0</div>
+        <div class="sc-s" style="color:var(--cyn);font-weight:600">→ Semua Siswa</div>
+      </div>
+      <div class="sc" data-action="setCRMFilter" data-args='["lunas","@@id:crm-chip-lunas"]' style="cursor:pointer;transition:border-color .15s,transform .12s" onmouseover="this.style.borderColor='var(--grn)';this.style.transform='translateY(-2px)'" onmouseout="this.style.borderColor='';this.style.transform=''">
+        <div class="sc-l">✅ SPP Lunas</div>
+        <div class="sc-v" style="color:var(--grn)" id="crm-stat-lunas">0</div>
+        <div class="sc-s" style="color:var(--grn);font-weight:600">→ Filter Lunas</div>
+      </div>
+      <div class="sc" data-action="setCRMFilter" data-args='["tunggakan","@@id:crm-chip-tunggakan"]' style="cursor:pointer;transition:border-color .15s,transform .12s" onmouseover="this.style.borderColor='var(--red)';this.style.transform='translateY(-2px)'" onmouseout="this.style.borderColor='';this.style.transform=''">
+        <div class="sc-l">⚠️ Ada Piutang</div>
+        <div class="sc-v" style="color:var(--red)" id="crm-stat-piutang">0</div>
+        <div class="sc-s" style="color:var(--red);font-weight:600">→ Filter Tunggakan</div>
+      </div>
+      <div class="sc" data-action="openModal" data-args='["modal-absensi-massal"]' style="cursor:pointer;transition:border-color .15s,transform .12s" onmouseover="this.style.borderColor='var(--cyn)';this.style.transform='translateY(-2px)'" onmouseout="this.style.borderColor='';this.style.transform=''">
+        <div class="sc-l">📅 Hadir Hari Ini</div>
+        <div class="sc-v" style="color:var(--cyn)" id="crm-stat-hadir">0</div>
+        <div class="sc-s" style="color:var(--cyn);font-weight:600">→ Catat Absensi</div>
+      </div>
+    </div>
+
+    <!-- Toolbar & Search -->
+    <div class="card">
+      <div class="toolbar" style="gap:8px;margin-bottom:10px">
+        <button class="abtn abtn-g" data-action="openModal" data-args='["modal-crm-add"]'>+ Tambah Siswa</button>
+        <button class="abtn abtn-b" data-action="openModal" data-args='["modal-absensi-massal"]'>📋 Absensi Massal</button>
+        <button class="abtn abtn-a" data-action="openModal" data-args='["modal-piutang-massal"]'>💳 Tagihan SPP</button>
+        <button class="abtn" style="background:linear-gradient(135deg,var(--cyn),var(--blu));color:#fff;border:none" data-action="openSmartImport" data-args='["siswa"]'>📥 Import CSV/Excel</button>
+      </div>
+      <!-- Filter chips -->
+      <div class="filter-chips" id="crm-filter-chips">
+        <button class="fchip on" data-action="setCRMFilter" data-args='["all","@@this"]'>Semua</button>
+        <button class="fchip" id="crm-chip-lunas" data-action="setCRMFilter" data-args='["lunas","@@this"]'>✅ Lunas</button>
+        <button class="fchip" id="crm-chip-tunggakan" data-action="setCRMFilter" data-args='["tunggakan","@@this"]'>⚠️ Tunggakan</button>
+        <button class="fchip" data-action="setCRMFilter" data-args='["1","@@this"]'>Kelas 1</button>
+        <button class="fchip" data-action="setCRMFilter" data-args='["2","@@this"]'>Kelas 2</button>
+        <button class="fchip" data-action="setCRMFilter" data-args='["3","@@this"]'>Kelas 3</button>
+        <button class="fchip" data-action="setCRMFilter" data-args='["4","@@this"]'>Kelas 4</button>
+        <button class="fchip" data-action="setCRMFilter" data-args='["5","@@this"]'>Kelas 5</button>
+        <button class="fchip" data-action="setCRMFilter" data-args='["6","@@this"]'>Kelas 6</button>
+      </div>
+      <!-- Search -->
+      <div class="siswa-search" style="margin-top:10px">
+        <span class="siswa-search-ico">🔍</span>
+        <input class="ti" id="crm-search" placeholder="Cari nama, NISN, orang tua..." style="padding-left:34px" data-action="renderCRM"/>
+      </div>
+    </div>
+
+    <!-- Daftar Siswa CRM -->
+    <div id="crm-list">
+      <div class="empty-state"><span class="empty-icon">👥</span><span class="empty-text">Belum ada data siswa</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- MODALS -->
+<div id="modal-spp" class="modal-bg">
+  <div class="sheet">
+    <div class="mhdr"><h2>💳 Bayar SPP</h2><button class="mclose" data-action="closeModal" data-args='["modal-spp"]'>✕</button></div>
+    <div class="msec">
+      <div class="mlbl">Pilih Siswa</div>
+      <select class="ts" id="spp-siswa-sel" style="width:100%"></select>
+    </div>
+    <div class="msec">
+      <div class="fg">
+        <div>
+          <div class="mlbl">Bulan</div>
+          <select class="ts" id="spp-bulan">
+            <option>Januari</option><option>Februari</option><option>Maret</option>
+            <option>April</option><option>Mei</option><option>Juni</option>
+            <option>Juli</option><option>Agustus</option><option>September</option>
+            <option>Oktober</option><option>November</option><option>Desember</option>
+          </select>
+        </div>
+        <div>
+          <div class="mlbl">Jumlah (Rp)</div>
+          <input class="ti" id="spp-jumlah" type="number" placeholder="0"/>
+        </div>
+      </div>
+    </div>
+    <div class="msec">
+      <div class="mlbl">Catatan</div>
+      <input class="ti" id="spp-catatan" placeholder="Opsional..." />
+    </div>
+    <div class="mact">
+      <button class="mbtn mbtn-c" data-action="closeModal" data-args='["modal-spp"]'>Batal</button>
+      <button class="mbtn mbtn-s" data-action="bayarSPP">✅ Proses Bayar</button>
+    </div>
+  </div>
+</div>
+<div id="modal-siswa" class="modal-bg">
+  <div class="sheet">
+    <div class="mhdr"><h2>👤 Tambah Siswa</h2><button class="mclose" data-action="closeModal" data-args='["modal-siswa"]'>✕</button></div>
+    <div class="msec">
+      <div class="fg">
+        <div class="fg-full">
+          <div class="mlbl">Nama Lengkap</div>
+          <input class="ti" id="siswa-nama-inp" placeholder="Nama siswa..." />
+        </div>
+        <div>
+          <div class="mlbl">Kelas</div>
+          <input class="ti" id="siswa-kelas-inp" placeholder="1A" />
+        </div>
+        <div>
+          <div class="mlbl">Piutang Awal (Rp)</div>
+          <input class="ti" id="siswa-piutang-inp" type="number" placeholder="0" />
+        </div>
+      </div>
+    </div>
+    <div class="mact">
+      <button class="mbtn mbtn-c" data-action="closeModal" data-args='["modal-siswa"]'>Batal</button>
+      <button class="mbtn mbtn-s" data-action="tambahSiswa">✅ Simpan</button>
+    </div>
+  </div>
+</div>
+<div id="modal-crm-add" class="modal-bg">
+  <div class="sheet">
+    <div class="mhdr"><h2>👤 Tambah Siswa</h2><button class="mclose" data-action="closeModal" data-args='["modal-crm-add"]'>✕</button></div>
+    <div class="msec">
+      <div class="mlbl">🎓 Data Siswa</div>
+      <div class="fg" style="gap:10px">
+        <div class="fg-full inp-group">
+          <div class="fl">Nama Lengkap*</div>
+          <input class="ti" id="crm-add-nama" placeholder="Nama lengkap siswa..."/>
+        </div>
+        <div class="inp-group">
+          <div class="fl">NISN</div>
+          <input class="ti" id="crm-add-nisn" placeholder="0012345678" maxlength="10"/>
+        </div>
+        <div class="inp-group">
+          <div class="fl">Kelas</div>
+          <select class="ts" id="crm-add-kelas">
+            <option value="">-- Pilih Kelas --</option>
+          </select>
+        </div>
+        <div class="inp-group">
+          <div class="fl">Jenis Kelamin</div>
+          <select class="ts" id="crm-add-jk">
+            <option value="L">Laki-laki</option>
+            <option value="P">Perempuan</option>
+          </select>
+        </div>
+        <div class="inp-group">
+          <div class="fl">Tanggal Lahir</div>
+          <input class="ti" id="crm-add-tgl-lahir" type="date"/>
+        </div>
+        <div class="inp-group">
+          <div class="fl">Tahun Masuk</div>
+          <input class="ti" id="crm-add-tahun-masuk" type="number" placeholder="2024"/>
+        </div>
+      </div>
+    </div>
+    <div class="msec">
+      <div class="mlbl">👨‍👩‍👧 Data Orang Tua / Wali</div>
+      <div class="fg" style="gap:10px">
+        <div class="fg-full inp-group">
+          <div class="fl">Nama Ayah / Wali</div>
+          <input class="ti" id="crm-add-ayah" placeholder="Nama ayah atau wali..."/>
+        </div>
+        <div class="fg-full inp-group">
+          <div class="fl">Nama Ibu</div>
+          <input class="ti" id="crm-add-ibu" placeholder="Nama ibu..."/>
+        </div>
+        <div class="inp-group">
+          <div class="fl">No. HP Orang Tua</div>
+          <input class="ti" id="crm-add-hp" type="tel" placeholder="08xxxxxxxxxx"/>
+        </div>
+        <div class="inp-group">
+          <div class="fl">Pekerjaan Orang Tua</div>
+          <input class="ti" id="crm-add-pekerjaan" placeholder="Guru, Pedagang..."/>
+        </div>
+        <div class="fg-full inp-group">
+          <div class="fl">Alamat</div>
+          <input class="ti" id="crm-add-alamat" placeholder="Alamat lengkap..."/>
+        </div>
+      </div>
+    </div>
+    <div class="msec">
+      <div class="mlbl">💳 Keuangan Awal</div>
+      <div class="inp-group">
+        <div class="fl">Piutang SPP Awal (Rp)</div>
+        <input class="ti" id="crm-add-piutang" type="number" placeholder="0"/>
+      </div>
+    </div>
+    <div class="mact">
+      <button class="mbtn mbtn-c" data-action="closeModal" data-args='["modal-crm-add"]'>Batal</button>
+      <button class="mbtn mbtn-s" data-action="crmTambahSiswa">✅ Simpan Siswa</button>
+    </div>
+  </div>
+</div>
+<div id="modal-edit-siswa" class="modal-bg">
+  <div class="sheet" style="max-width:560px">
+    <div class="mhdr">
+      <h2>✏️ Edit Data Siswa</h2>
+      <button class="mclose" data-action="closeModal" data-args='["modal-edit-siswa"]'>✕</button>
+    </div>
+    <div style="padding:14px 16px;display:flex;flex-direction:column;gap:12px;max-height:72vh;overflow-y:auto">
+      <div class="fg">
+        <div class="inp-group"><div class="fl">Nama Lengkap *</div><input class="ti" id="edit-siswa-nama" placeholder="Nama siswa"/></div>
+        <div class="inp-group"><div class="fl">NISN</div><input class="ti" id="edit-siswa-nisn" placeholder="Nomor Induk"/></div>
+        <div class="inp-group"><div class="fl">Kelas</div><select class="ts" id="edit-siswa-kelas"><option value="">-- Pilih Kelas --</option></select></div>
+        <div class="inp-group"><div class="fl">Jenis Kelamin</div>
+          <select class="ts" id="edit-siswa-jk"><option value="L">Laki-laki</option><option value="P">Perempuan</option></select>
+        </div>
+        <div class="inp-group"><div class="fl">Tanggal Lahir</div><input class="ti" id="edit-siswa-tgl" type="date"/></div>
+        <div class="inp-group"><div class="fl">Tahun Masuk</div><input class="ti" id="edit-siswa-tahun" type="number" placeholder="2022"/></div>
+        <div class="inp-group"><div class="fl">Nama Ayah / Wali</div><input class="ti" id="edit-siswa-ayah" placeholder="Nama ayah atau wali"/></div>
+        <div class="inp-group"><div class="fl">Nama Ibu</div><input class="ti" id="edit-siswa-ibu" placeholder="Nama ibu"/></div>
+        <div class="inp-group"><div class="fl">HP Orang Tua</div><input class="ti" id="edit-siswa-hp" type="tel" placeholder="08xxxxxxxxxx"/></div>
+        <div class="inp-group"><div class="fl">Email Orang Tua</div><input class="ti" id="edit-siswa-email" type="email" placeholder="email@gmail.com"/></div>
+        <div class="inp-group fg-full"><div class="fl">Pekerjaan Orang Tua</div><input class="ti" id="edit-siswa-pekerjaan" placeholder="Guru, Pedagang..."/></div>
+        <div class="inp-group fg-full"><div class="fl">Alamat</div><input class="ti" id="edit-siswa-alamat" placeholder="Alamat lengkap"/></div>
+      </div>
+    </div>
+    <div class="mact">
+      <button class="mbtn mbtn-c" data-action="closeModal" data-args='["modal-edit-siswa"]'>Batal</button>
+      <button class="mbtn mbtn-s" data-action="simpanEditSiswa">💾 Simpan Perubahan</button>
+    </div>
+  </div>
+</div>
+<div id="modal-crm-detail" class="modal-bg">
+  <div class="sheet" style="max-width:600px">
+    <div class="mhdr"><h2 id="detail-modal-title">Profil Siswa</h2><button class="mclose" data-action="closeModal" data-args='["modal-crm-detail"]'>✕</button></div>
+    <!-- Profil Header -->
+    <div class="profil-header" id="detail-profil-header"></div>
+    <!-- Tab Strip -->
+    <div class="modal-tabs">
+      <button class="mtab-btn on" data-action="switchDetailTab" data-args='["profil","@@this"]'>👤 Profil</button>
+      <button class="mtab-btn" data-action="switchDetailTab" data-args='["piutang","@@this"]'>💳 Piutang</button>
+      <button class="mtab-btn" data-action="switchDetailTab" data-args='["absensi","@@this"]'>📅 Absensi</button>
+      <button class="mtab-btn" data-action="switchDetailTab" data-args='["nilai","@@this"]'>📊 Nilai</button>
+    </div>
+    <!-- Profil Tab -->
+    <div class="modal-tab-pane on" id="tab-profil">
+      <div id="detail-profil-content"></div>
+      <div style="display:flex;gap:8px;margin-top:12px">
+        <button class="abtn abtn-b" style="flex:1" data-action="editSiswa">✏️ Edit Data</button>
+        <button class="abtn abtn-r" data-action="hapusSiswa">🗑️ Hapus</button>
+      </div>
+    </div>
+    <!-- Piutang Tab -->
+    <div class="modal-tab-pane" id="tab-piutang">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+        <div style="font-size:12px;color:var(--t2)">Riwayat Tagihan & Pembayaran</div>
+        <button class="abtn abtn-a" style="padding:6px 12px;font-size:11px" data-action="openTagihanModal">+ Tambah Tagihan</button>
+      </div>
+      <div id="detail-piutang-list"></div>
+      <div style="margin-top:12px;padding:10px;background:var(--red-bg);border:1px solid rgba(255,82,82,.2);border-radius:9px;display:flex;justify-content:space-between;align-items:center" id="detail-piutang-total-box">
+        <span style="font-size:12px;font-weight:700">Total Piutang</span>
+        <span style="font-size:18px;font-weight:900;color:var(--red);font-family:'Courier New',monospace" id="detail-piutang-total">Rp 0</span>
+      </div>
+    </div>
+    <!-- Absensi Tab -->
+    <div class="modal-tab-pane" id="tab-absensi">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;flex-wrap:wrap;gap:8px">
+        <div style="display:flex;gap:6px;align-items:center">
+          <button class="abtn abtn-b" style="padding:6px 10px;font-size:11px" data-action="prevAbsMonth">◀</button>
+          <span style="font-size:13px;font-weight:700" id="abs-month-label">—</span>
+          <button class="abtn abtn-b" style="padding:6px 10px;font-size:11px" data-action="nextAbsMonth">▶</button>
+        </div>
+        <div style="display:flex;gap:5px">
+          <button class="abtn" style="padding:5px 10px;font-size:10px;background:var(--grn-bg);color:var(--grn);border:1px solid var(--grn)" data-action="setAbsMode" data-args='["H"]'>H</button>
+          <button class="abtn" style="padding:5px 10px;font-size:10px;background:var(--yel-bg);color:var(--yel);border:1px solid var(--yel)" data-action="setAbsMode" data-args='["I"]'>I</button>
+          <button class="abtn" style="padding:5px 10px;font-size:10px;background:var(--blu-bg);color:var(--blu);border:1px solid var(--blu)" data-action="setAbsMode" data-args='["S"]'>S</button>
+          <button class="abtn" style="padding:5px 10px;font-size:10px;background:var(--red-bg);color:var(--red);border:1px solid var(--red)" data-action="setAbsMode" data-args='["A"]'>A</button>
+        </div>
+      </div>
+      <div style="font-size:10px;color:var(--t3);margin-bottom:8px">Mode: <span id="abs-mode-label" style="font-weight:700;color:var(--grn)">Hadir (H)</span> — klik tanggal untuk toggle</div>
+      <div class="abs-grid" id="abs-cal-grid"></div>
+      <div class="abs-legend">
+        <div class="abs-leg-item"><div class="abs-leg-dot" style="background:var(--grn)"></div>Hadir</div>
+        <div class="abs-leg-item"><div class="abs-leg-dot" style="background:var(--yel)"></div>Izin</div>
+        <div class="abs-leg-item"><div class="abs-leg-dot" style="background:var(--blu)"></div>Sakit</div>
+        <div class="abs-leg-item"><div class="abs-leg-dot" style="background:var(--red)"></div>Alpha</div>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:12px" id="abs-summary"></div>
+    </div>
+    <!-- Nilai Tab -->
+    <div class="modal-tab-pane" id="tab-nilai">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;flex-wrap:wrap;gap:8px">
+        <div>
+          <select class="ts" id="nilai-semester-sel" data-action="renderNilai" style="font-size:12px">
+            <option value="1">Semester 1</option>
+            <option value="2">Semester 2</option>
+          </select>
+        </div>
+        <button class="abtn abtn-b" style="padding:6px 12px;font-size:11px" data-action="openModal" data-args='["modal-input-nilai"]'>+ Input Nilai</button>
+      </div>
+      <div id="detail-nilai-list"></div>
+      <div style="margin-top:12px;padding:10px;background:var(--cyn-bg);border:1px solid rgba(38,198,218,.2);border-radius:9px;display:flex;justify-content:space-between;align-items:center">
+        <span style="font-size:12px;font-weight:700">Rata-rata Nilai</span>
+        <span style="font-size:22px;font-weight:900;color:var(--cyn);font-family:'Courier New',monospace" id="detail-nilai-avg">—</span>
+      </div>
+    </div>
+  </div>
+</div>
+<div id="modal-input-nilai" class="modal-bg">
+  <div class="sheet">
+    <div class="mhdr"><h2>📊 Input Nilai</h2><button class="mclose" data-action="closeModal" data-args='["modal-input-nilai"]'>✕</button></div>
+    <div class="msec">
+      <div class="fg" style="gap:10px">
+        <div class="inp-group fg-full">
+          <div class="fl">Mata Pelajaran</div>
+          <select class="ts" id="nilai-mapel-inp">
+            <option>Matematika</option><option>Bahasa Indonesia</option><option>IPA</option>
+            <option>IPS</option><option>PKn</option><option>Bahasa Inggris</option>
+            <option>Pendidikan Agama Islam</option><option>PJOK</option>
+            <option>Seni Budaya</option><option>Prakarya</option><option>Lainnya</option>
+          </select>
+        </div>
+        <div class="inp-group">
+          <div class="fl">Jenis Penilaian</div>
+          <select class="ts" id="nilai-jenis-inp">
+            <option>UH</option><option>UTS</option><option>UAS</option>
+            <option>Tugas</option><option>Proyek</option>
+          </select>
+        </div>
+        <div class="inp-group">
+          <div class="fl">Nilai (0-100)</div>
+          <input class="ti" id="nilai-skor-inp" type="number" min="0" max="100" placeholder="85"/>
+        </div>
+      </div>
+    </div>
+    <div class="mact">
+      <button class="mbtn mbtn-c" data-action="closeModal" data-args='["modal-input-nilai"]'>Batal</button>
+      <button class="mbtn mbtn-s" data-action="simpanNilai">✅ Simpan Nilai</button>
+    </div>
+  </div>
+</div>
+<div id="modal-tagihan" class="modal-bg">
+  <div class="sheet">
+    <div class="mhdr"><h2>💳 Tambah Tagihan</h2><button class="mclose" data-action="closeModal" data-args='["modal-tagihan"]'>✕</button></div>
+    <div class="msec">
+      <div class="fg" style="gap:10px">
+        <div class="inp-group fg-full">
+          <div class="fl">Jenis Tagihan</div>
+          <select class="ts" id="tagihan-jenis-inp">
+            <option>SPP Bulanan</option><option>DSP</option><option>Uang Kegiatan</option>
+            <option>Seragam</option><option>Buku</option><option>Lainnya</option>
+          </select>
+        </div>
+        <div class="inp-group">
+          <div class="fl">Bulan / Keterangan</div>
+          <input class="ti" id="tagihan-ket-inp" placeholder="Januari 2025..."/>
+        </div>
+        <div class="inp-group">
+          <div class="fl">Jumlah (Rp)</div>
+          <input class="ti" id="tagihan-jumlah-inp" type="number" placeholder="0"/>
+        </div>
+        <div class="inp-group">
+          <div class="fl">Jatuh Tempo</div>
+          <input class="ti" id="tagihan-tempo-inp" type="date"/>
+        </div>
+      </div>
+    </div>
+    <div class="mact">
+      <button class="mbtn mbtn-c" data-action="closeModal" data-args='["modal-tagihan"]'>Batal</button>
+      <button class="mbtn mbtn-s" data-action="simpanTagihan">✅ Tambah Tagihan</button>
+    </div>
+  </div>
+</div>
+<div id="modal-absensi-massal" class="modal-bg">
+  <div class="sheet">
+    <div class="mhdr"><h2>📋 Absensi Massal</h2><button class="mclose" data-action="closeModal" data-args='["modal-absensi-massal"]'>✕</button></div>
+    <div class="msec">
+      <div style="display:flex;gap:8px;align-items:center;margin-bottom:12px;flex-wrap:wrap">
+        <div class="inp-group" style="flex:1;margin-bottom:0">
+          <div class="fl">Filter Kelas</div>
+          <select class="ts" id="massal-kelas-sel" data-action="renderMassalList">
+            <option value="">Semua Kelas</option>
+            <option value="1A">1A</option><option value="1B">1B</option>
+            <option value="2A">2A</option><option value="2B">2B</option>
+            <option value="3A">3A</option><option value="3B">3B</option>
+            <option value="4A">4A</option><option value="4B">4B</option>
+            <option value="5A">5A</option><option value="5B">5B</option>
+            <option value="6A">6A</option><option value="6B">6B</option>
+          </select>
+        </div>
+        <div class="inp-group" style="flex:1;margin-bottom:0">
+          <div class="fl">Tanggal</div>
+          <input class="ti" id="massal-tanggal" type="date"/>
+        </div>
+      </div>
+      <div style="display:flex;gap:6px;margin-bottom:10px">
+        <button class="abtn abtn-g" style="flex:1;font-size:11px" data-action="massalSetAll" data-args='["H"]'>✅ Semua Hadir</button>
+        <button class="abtn abtn-r" style="flex:1;font-size:11px" data-action="massalSetAll" data-args='["A"]'>❌ Semua Alpha</button>
+      </div>
+      <div id="massal-siswa-list" style="max-height:280px;overflow-y:auto"></div>
+    </div>
+    <div class="mact">
+      <button class="mbtn mbtn-c" data-action="closeModal" data-args='["modal-absensi-massal"]'>Batal</button>
+      <button class="mbtn mbtn-s" data-action="simpanAbsensiMassal">✅ Simpan Absensi</button>
+    </div>
+  </div>
+</div>
+<div id="modal-piutang-massal" class="modal-bg">
+  <div class="sheet">
+    <div class="mhdr"><h2>💳 Tagihan SPP Massal</h2><button class="mclose" data-action="closeModal" data-args='["modal-piutang-massal"]'>✕</button></div>
+    <div class="msec">
+      <div class="mlbl">Buat tagihan SPP sekaligus untuk semua siswa</div>
+      <div class="fg" style="gap:10px">
+        <div class="inp-group">
+          <div class="fl">Bulan</div>
+          <select class="ts" id="massal-bulan-spp">
+            <option>Januari</option><option>Februari</option><option>Maret</option>
+            <option>April</option><option>Mei</option><option>Juni</option>
+            <option>Juli</option><option>Agustus</option><option>September</option>
+            <option>Oktober</option><option>November</option><option>Desember</option>
+          </select>
+        </div>
+        <div class="inp-group">
+          <div class="fl">Jumlah SPP (Rp)</div>
+          <input class="ti" id="massal-spp-nominal" type="number" placeholder="150000"/>
+        </div>
+        <div class="inp-group">
+          <div class="fl">Filter Kelas</div>
+          <select class="ts" id="massal-spp-kelas">
+            <option value="">Semua Kelas</option>
+            <option value="1A">1A</option><option value="1B">1B</option>
+            <option value="2A">2A</option><option value="2B">2B</option>
+            <option value="3A">3A</option><option value="3B">3B</option>
+            <option value="4A">4A</option><option value="4B">4B</option>
+            <option value="5A">5A</option><option value="5B">5B</option>
+            <option value="6A">6A</option><option value="6B">6B</option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <div class="mact">
+      <button class="mbtn mbtn-c" data-action="closeModal" data-args='["modal-piutang-massal"]'>Batal</button>
+      <button class="mbtn mbtn-s" data-action="buatTagihanSPPMassal">✅ Buat Tagihan</button>
+    </div>
+  </div>
+</div>

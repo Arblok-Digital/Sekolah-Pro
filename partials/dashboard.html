@@ -1,0 +1,109 @@
+<!-- partials/dashboard.html — HTML halaman dashboard + modal milik modul dashboard (id/class dipertahankan) -->
+<div id="dashboard-page" class="page on">
+  <div class="page-body">
+    <!-- School Identity Banner -->
+    <div class="saldo-main" style="text-align:left;padding:16px 18px">
+      <div style="display:flex;align-items:start;justify-content:space-between;gap:12px;flex-wrap:wrap">
+        <div style="flex:1;min-width:0">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
+            <span style="font-size:22px">🏫</span>
+            <div>
+              <div style="font-size:17px;font-weight:900;color:var(--t1);letter-spacing:.2px;line-height:1.2" id="banner-nama-besar">SD Islam Sahara</div>
+              <div style="font-size:10px;color:var(--t3);font-weight:600;text-transform:uppercase;letter-spacing:.5px;margin-top:2px">Sistem Manajemen Sekolah</div>
+            </div>
+          </div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:4px">
+            <span style="font-size:10px;color:var(--t3)">📅 <span id="banner-tanggal" style="color:var(--t2);font-weight:600"></span></span>
+          </div>
+        </div>
+        <div style="text-align:right;flex-shrink:0">
+          <div style="font-size:10px;color:var(--t3);font-weight:600;text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px">💰 Saldo Kas</div>
+          <div class="saldo-val" id="saldo-display" style="font-size:22px">Rp 0</div>
+          <div style="font-size:10px;color:var(--t3);margin-top:3px" id="banner-ta">T.A. 2024/2025</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Quick Stats -->
+    <div class="stats-row">
+      <div class="sc" data-action="dashStatClick" data-args='["siswa"]' style="cursor:pointer;transition:border-color .15s,transform .12s" onmouseover="this.style.borderColor='var(--cyn)';this.style.transform='translateY(-2px)'" onmouseout="this.style.borderColor='';this.style.transform=''">
+        <div class="sc-l">📚 Total Siswa</div>
+        <div class="sc-v" id="stat-siswa">0</div>
+        <div class="sc-s" style="color:var(--cyn);font-weight:600">→ Lihat CRM</div>
+      </div>
+      <div class="sc" data-action="dashStatClick" data-args='["lunas"]' style="cursor:pointer;transition:border-color .15s,transform .12s" onmouseover="this.style.borderColor='var(--grn)';this.style.transform='translateY(-2px)'" onmouseout="this.style.borderColor='';this.style.transform=''">
+        <div class="sc-l">✅ SPP Lunas</div>
+        <div class="sc-v" style="color:var(--grn)" id="stat-lunas">0</div>
+        <div class="sc-s" style="color:var(--grn);font-weight:600">→ Filter Lunas</div>
+      </div>
+      <div class="sc" data-action="dashStatClick" data-args='["tunggak"]' style="cursor:pointer;transition:border-color .15s,transform .12s" onmouseover="this.style.borderColor='var(--red)';this.style.transform='translateY(-2px)'" onmouseout="this.style.borderColor='';this.style.transform=''">
+        <div class="sc-l">⚠️ Tunggakan</div>
+        <div class="sc-v" style="color:var(--red)" id="stat-tunggak">0</div>
+        <div class="sc-s" style="color:var(--red);font-weight:600">→ Tagih Sekarang</div>
+      </div>
+      <div class="sc" data-action="dashStatClick" data-args='["infak"]' style="cursor:pointer;transition:border-color .15s,transform .12s" onmouseover="this.style.borderColor='var(--yel)';this.style.transform='translateY(-2px)'" onmouseout="this.style.borderColor='';this.style.transform=''">
+        <div class="sc-l">🙏 Infak Hari Ini</div>
+        <div class="sc-v" style="color:var(--yel)" id="stat-infak-today">Rp 0</div>
+        <div class="sc-s" style="color:var(--yel);font-weight:600">→ Catat Infak</div>
+      </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="card">
+      <div class="card-title">⚡ Aksi Cepat</div>
+      <div class="qact-row" style="grid-template-columns:repeat(5,1fr)">
+        <button class="qact" data-action="openModal" data-args='["modal-spp"]'>
+          <span class="qact-icon">💳</span>
+          <span class="qact-lbl">Bayar SPP</span>
+        </button>
+        <button class="qact" data-action="openModal" data-args='["modal-absensi-massal"]'>
+          <span class="qact-icon">📋</span>
+          <span class="qact-lbl">Absensi</span>
+        </button>
+        <button class="qact" data-action="openModal" data-args='["modal-infak"]'>
+          <span class="qact-icon">🙏</span>
+          <span class="qact-lbl">Catat Infak</span>
+        </button>
+        <button class="qact" data-action="switchPage" data-args='["laporan"]'>
+          <span class="qact-icon">📄</span>
+          <span class="qact-lbl">Laporan</span>
+        </button>
+        <button class="qact" data-action="switchPage" data-args='["radar"]'>
+          <span class="qact-icon">📡</span>
+          <span class="qact-lbl">Radar</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Reminder Alert Panel -->
+    <div class="card" id="reminder-panel" style="display:none">
+      <div class="card-title" style="color:var(--yel)">🔔 Perhatian & Reminder</div>
+      <div id="reminder-list"></div>
+    </div>
+
+    <!-- Aktivitas Terbaru -->
+    <div class="card">
+      <div class="card-title">📋 Aktivitas Terbaru</div>
+      <div id="aktivitas-list">
+        <div class="empty-state"><span class="empty-icon">📭</span><span class="empty-text">Belum ada aktivitas</span></div>
+      </div>
+    </div>
+
+    <!-- Dana BOS Mini -->
+    <div class="card">
+      <div class="card-title">🏦 Dana BOS
+        <span id="bos-pct-badge" class="bdg bdg-g">0%</span>
+      </div>
+      <div class="bos-progress">
+        <div class="bos-seg">
+          <div id="bos-bar" class="bos-used" style="width:0%"></div>
+        </div>
+      </div>
+      <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--t3);margin-top:6px">
+        <span>Terpakai: <span id="bos-terpakai-d" style="color:var(--amb);font-weight:700">Rp 0</span></span>
+        <span>Sisa: <span id="bos-sisa-d" style="color:var(--grn);font-weight:700">Rp 0</span></span>
+      </div>
+    </div>
+
+  </div>
+</div>

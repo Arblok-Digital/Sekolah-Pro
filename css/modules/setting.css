@@ -1,0 +1,87 @@
+/* ══════════════════════════════════════════════════════════
+   SEKOLAH PRO — MODUL SETTING
+   Diekstrak dari index.html <style> — selektor tidak diubah.
+   ══════════════════════════════════════════════════════════ */
+/* ══ SMART IMPORT ══ */
+.import-drop-zone{
+  border:2px dashed var(--bdr2);border-radius:var(--r2);padding:32px 20px;
+  text-align:center;cursor:pointer;transition:all .2s;background:var(--s2);
+  position:relative;
+}
+.import-drop-zone:hover,.import-drop-zone.drag-over{
+  border-color:var(--cyn);background:var(--cyn-bg);
+}
+.import-drop-zone input[type=file]{
+  position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;
+}
+.import-step{
+  display:flex;align-items:center;gap:10px;padding:10px 0;
+  border-bottom:1px solid var(--bdr);
+}
+.import-step:last-child{border-bottom:none}
+.import-step-num{
+  width:28px;height:28px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:12px;font-weight:900;flex-shrink:0;
+}
+.import-step-num.done{background:var(--grn-bg);color:var(--grn);border:1.5px solid var(--grn)}
+.import-step-num.active{background:var(--cyn-bg);color:var(--cyn);border:1.5px solid var(--cyn)}
+.import-step-num.pending{background:var(--s2);color:var(--t3);border:1.5px solid var(--bdr2)}
+.col-map-row{display:flex;align-items:center;gap:8px;padding:8px 0;border-bottom:1px solid var(--bdr)}
+.col-map-row:last-child{border-bottom:none}
+.col-src{flex:1;font-size:12px;font-weight:700;color:var(--t1);min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.col-arrow{color:var(--cyn);font-size:14px;flex-shrink:0}
+.col-dest{flex:1;min-width:0}
+.col-dest select{width:100%;background:var(--s2);border:1px solid var(--bdr2);border-radius:8px;color:var(--t1);padding:6px 8px;font-size:12px;outline:none}
+.col-dest select:focus{border-color:var(--cyn)}
+.preview-tbl{width:100%;border-collapse:collapse;font-size:11px}
+.preview-tbl th{background:var(--s3);padding:7px 9px;text-align:left;font-weight:700;color:var(--t3);font-size:10px;text-transform:uppercase;border-bottom:1px solid var(--bdr);position:sticky;top:0;z-index:1}
+.preview-tbl td{padding:7px 9px;border-bottom:1px solid var(--bdr);color:var(--t2)}
+.preview-tbl tr.dup-row td{background:var(--red-bg)!important;color:var(--red)}
+.preview-tbl tr.ok-row td{background:var(--grn-bg)!important}
+.preview-tbl tr:hover td{background:rgba(255,255,255,.02)}
+.import-summary{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px}
+.imp-sum-box{text-align:center;border-radius:9px;padding:10px 8px}
+.imp-sum-num{font-size:20px;font-weight:900;font-family:'Courier New',monospace}
+.imp-sum-lbl{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;margin-top:3px;color:var(--t3)}
+.import-progress{height:6px;background:var(--s2);border-radius:3px;overflow:hidden;margin:8px 0}
+.import-progress-bar{height:100%;background:linear-gradient(90deg,var(--cyn),var(--grn));border-radius:3px;transition:width .4s}
+.pesan-item{display:flex;gap:10px;padding:10px 0;border-bottom:1px solid var(--bdr)}
+.pesan-item:last-child{border-bottom:none}
+.pesan-avatar{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:900;flex-shrink:0;border:2px solid}
+.pesan-body{flex:1;min-width:0}
+.pesan-header{display:flex;justify-content:space-between;align-items:start;gap:6px;margin-bottom:3px}
+.pesan-nama{font-size:12px;font-weight:800}
+.pesan-waktu{font-size:9px;color:var(--t3);white-space:nowrap}
+.pesan-teks{font-size:12px;color:var(--t2);line-height:1.5}
+.wa-btn{background:#25D366;color:#fff;border:none;border-radius:9px;padding:10px 16px;font-weight:700;font-size:13px;display:flex;align-items:center;gap:8px;cursor:pointer;transition:all .12s;width:100%;justify-content:center}
+.wa-btn:active{transform:scale(.96);background:#128C7E}
+.broadcast-item{display:flex;align-items:center;justify-content:space-between;padding:9px 0;border-bottom:1px solid var(--bdr)}
+.broadcast-item:last-child{border-bottom:none}
+.template-chip{padding:7px 12px;border-radius:9px;border:1px solid var(--bdr2);background:var(--s2);color:var(--t2);font-size:11px;font-weight:700;cursor:pointer;transition:all .12s;display:block;text-align:left;width:100%;margin-bottom:6px}
+.template-chip:active{border-color:var(--grn);color:var(--grn);background:var(--grn-bg)}
+
+
+/* ══ RAPOR DIGITAL ══ */
+.rapor-wrap{background:#fff;color:#000;font-family:'Courier New',monospace;font-size:10px;max-width:580px;margin:0 auto;padding:20px;border:1px solid #ddd;border-radius:4px}
+.rapor-header{display:flex;align-items:center;gap:14px;border-bottom:3px double #000;padding-bottom:10px;margin-bottom:12px}
+.rapor-logo{font-size:36px}
+.rapor-school-name{font-size:14px;font-weight:900;letter-spacing:.5px;text-transform:uppercase}
+.rapor-school-sub{font-size:9px;color:#555;margin-top:2px}
+.rapor-title{text-align:center;font-size:13px;font-weight:900;text-transform:uppercase;letter-spacing:2px;padding:8px;border:2px solid #000;margin-bottom:12px}
+.rapor-info-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:12px}
+.rapor-info-item{display:flex;gap:6px;font-size:10px}
+.rapor-info-label{color:#666;min-width:80px}
+.rapor-info-val{font-weight:700;border-bottom:1px solid #999;flex:1}
+.rapor-section-title{font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:1px;padding:4px 8px;background:#f0f0f0;border:1px solid #ccc;margin:10px 0 6px}
+.rapor-tbl{width:100%;border-collapse:collapse;font-size:9px;margin-bottom:10px}
+.rapor-tbl th,.rapor-tbl td{border:1px solid #ccc;padding:3px 6px}
+.rapor-tbl th{background:#e8e8e8;font-weight:900;text-align:center}
+.rapor-abs-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:10px}
+.rapor-abs-box{text-align:center;border:1px solid #ccc;padding:6px}
+.rapor-abs-num{font-size:18px;font-weight:900}
+.rapor-abs-lbl{font-size:8px;text-transform:uppercase;color:#666}
+.rapor-footer{border-top:1px solid #999;padding-top:8px;margin-top:12px;display:grid;grid-template-columns:1fr 1fr;gap:20px;font-size:9px}
+.rapor-sign{text-align:center}
+.rapor-sign-line{border-bottom:1px solid #000;margin:28px 10px 3px}
+@media print{.no-print{display:none!important}body{background:#fff!important;color:#000!important}.rapor-wrap{border:none;padding:0;max-width:100%}}

@@ -1,0 +1,65 @@
+/* ══════════════════════════════════════════════════════════
+   SEKOLAH PRO — MODUL BROADCAST
+   Diekstrak dari index.html <style> — selektor tidak diubah.
+   ══════════════════════════════════════════════════════════ */
+/* ══ BROADCAST 2-COL LAYOUT ══ */
+.bc-cols{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+  align-items:start;
+}
+.bc-col-form{ min-width:0 }
+.bc-col-history{ min-width:0 }
+
+
+/* Riwayat kolom kanan — scroll internal */
+.bc-col-history .card{ display:flex;flex-direction:column }
+#bc-history-list{
+  flex:1;
+  overflow-y:auto;
+  overflow-x:hidden;
+  -webkit-overflow-scrolling:touch;
+  scrollbar-width:thin;
+  scrollbar-color:var(--bdr2) transparent;
+  max-height:calc(100vh - 280px);
+  min-height:200px;
+}
+#bc-history-list::-webkit-scrollbar{width:5px}
+#bc-history-list::-webkit-scrollbar-track{background:var(--s2)}
+#bc-history-list::-webkit-scrollbar-thumb{background:var(--bdr2);border-radius:3px}
+#bc-history-list::-webkit-scrollbar-thumb:hover{background:var(--pur)}
+
+
+/* Mobile: 1 kolom */
+@media(max-width:700px){
+  .bc-cols{ grid-template-columns:1fr }
+  #bc-history-list{ max-height:360px }
+}
+
+
+/* ══ BROADCAST PAGE ══ */
+/* max-width diatur di dalam @media desktop agar tidak konflik mobile */
+.bc-tgt{
+  padding:6px 13px;font-size:11px;font-weight:700;
+  border-radius:20px;border:1.5px solid var(--bdr2);
+  background:transparent;color:var(--t3);
+  cursor:pointer;white-space:nowrap;transition:all .15s;
+  touch-action:manipulation;
+  -webkit-tap-highlight-color:rgba(192,132,252,.2);
+}
+.bc-tgt.on{ border-color:var(--pur);background:var(--pur-bg);color:var(--pur); }
+.bc-tgt:active{ transform:scale(.95); }
+.bc-typ{
+  padding:10px 4px;font-size:13px;font-weight:700;
+  border-radius:9px;border:1.5px solid var(--bdr2);
+  background:transparent;color:var(--t3);
+  cursor:pointer;text-align:center;transition:all .15s;line-height:1.2;
+  touch-action:manipulation;
+  -webkit-tap-highlight-color:rgba(68,138,255,.2);
+}
+.bc-typ.on{ border-color:var(--blu);background:var(--blu-bg);color:var(--blu); }
+.bc-typ[data-y="promo"].on  { border-color:var(--grn);background:var(--grn-bg);color:var(--grn); }
+.bc-typ[data-y="warning"].on{ border-color:var(--yel);background:var(--yel-bg);color:var(--yel); }
+.bc-typ[data-y="event"].on  { border-color:var(--cyn);background:var(--cyn-bg);color:var(--cyn); }
+.bc-typ:active{ transform:scale(.95); }

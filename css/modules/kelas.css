@@ -1,0 +1,39 @@
+/* ══════════════════════════════════════════════════════════
+   SEKOLAH PRO — MODUL KELAS
+   Diekstrak dari index.html <style> — selektor tidak diubah.
+   ══════════════════════════════════════════════════════════ */
+/* ══ KELAS PAGE ══ */
+.jenjang-btn{
+  display:flex;flex-direction:column;align-items:center;gap:4px;
+  padding:12px 6px;border-radius:10px;border:1.5px solid var(--bdr2);
+  background:var(--s2);color:var(--t3);cursor:pointer;transition:all .15s;
+}
+.jenjang-btn.on{border-color:var(--cyn);background:var(--cyn-bg);color:var(--cyn)}
+.jenjang-btn:hover:not(.on){border-color:var(--t3)}
+.rombel-btn{
+  width:36px;height:36px;border-radius:8px;border:1.5px solid var(--bdr2);
+  background:var(--s2);color:var(--t3);font-weight:800;font-size:12px;
+  cursor:pointer;transition:all .15s;
+}
+.rombel-btn.on{border-color:var(--grn);background:var(--grn-bg);color:var(--grn)}
+.kelas-card{
+  background:var(--s2);border:1px solid var(--bdr2);border-radius:10px;
+  padding:12px;text-align:center;cursor:pointer;transition:all .15s;
+}
+.kelas-card:hover{border-color:var(--cyn);transform:translateY(-2px)}
+.kelas-card-name{font-size:15px;font-weight:900;color:var(--t1);margin-bottom:3px}
+.kelas-card-count{font-size:11px;color:var(--t3)}
+.kelas-card-wk{font-size:9px;color:var(--cyn);margin-top:4px;font-weight:600}
+/* Offline vs Online mode badge */
+.mode-badge-offline{
+  display:inline-flex;align-items:center;gap:4px;
+  font-size:9px;font-weight:800;padding:3px 9px;border-radius:12px;
+  background:rgba(255,202,40,.12);border:1px solid rgba(255,202,40,.3);
+  color:var(--yel);text-transform:uppercase;letter-spacing:.5px;
+}
+.mode-badge-online{
+  display:inline-flex;align-items:center;gap:4px;
+  font-size:9px;font-weight:800;padding:3px 9px;border-radius:12px;
+  background:rgba(0,230,118,.12);border:1px solid rgba(0,230,118,.3);
+  color:var(--grn);text-transform:uppercase;letter-spacing:.5px;
+}

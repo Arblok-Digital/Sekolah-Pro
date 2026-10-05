@@ -1,0 +1,76 @@
+/* ══════════════════════════════════════════════════════════
+   SEKOLAH PRO — MODUL CRM
+   Diekstrak dari index.html <style> — selektor tidak diubah.
+   ══════════════════════════════════════════════════════════ */
+/* ══ CRM SISWA ══ */
+.crm-card{background:var(--s1);border:1px solid var(--bdr);border-radius:var(--r2);overflow:hidden;transition:border-color .15s;cursor:pointer}
+.crm-card:active{border-color:var(--cyn)}
+.crm-card-head{display:flex;align-items:center;gap:12px;padding:12px 14px;border-bottom:1px solid var(--bdr)}
+.crm-avatar{width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;font-weight:900;border:2px solid}
+.crm-info{flex:1;min-width:0}
+.crm-nama{font-weight:800;font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.crm-sub{font-size:10px;color:var(--t3);margin-top:2px;display:flex;gap:8px;flex-wrap:wrap}
+.crm-nisn{font-family:'Courier New',monospace;color:var(--t2)}
+.crm-badge-row{display:flex;gap:5px;flex-wrap:wrap;margin-top:4px}
+.crm-body{padding:10px 14px;display:flex;flex-direction:column;gap:6px}
+.crm-row{display:flex;justify-content:space-between;align-items:center;font-size:12px}
+.crm-lbl{color:var(--t3)}
+.crm-val{font-weight:700;font-family:'Courier New',monospace}
+.crm-actions{display:flex;gap:6px;padding:0 14px 12px}
+
+/* Profil Detail Panel */
+.profil-header{background:linear-gradient(135deg,#0a1628,#0f1f3a);padding:20px 16px;display:flex;gap:16px;align-items:center;border-bottom:1px solid var(--bdr)}
+.profil-avatar-big{width:64px;height:64px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:32px;flex-shrink:0;border:3px solid}
+.profil-info{flex:1}
+.profil-nama{font-size:18px;font-weight:900}
+.profil-sub{font-size:12px;color:var(--t2);margin-top:3px}
+.profil-nisn{font-size:11px;color:var(--t3);font-family:'Courier New',monospace;margin-top:2px}
+
+/* Tab strip inside modal */
+.modal-tabs{display:flex;border-bottom:1px solid var(--bdr);background:var(--s2)}
+.mtab-btn{flex:1;padding:10px 6px;border:none;background:transparent;color:var(--t3);font-size:11px;font-weight:700;border-bottom:2px solid transparent;transition:all .15s}
+.mtab-btn.on{color:var(--cyn);border-bottom-color:var(--cyn)}
+.modal-tab-pane{display:none;padding:12px 16px;overflow-y:auto;max-height:calc(75vh - 120px);-webkit-overflow-scrolling:touch}
+.modal-tab-pane.on{display:block}
+
+/* Absensi grid */
+.abs-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}
+.abs-day{aspect-ratio:1;border-radius:6px;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:9px;font-weight:700;border:1px solid var(--bdr2);transition:all .12s;cursor:pointer;gap:1px}
+.abs-day:active{transform:scale(.9)}
+.abs-day.hadir{background:var(--grn-bg);border-color:var(--grn);color:var(--grn)}
+.abs-day.izin{background:var(--yel-bg);border-color:var(--yel);color:var(--yel)}
+.abs-day.sakit{background:var(--blu-bg);border-color:var(--blu);color:var(--blu)}
+.abs-day.alpha{background:var(--red-bg);border-color:var(--red);color:var(--red)}
+.abs-day.libur{background:rgba(255,255,255,.04);border-color:var(--bdr);color:var(--t3)}
+.abs-day-num{font-size:10px;font-weight:900}
+.abs-day-lbl{font-size:7px;text-transform:uppercase;letter-spacing:.3px}
+.abs-legend{display:flex;gap:10px;flex-wrap:wrap;margin-top:8px;font-size:10px}
+.abs-leg-item{display:flex;align-items:center;gap:4px;font-weight:700}
+.abs-leg-dot{width:10px;height:10px;border-radius:3px}
+
+/* Nilai/Akademik */
+.nilai-row{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--bdr)}
+.nilai-row:last-child{border-bottom:none}
+.nilai-mapel{flex:1;font-size:12px;font-weight:700}
+.nilai-score{font-size:18px;font-weight:900;font-family:'Courier New',monospace;width:40px;text-align:right}
+.nilai-bar{flex:1;height:6px;background:var(--s2);border-radius:3px;overflow:hidden;max-width:80px}
+.nilai-bar-fill{height:100%;border-radius:3px}
+.nilai-grade{width:24px;text-align:center;font-size:11px;font-weight:700}
+
+/* Piutang buku */
+.piutang-item{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--bdr)}
+.piutang-item:last-child{border-bottom:none}
+.piutang-status-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+.piutang-info{flex:1}
+.piutang-title{font-size:12px;font-weight:700}
+.piutang-date{font-size:10px;color:var(--t3)}
+.piutang-jumlah{font-size:13px;font-weight:900;font-family:'Courier New',monospace}
+
+/* Filter chips */
+.filter-chips{display:flex;gap:6px;overflow-x:auto;padding-bottom:4px}
+.fchip{padding:5px 12px;border-radius:20px;border:1px solid var(--bdr2);background:transparent;color:var(--t3);font-size:11px;font-weight:700;white-space:nowrap;transition:all .15s;flex-shrink:0}
+.fchip.on{background:var(--cyn-bg);border-color:var(--cyn);color:var(--cyn)}
+
+/* Search siswa */
+.siswa-search{position:relative}
+.siswa-search-ico{position:absolute;left:10px;top:50%;transform:translateY(-50%);font-size:14px;pointer-events:none}

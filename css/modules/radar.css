@@ -1,0 +1,37 @@
+/* ══════════════════════════════════════════════════════════
+   SEKOLAH PRO — MODUL RADAR
+   Diekstrak dari index.html <style> — selektor tidak diubah.
+   ══════════════════════════════════════════════════════════ */
+/* ══ HEALTH RADAR ══ */
+.health-ring-wrap{display:flex;flex-direction:column;align-items:center;gap:12px;padding:10px 0}
+.health-ring{position:relative;width:120px;height:120px}
+.health-ring svg{transform:rotate(-90deg)}
+.health-ring-val{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px}
+.health-ring-pct{font-size:26px;font-weight:900;font-family:'Courier New',monospace}
+.health-ring-lbl{font-size:9px;color:var(--t3);font-weight:700;text-transform:uppercase}
+.health-meters{display:flex;flex-direction:column;gap:8px;flex:1}
+.hm-row{display:flex;flex-direction:column;gap:4px}
+.hm-label{display:flex;justify-content:space-between;font-size:11px}
+.hm-lbl-t{color:var(--t2);font-weight:600}
+.hm-lbl-v{color:var(--t1);font-weight:700;font-family:'Courier New',monospace}
+.bar-t{height:7px;background:var(--s2);border-radius:4px;overflow:hidden}
+.bar-f{height:100%;border-radius:4px;transition:width .8s cubic-bezier(.4,0,.2,1)}
+.health-grid{display:flex;gap:12px;align-items:center}
+@media(max-width:479px){.health-grid{flex-direction:column;align-items:center}}
+
+
+/* ══ RADAR BARS ══ */
+.radar-item{display:flex;flex-direction:column;gap:5px;padding:10px 0;border-bottom:1px solid var(--bdr)}
+.radar-item:last-child{border-bottom:none}
+.radar-row{display:flex;justify-content:space-between;align-items:center}
+.radar-name{font-size:12px;font-weight:600;color:var(--t2)}
+.radar-val{font-size:12px;font-weight:700;font-family:'Courier New',monospace}
+.radar-bar{height:6px;background:var(--s2);border-radius:3px;overflow:hidden;margin-top:2px}
+.radar-bar-fill{height:100%;border-radius:3px;transition:width .8s cubic-bezier(.4,0,.2,1)}
+
+
+/* ══ SCORE CIRCLE ══ */
+.score-big{display:flex;flex-direction:column;align-items:center;padding:10px}
+.score-num{font-size:52px;font-weight:900;font-family:'Courier New',monospace;line-height:1}
+.score-grade{font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-top:4px}
+.score-desc{font-size:11px;color:var(--t3);margin-top:4px;text-align:center;max-width:160px}

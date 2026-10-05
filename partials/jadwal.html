@@ -1,0 +1,124 @@
+<!-- partials/jadwal.html — HTML halaman jadwal + modal milik modul jadwal (id/class dipertahankan) -->
+<div id="jadwal-page" class="page">
+  <div class="page-body">
+    <div class="stats-row">
+      <div class="sc">
+        <div class="sc-l">📚 Total Mapel</div>
+        <div class="sc-v" id="jd-stat-mapel">0</div>
+        <div class="sc-s">Terjadwal</div>
+      </div>
+      <div class="sc">
+        <div class="sc-l">👨‍🏫 Guru Bertugas</div>
+        <div class="sc-v" id="jd-stat-guru">0</div>
+        <div class="sc-s">Kelas ini</div>
+      </div>
+      <div class="sc">
+        <div class="sc-l">⏰ Jam / Minggu</div>
+        <div class="sc-v" id="jd-stat-jam">0</div>
+        <div class="sc-s">Total jam</div>
+      </div>
+      <div class="sc">
+        <div class="sc-l">🏫 Aktif Hari Ini</div>
+        <div class="sc-v" id="jd-stat-hari" style="color:var(--grn)">—</div>
+        <div class="sc-s">Jadwal</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title" style="flex-wrap:wrap;gap:8px">
+        <span>📅 Jadwal Pelajaran</span>
+        <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap">
+          <select class="ts" id="jd-kelas-sel" style="font-size:12px" data-action="renderJadwal">
+            <option value="1A">Kelas 1A</option><option value="1B">Kelas 1B</option>
+            <option value="2A">Kelas 2A</option><option value="2B">Kelas 2B</option>
+            <option value="3A">Kelas 3A</option><option value="3B">Kelas 3B</option>
+            <option value="4A">Kelas 4A</option><option value="4B">Kelas 4B</option>
+            <option value="5A">Kelas 5A</option><option value="5B">Kelas 5B</option>
+            <option value="6A">Kelas 6A</option><option value="6B">Kelas 6B</option>
+          </select>
+          <button class="abtn abtn-g" style="padding:7px 12px;font-size:11px" data-action="openModal" data-args='["modal-jadwal-add"]'>+ Tambah</button>
+          <button class="abtn abtn-r" style="padding:7px 12px;font-size:11px" data-action="hapusJadwalKelas">🗑️ Hapus Semua</button>
+        </div>
+      </div>
+      <div style="overflow-x:auto;-webkit-overflow-scrolling:touch">
+        <div id="jadwal-grid-wrap" style="min-width:540px">
+          <div class="jadwal-grid" id="jadwal-grid"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Jam Pelajaran Info -->
+    <div class="card">
+      <div class="card-title">⏰ Slot Waktu Pelajaran</div>
+      <div id="jadwal-slots-list" style="display:flex;flex-direction:column;gap:6px"></div>
+      <button class="abtn abtn-b" style="margin-top:10px;padding:8px 14px;font-size:11px" data-action="openModal" data-args='["modal-slot-add"]'>+ Tambah Slot Waktu</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODALS -->
+<div id="modal-jadwal-add" class="modal-bg">
+  <div class="sheet">
+    <div class="mhdr"><h2>📅 Tambah Jadwal</h2><button class="mclose" data-action="closeModal" data-args='["modal-jadwal-add"]'>✕</button></div>
+    <div class="msec">
+      <div class="fg" style="gap:10px">
+        <div class="inp-group">
+          <div class="fl">Hari</div>
+          <select class="ts" id="jd-hari-inp">
+            <option value="1">Senin</option><option value="2">Selasa</option>
+            <option value="3">Rabu</option><option value="4">Kamis</option>
+            <option value="5">Jumat</option><option value="6">Sabtu</option>
+          </select>
+        </div>
+        <div class="inp-group">
+          <div class="fl">Slot Jam</div>
+          <select class="ts" id="jd-slot-inp"></select>
+        </div>
+        <div class="inp-group fg-full">
+          <div class="fl">Mata Pelajaran</div>
+          <select class="ts" id="jd-mapel-inp">
+            <option>Matematika</option><option>Bahasa Indonesia</option><option>IPA</option>
+            <option>IPS</option><option>PKn</option><option>Bahasa Inggris</option>
+            <option>Pendidikan Agama Islam</option><option>PJOK</option>
+            <option>Seni Budaya</option><option>Prakarya</option><option>TIK</option><option>Mulok</option>
+          </select>
+        </div>
+        <div class="inp-group fg-full">
+          <div class="fl">Guru Pengampu</div>
+          <select class="ts" id="jd-guru-inp">
+            <option value="">-- Pilih Guru --</option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <div class="mact">
+      <button class="mbtn mbtn-c" data-action="closeModal" data-args='["modal-jadwal-add"]'>Batal</button>
+      <button class="mbtn mbtn-s" data-action="simpanJadwal">✅ Simpan</button>
+    </div>
+  </div>
+</div>
+<div id="modal-slot-add" class="modal-bg">
+  <div class="sheet">
+    <div class="mhdr"><h2>⏰ Tambah Slot Waktu</h2><button class="mclose" data-action="closeModal" data-args='["modal-slot-add"]'>✕</button></div>
+    <div class="msec">
+      <div class="fg" style="gap:10px">
+        <div class="inp-group">
+          <div class="fl">Jam Mulai</div>
+          <input class="ti" id="slot-mulai" type="time" value="07:00"/>
+        </div>
+        <div class="inp-group">
+          <div class="fl">Jam Selesai</div>
+          <input class="ti" id="slot-selesai" type="time" value="07:40"/>
+        </div>
+        <div class="inp-group fg-full">
+          <div class="fl">Label (opsional)</div>
+          <input class="ti" id="slot-label" placeholder="Jam ke-1, Istirahat..."/>
+        </div>
+      </div>
+    </div>
+    <div class="mact">
+      <button class="mbtn mbtn-c" data-action="closeModal" data-args='["modal-slot-add"]'>Batal</button>
+      <button class="mbtn mbtn-s" data-action="simpanSlot">✅ Simpan Slot</button>
+    </div>
+  </div>
+</div>

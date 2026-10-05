@@ -1,0 +1,660 @@
+/* ══════════════════════════════════════════════════════════
+   SEKOLAH PRO — CORE (tokens, reset, layout, komponen bersama)
+   Diekstrak dari index.html <style> — selektor tidak diubah.
+   ══════════════════════════════════════════════════════════ */
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+:root{
+  --bg:#0a0f1a;--s1:#111827;--s2:#1a2234;--s3:#1e2a3f;
+  --bdr:#1e3048;--bdr2:#243858;
+  --grn:#00e676;--grn2:#00c853;--grn-bg:rgba(0,230,118,0.09);
+  --red:#ff5252;--red-bg:rgba(255,82,82,0.1);
+  --blu:#448aff;--blu-bg:rgba(68,138,255,0.1);
+  --yel:#ffca28;--yel-bg:rgba(255,202,40,0.1);
+  --amb:#ff9800;--amb-bg:rgba(255,152,0,0.1);
+  --pur:#c084fc;--pur-bg:rgba(192,132,252,0.1);
+  --cyn:#26c6da;--cyn-bg:rgba(38,198,218,0.1);
+  --t1:#e8f0fe;--t2:#8ba3c7;--t3:#4a6080;
+  --r:10px;--r2:14px;--r3:18px;
+  --sat:env(safe-area-inset-top,0px);
+  --sab:env(safe-area-inset-bottom,16px);
+}
+html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--t1);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:14px}
+::-webkit-scrollbar{display:none}
+input,select,button,textarea{font-family:inherit;-webkit-appearance:none;border-radius:0}
+button{cursor:pointer;touch-action:manipulation}
+.mono{font-family:'Courier New',monospace}
+
+
+/* ══ TOPBAR ══ */
+#hdr{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  background:linear-gradient(135deg,#060d1a 0%,#0a1628 60%,#06101e 100%);
+  border-bottom:1px solid var(--bdr);
+  display:flex;align-items:center;gap:8px;
+  padding:10px 14px;padding-top:calc(10px + var(--sat));
+}
+.logo{font-weight:900;font-size:16px;color:var(--grn);white-space:nowrap;letter-spacing:-0.3px}
+.logo em{color:var(--t2);font-style:normal;font-weight:400}
+.hdr-tabs{flex:1;display:flex;justify-content:center;gap:2px}
+.htab{padding:6px 10px;border-radius:8px;border:none;background:transparent;color:var(--t3);font-weight:700;font-size:11px;transition:all .15s;white-space:nowrap}
+.htab.on{background:var(--grn);color:#000}
+.hdr-right{display:flex;align-items:center;gap:6px}
+#clock{font-size:10px;color:var(--grn);font-family:'Courier New',monospace;font-weight:700}
+
+
+/* ══ TICKER BAR ══ */
+#ticker-bar{
+  position:fixed;top:calc(62px + var(--sat));left:0;right:0;z-index:99;
+  background:#060d1a;border-bottom:2px solid #0d2035;
+  height:42px;overflow:hidden;
+  display:flex;align-items:center;
+}
+#ticker-inner{
+  display:inline-flex;align-items:center;
+  white-space:nowrap;
+  animation:tickerScroll 80s linear infinite;
+  will-change:transform;
+}
+#ticker-inner:hover{animation-play-state:paused}
+@keyframes tickerScroll{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+.tick-item{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:0 20px;font-size:13px;font-weight:700;
+  white-space:nowrap;
+  border-right:1px solid #152030;height:42px;
+}
+
+
+/* Mobile: sedikit lebih compact */
+@media(max-width:480px){
+  .tick-item{ padding:0 14px;font-size:12px;gap:5px }
+  .tick-ads-text{ font-size:12px }
+  .tick-ads-brand{ font-size:10px!important;padding:1px 6px!important }
+  .tick-ads-cta{ font-size:11px }
+}
+.tick-up{color:#00e676}.tick-dn{color:#ff5252}.tick-neu{color:#ffca28}
+.tick-lbl{color:#4a6080;font-size:11px;font-weight:600}
+.tick-news{color:#448aff;font-size:12px;font-weight:700}
+.tick-bos{color:#c084fc;font-size:12px;font-weight:700}
+
+
+/* ══ SEMUA PAGE — SCROLLBAR TIPIS ══ */
+.page::-webkit-scrollbar{ width:4px }
+.page::-webkit-scrollbar-track{ background:transparent }
+.page::-webkit-scrollbar-thumb{ background:var(--bdr2);border-radius:2px }
+.page::-webkit-scrollbar-thumb:hover{ background:var(--t3) }
+
+/* Desktop content area scrollbar */
+#desktop-content::-webkit-scrollbar{ width:5px }
+#desktop-content::-webkit-scrollbar-thumb{ background:var(--bdr2);border-radius:3px }
+#desktop-content::-webkit-scrollbar-thumb:hover{ background:var(--t3) }
+.tick-ads-brand{
+  font-size:11px;font-weight:900;color:#ffca28;
+  letter-spacing:.5px;text-transform:uppercase;
+  background:rgba(255,202,40,.12);padding:2px 8px;border-radius:4px;
+}
+.tick-ads-text{font-size:13px;font-weight:600;color:#e8f0fe}
+.tick-ads-sep{color:#4a6080;font-size:12px;margin:0 4px}
+.tick-ads-cta{
+  font-size:12px;font-weight:900;color:#00e676;
+  cursor:pointer;text-decoration:underline;
+  padding:1px 8px;border-radius:4px;
+  background:rgba(0,230,118,.1);margin-left:6px;
+}
+.tick-ads-cta:hover{background:rgba(0,230,118,.2)}
+
+
+/* ══ PAGES ══ */
+.page{
+  position:fixed;
+  top:0; left:0; right:0;
+  bottom:calc(56px + var(--sab)); /* stop di atas bottom-nav, bukan inset:0 */
+  padding-top:calc(104px + var(--sat));
+  padding-bottom:12px;
+  display:none;
+  flex-direction:column;
+  overflow-y:auto;
+  -webkit-overflow-scrolling:touch;
+  z-index:10; /* di bawah nav (z-index:300) */
+}
+.page.on{display:flex}
+.page-body{padding:12px;display:flex;flex-direction:column;gap:12px}
+
+
+/* ══ FORMS ══ */
+.ti{background:var(--s2);border:1px solid var(--bdr2);border-radius:9px;color:var(--t1);padding:9px 11px;font-size:13px;outline:none;width:100%}
+.ti:focus{border-color:var(--grn)}
+.ti::placeholder{color:var(--t3)}
+.ts{background:var(--s2);border:1px solid var(--bdr2);border-radius:9px;color:var(--t1);padding:9px 9px;font-size:12px;outline:none;width:100%}
+.ts option{background:var(--s2)}
+.fl{font-size:10px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.4px;margin-bottom:4px}
+.fg{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.fg-full{grid-column:1/-1}
+.fg3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
+.abtn{padding:9px 14px;border-radius:9px;border:none;font-weight:800;font-size:12px;white-space:nowrap;cursor:pointer;transition:all .12s}
+.abtn:active{transform:scale(.95)}
+.abtn-g{background:var(--grn);color:#000}
+.abtn-b{background:var(--blu-bg);color:var(--blu);border:1px solid var(--blu)}
+.abtn-r{background:#2a0a0a;color:var(--red);border:1px solid rgba(255,82,82,.25)}
+.abtn-a{background:var(--amb-bg);color:var(--amb);border:1px solid rgba(255,152,0,.3)}
+.abtn-p{background:var(--pur-bg);color:var(--pur);border:1px solid rgba(192,132,252,.3)}
+
+
+/* ══ TABLES ══ */
+.tbl-wrap{overflow-x:auto;border-radius:var(--r);border:1px solid var(--bdr)}
+table{width:100%;border-collapse:collapse;min-width:500px}
+th{padding:8px 10px;text-align:left;font-size:10px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.4px;border-bottom:1px solid var(--bdr);background:var(--s2);white-space:nowrap;position:sticky;top:0;z-index:2}
+td{padding:8px 10px;font-size:12px;border-bottom:1px solid var(--bdr);color:var(--t2)}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:rgba(255,255,255,.015)}
+
+
+/* ══ BADGES ══ */
+.bdg{display:inline-block;padding:2px 7px;border-radius:16px;font-size:9px;font-weight:700}
+.bdg-g{background:rgba(0,230,118,.12);color:var(--grn)}
+.bdg-r{background:var(--red-bg);color:var(--red)}
+.bdg-b{background:var(--blu-bg);color:var(--blu)}
+.bdg-y{background:var(--yel-bg);color:var(--yel)}
+.bdg-x{background:rgba(255,255,255,.05);color:var(--t3)}
+.bdg-am{background:var(--amb-bg);color:var(--amb)}
+.bdg-p{background:var(--pur-bg);color:var(--pur)}
+
+
+/* ══ BOTTOM NAV ══ */
+#bottom-nav{
+  position:fixed;bottom:0;left:0;right:0;
+  z-index:9990; /* di atas SEMUA elemen termasuk school-banner(101), modal(200) saat closed */
+  background:var(--s1);border-top:1px solid var(--bdr);
+  padding-bottom:var(--sab);
+  -webkit-transform:translateZ(0); /* force GPU layer di iOS */
+  transform:translateZ(0);
+}
+#bnav-scroll{
+  display:flex;
+  overflow-x:auto;
+  overflow-y:hidden;
+  -webkit-overflow-scrolling:touch;
+  scrollbar-width:none;
+  padding:0 2px;
+  touch-action:pan-x; /* hanya scroll horizontal, jangan block tap */
+}
+#bnav-scroll::-webkit-scrollbar{display:none}
+.bnav{
+  flex:0 0 auto;
+  min-width:54px;
+  min-height:48px; /* minimum tap target 48px */
+  padding:8px 4px;
+  border:none;background:transparent;
+  color:var(--t3);font-size:8px;font-weight:700;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;
+  transition:color .15s;text-transform:uppercase;letter-spacing:.2px;
+  scroll-snap-align:start;
+  cursor:pointer;
+  touch-action:manipulation; /* hapus delay 300ms di mobile */
+  -webkit-tap-highlight-color:rgba(0,230,118,.15);
+  position:relative;
+  z-index:1;
+}
+.bnav .bicon{font-size:19px;line-height:1}
+.bnav.on{color:var(--grn)}
+.bnav.on .bicon-bg{background:var(--grn-bg);border-radius:16px;padding:4px 14px;margin:-4px 0}
+/* Locked bnav — tampil tapi dikunci, opacity rendah */
+.bnav.locked{
+  opacity:.4;
+  cursor:pointer;
+  position:relative;
+}
+.bnav.locked::after{
+  content:'🔒';
+  position:absolute;
+  top:4px; right:2px;
+  font-size:8px;
+  line-height:1;
+}
+
+
+/* ══ MODALS ══ */
+.modal-bg{
+  position:fixed;
+  inset:0;
+  /* Di mobile, beri ruang agar sheet tidak tertutup bottom nav */
+  padding-bottom:calc(56px + var(--sab));
+  background:rgba(10,15,26,.93);
+  z-index:9000;
+  display:none;
+  align-items:flex-end;
+  justify-content:center;
+  backdrop-filter:blur(3px);
+}
+.modal-bg.open{display:flex}
+@media(min-width:600px){
+  .modal-bg{
+    align-items:center;
+    padding-bottom:0;
+  }
+}
+.sheet{
+  background:var(--s1);
+  border-radius:20px 20px 0 0;
+  width:100%;
+  max-width:520px;
+  /* max-height harus sisakan ruang untuk bottom nav di mobile */
+  max-height:calc(92vh - 56px - var(--sab));
+  overflow-y:auto;
+  animation:sheetUp .22s ease-out;
+  /* Pastikan konten bawah tidak terpotong */
+  padding-bottom:0;
+}
+@media(min-width:600px){
+  .sheet{
+    border-radius:20px;
+    max-height:85vh;
+  }
+}
+/* Tombol aksi di bawah modal — padding bawah aman */
+.mact{
+  padding:12px 16px;
+  padding-bottom:calc(16px + var(--sab));
+  display:flex;
+  gap:8px;
+  position:sticky;
+  bottom:0;
+  background:var(--s1);
+  border-top:1px solid var(--bdr);
+  z-index:1;
+}@keyframes sheetUp{from{transform:translateY(30px);opacity:0}to{transform:translateY(0);opacity:1}}
+.mhdr{padding:14px 16px 12px;border-bottom:1px solid var(--bdr);display:flex;justify-content:space-between;align-items:center}
+.mhdr h2{font-size:16px;font-weight:900}
+.mclose{background:transparent;border:none;color:var(--t2);font-size:22px;padding:4px;border-radius:6px;line-height:1}
+.mclose:active{background:var(--red-bg);color:var(--red)}
+.msec{padding:12px 16px;border-bottom:1px solid var(--bdr)}
+.mlbl{font-size:10px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.6px;margin-bottom:8px}
+/* .mact sudah didefinisikan di atas */
+.mbtn{flex:1;padding:13px;border-radius:var(--r);border:none;font-weight:700;font-size:14px}
+.mbtn-c{background:var(--s2);color:var(--t2);border:1px solid var(--bdr2)}
+.mbtn-s{background:var(--grn);color:#000;flex:2;font-weight:900}
+
+
+/* ══ NOTIF ══ */
+#notif{position:fixed;top:calc(90px + var(--sat));right:12px;z-index:9999;padding:10px 16px;border-radius:10px;font-weight:700;font-size:13px;display:none;max-width:90vw;animation:fadeIn .2s}
+@keyframes fadeIn{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:translateY(0)}}
+.nok{background:#0a3320;border:1px solid var(--grn);color:var(--grn)}
+.nerr{background:#3a0a0a;border:1px solid var(--red);color:var(--red)}
+.nwarn{background:#2a1e00;border:1px solid var(--yel);color:var(--yel)}
+
+
+/* ══ GRID ══ */
+.grid2{display:grid;grid-template-columns:1fr;gap:12px}
+@media(min-width:600px){.grid2{grid-template-columns:1fr 1fr}}
+
+
+/* ══ TOOLBAR ══ */
+.toolbar{display:flex;gap:7px;flex-wrap:wrap;align-items:center}
+
+
+/* ══ PNL SPLIT ══ */
+.pnl-split{display:flex;gap:8px;margin-bottom:10px}
+.pnlb{flex:1;border-radius:9px;padding:12px;text-align:center}
+
+
+/* ══ SALDO BESAR ══ */
+.saldo-main{background:linear-gradient(135deg,#0a1628,#0f1f3a);border:1px solid var(--grn);border-radius:var(--r2);padding:18px;text-align:center;position:relative;overflow:hidden}
+.saldo-main::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 50% 0%,rgba(0,230,118,.08) 0%,transparent 70%);pointer-events:none}
+.saldo-lbl{font-size:11px;color:var(--t2);font-weight:600;margin-bottom:6px;text-transform:uppercase;letter-spacing:.6px}
+.saldo-val{font-size:32px;font-weight:900;color:var(--grn);font-family:'Courier New',monospace;letter-spacing:-1px}
+.saldo-sub{font-size:11px;color:var(--t3);margin-top:4px}
+
+
+/* ══ SPLASH ANIM ══ */
+@keyframes countUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.count-anim{animation:countUp .4s ease-out}
+
+
+/* ══ EMPTY STATE ══ */
+.empty-state{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 20px;gap:10px;color:var(--t3)}
+.empty-icon{font-size:40px}
+.empty-text{font-size:13px;text-align:center}
+
+
+/* ══ INPUT GROUP ══ */
+.inp-group{display:flex;flex-direction:column;gap:4px;margin-bottom:10px}
+
+
+/* ══ TEMA TERANG (Light Mode) ══ */
+body.light-mode{
+  --bg:#f0f4f8;--s1:#ffffff;--s2:#eef2f7;--s3:#e2e8f0;
+  --bdr:#c8d6e5;--bdr2:#b8c9db;--t1:#1a2234;--t2:#4a6080;--t3:#8ba3c7;
+}
+body.light-mode #school-banner{background:linear-gradient(135deg,#1a3a5c,#0f2a44)}
+body.light-mode #hdr{background:linear-gradient(135deg,#1a3a5c,#0f2a44)!important}
+body.light-mode .saldo-main{background:linear-gradient(135deg,#dbeeff,#c8e6f8)}
+body.light-mode #ticker-bar{background:#1a3a5c;border-color:#2a4a6c}
+body.light-mode .kartu-spp{background:#fff!important}
+body.light-mode .rapor-wrap{background:#fff!important}
+
+
+/* ══ PIN LOCK SCREEN ══ */
+#pin-lock-screen{
+  position:fixed;inset:0;z-index:9999;
+  background:var(--bg);
+  display:none;flex-direction:column;align-items:center;justify-content:center;
+  gap:8px;padding:20px;
+}
+#pin-lock-screen.show{display:flex}
+.pin-lock-logo{font-size:52px;margin-bottom:4px}
+.pin-lock-title{font-size:22px;font-weight:900;color:var(--grn)}
+.pin-lock-sub{font-size:13px;color:var(--t2);margin-bottom:8px;text-align:center}
+.pin-dots{display:flex;gap:12px;margin:10px 0}
+.pin-dot{width:16px;height:16px;border-radius:50%;background:var(--bdr2);border:2px solid var(--bdr2);transition:all .2s}
+.pin-dot.filled{background:var(--grn);border-color:var(--grn)}
+.pin-numpad{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;width:260px}
+.pin-key{padding:16px;border-radius:12px;border:1px solid var(--bdr2);background:var(--s2);
+  color:var(--t1);font-size:20px;font-weight:700;text-align:center;cursor:pointer;
+  transition:all .1s;font-family:'Courier New',monospace;border:none;outline:none}
+.pin-key:active{background:var(--grn-bg);border-color:var(--grn)!important;transform:scale(.94);color:var(--grn)}
+.pin-key.del{color:var(--red);font-size:13px;font-weight:700;background:var(--red-bg)}
+.pin-key.empty{visibility:hidden;pointer-events:none}
+.pin-role-badge{padding:5px 16px;border-radius:20px;font-size:11px;font-weight:700;margin-bottom:6px;display:inline-block}
+.pin-error{color:var(--red);font-size:12px;font-weight:700;animation:shake .4s ease}
+@keyframes shake{0%,100%{transform:translateX(0)}20%,60%{transform:translateX(-8px)}40%,80%{transform:translateX(8px)}}
+
+
+/* SCHOOL BANNER ══ */
+#school-banner{
+  position:fixed;top:0;left:0;right:0;z-index:101;
+  background:linear-gradient(135deg,#060d1a 0%,#091422 50%,#060e1c 100%);
+  border-bottom:1px solid rgba(0,230,118,.15);
+  padding:0 14px;
+  padding-top:var(--sat);
+  display:flex;align-items:center;gap:10px;
+  height:calc(42px + var(--sat));
+  overflow:hidden;
+}
+#school-banner::after{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse at 30% 50%,rgba(0,230,118,.06) 0%,transparent 60%);
+  pointer-events:none;
+}
+.banner-logo{font-size:20px;flex-shrink:0;line-height:1}
+.banner-school-info{flex:1;min-width:0}
+.banner-school-name{
+  font-size:13px;font-weight:900;color:var(--t1);
+  letter-spacing:.3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+  line-height:1.2;
+}
+.banner-school-sub{
+  font-size:9px;color:var(--t3);font-weight:600;
+  text-transform:uppercase;letter-spacing:.6px;margin-top:1px;
+}
+.banner-brand{
+  font-size:8px;font-weight:800;color:var(--grn);
+  text-transform:uppercase;letter-spacing:.8px;
+  display:flex;flex-direction:column;align-items:flex-end;gap:1px;
+  flex-shrink:0;
+}
+.banner-brand-name{font-size:10px;font-weight:900;color:var(--grn);letter-spacing:.3px}
+.banner-brand-by{font-size:7px;color:var(--t3);font-weight:600}
+.banner-online-dot{width:6px;height:6px;border-radius:50%;background:var(--grn);display:inline-block;margin-left:4px;animation:pulse-dot 2s infinite}
+@keyframes pulse-dot{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.8)}}
+
+
+/* ══ TOPBAR — posisi di bawah school-banner (42px) ══ */
+#hdr{ top:calc(42px + var(--sat))!important; padding-top:8px!important; height:34px }
+#hdr .hdr-tabs{ display:none!important }
+/* Desktop: ticker di bawah banner(42) + hdr(34) = 76px */
+/* Mobile: ticker langsung di bawah banner = 42px (di-override di @media mobile) */
+#ticker-bar{ top:calc(76px + var(--sat)) }
+
+
+/* ══ MOBILE LAYOUT (max 899px) ══ */
+@media(max-width:899px){
+  /* Sembunyikan elemen desktop */
+  #hdr{ display:none!important }
+  #sidebar-wrap{ display:none!important }
+  #scroll-top-btn{ display:none!important }
+  #desktop-layout{ position:static; display:block; padding-top:0; height:auto; }
+
+  /* Ticker langsung di bawah banner */
+  #ticker-bar{ top:calc(42px + var(--sat))!important }
+
+  /* ── PAGE SCROLL FIX ──────────────────────────────────────────
+     Semua page: fixed, berhenti TEPAT di atas bottom-nav       */
+  .page{
+    position:fixed !important;
+    top:0 !important;
+    left:0 !important;
+    right:0 !important;
+    bottom:calc(56px + var(--sab)) !important;
+    padding-top:calc(84px + var(--sat)) !important;
+    padding-bottom:16px !important;
+    display:none !important;
+    flex-direction:column;
+    overflow-y:scroll !important;
+    overflow-x:hidden !important;
+    -webkit-overflow-scrolling:touch !important;
+    overscroll-behavior-y:contain !important;
+    z-index:10 !important;
+    /* Pastikan konten bisa scroll penuh */
+    box-sizing:border-box !important;
+  }
+  /* PENTING: .page.on harus override display:none di atas */
+  .page.on{
+    display:flex !important;
+  }
+
+  /* page-body pastikan mengisi ruang dan bisa grow untuk scroll */
+  .page.on > .page-body{
+    flex:1 1 auto;
+    width:100%;
+    min-height:min-content;
+  }
+
+  /* Bottom nav — selalu visible di atas segalanya */
+  #bottom-nav{
+    display:flex !important;
+    visibility:visible !important;
+  }
+
+
+  /* ── PER-PAGE OVERRIDES ─────────────────────────────────── */
+
+  /* Jadwal: tabel horizontal scroll */
+  #jadwal-page .page-body{
+    overflow-x:auto;
+    -webkit-overflow-scrolling:touch;
+  }
+
+  /* Ke-4 page yang wajib bisa scroll di mobile */
+  #kelas-page,
+  #akademik-page,
+  #laporan-page,
+  #broadcast-page{
+    overflow-y:scroll !important;
+    -webkit-overflow-scrolling:touch !important;
+  }
+
+  /* Broadcast: semua elemen interaktif bisa diklik & diketik */
+  #broadcast-page input,
+  #broadcast-page textarea,
+  #broadcast-page select,
+  #broadcast-page button,
+  #broadcast-page .bc-tgt,
+  #broadcast-page .bc-typ {
+    pointer-events:auto !important;
+    user-select:auto !important;
+    -webkit-user-select:auto !important;
+    touch-action:manipulation !important;
+    position:relative;
+    z-index:5;
+  }
+
+  /* Guru & Setting: banyak form */
+  #guru-page,
+  #setting-page{
+    overflow-y:scroll !important;
+  }
+}
+
+
+/* ══ DESKTOP SIDEBAR ══ */
+@media(min-width:900px){
+  /* Hide mobile-only elements */
+  #bottom-nav{display:none!important}
+  .hdr-tabs{display:none!important}
+
+  /* Root layout — fix height properly */
+  html,body{height:100%;overflow:hidden}
+
+  /* Full-height desktop layout — di bawah: banner(42) + hdr(34) + ticker(26) = 102px */
+  #desktop-layout{
+    display:flex;
+    flex-direction:row;
+    position:fixed;
+    top:calc(102px + var(--sat));
+    left:0;right:0;bottom:0;
+    overflow:hidden;
+  }
+
+  /* Sidebar — fixed width, fully scrollable */
+  #sidebar-wrap{
+    width:220px;
+    flex-shrink:0;
+    background:var(--s1);
+    border-right:1px solid var(--bdr);
+    display:flex;
+    flex-direction:column;
+    overflow-y:auto;
+    overflow-x:hidden;
+    height:100%;
+    scrollbar-width:thin;
+    scrollbar-color:var(--bdr2) transparent;
+  }
+  #sidebar-wrap::-webkit-scrollbar{width:4px}
+  #sidebar-wrap::-webkit-scrollbar-thumb{background:var(--bdr2);border-radius:2px}
+  #sidebar{
+    display:flex;
+    flex-direction:column;
+    gap:0;
+    width:100%;
+    flex:1;
+    padding-bottom:20px;
+  }
+  #sidebar .snav{
+    padding:11px 16px;
+    border:none;
+    background:transparent;
+    color:var(--t3);
+    font-size:13px;
+    font-weight:700;
+    display:flex;
+    align-items:center;
+    gap:10px;
+    text-align:left;
+    width:100%;
+    border-left:3px solid transparent;
+    transition:all .15s;
+    white-space:nowrap;
+    cursor:pointer;
+  }
+  #sidebar .snav:hover:not(.on){
+    color:var(--t1);
+    background:rgba(255,255,255,.04);
+  }
+  #sidebar .snav.on{
+    color:var(--grn);
+    border-left-color:var(--grn);
+    background:var(--grn-bg);
+  }
+  /* Locked menu item — tampil tapi dikunci */
+  #sidebar .snav.locked{
+    color:var(--t3) !important;
+    opacity:.5;
+    cursor:pointer;
+    border-left-color:transparent !important;
+    background:transparent !important;
+  }
+  #sidebar .snav.locked:hover{
+    opacity:.7;
+    background:rgba(255,202,40,.04) !important;
+  }
+
+  /* Content area — takes remaining width, FULLY SCROLLABLE */
+  #desktop-content{
+    flex:1;
+    height:100%;
+    overflow-y:auto;         /* auto lebih reliable dari scroll untuk desktop */
+    overflow-x:hidden;
+    -webkit-overflow-scrolling:touch;
+    scroll-behavior:smooth;
+    scrollbar-width:thin;
+    scrollbar-color:var(--bdr2) transparent;
+    display:flex;
+    flex-direction:column;
+  }
+  #desktop-content::-webkit-scrollbar{width:5px}
+  #desktop-content::-webkit-scrollbar-thumb{background:var(--bdr2);border-radius:3px}
+  #desktop-content::-webkit-scrollbar-thumb:hover{background:var(--t3)}
+
+  /* Pages inside desktop content — normal flow, scroll dari #desktop-content */
+  .page{
+    position:static!important;
+    display:none;
+    flex-direction:column;
+    padding-top:0!important;
+    padding-bottom:60px;    /* ruang cukup di bawah konten */
+    min-height:100%;
+    overflow:visible!important;  /* scroll dari parent #desktop-content */
+    width:100%;
+    box-sizing:border-box;
+  }
+  .page.on{display:flex}
+
+  /* Khusus broadcast — max-width center */
+  #broadcast-page.on{
+    align-items:stretch;
+  }
+  #broadcast-page .page-body{
+    max-width:680px;
+    margin:0 auto;
+    width:100%;
+    flex:1;
+  }
+
+  /* Kelas, Akademik, Laporan — pastikan konten tidak terpotong */
+  #kelas-page.on,
+  #akademik-page.on,
+  #laporan-page.on{
+    min-height:calc(100% + 1px); /* paksa desktop-content untuk scroll */
+  }
+
+  /* Center PWA banners on desktop */
+  #pwa-install-banner,#pwa-update-banner{
+    bottom:20px!important;
+    max-width:480px;
+    left:50%;
+    transform:translateX(-50%);
+  }
+
+  /* Scroll to top button — desktop only */
+  #scroll-top-btn{
+    display:none;
+    position:fixed;
+    bottom:24px;
+    right:20px;
+    z-index:90;
+    width:40px;height:40px;
+    border-radius:50%;
+    background:var(--s2);
+    border:1px solid var(--bdr2);
+    color:var(--t2);
+    font-size:16px;
+    cursor:pointer;
+    transition:all .2s;
+    align-items:center;
+    justify-content:center;
+    box-shadow:0 2px 12px rgba(0,0,0,.4);
+  }
+  #scroll-top-btn:hover{background:var(--grn-bg);border-color:var(--grn);color:var(--grn)}
+  #scroll-top-btn.visible{display:flex}
+}
+

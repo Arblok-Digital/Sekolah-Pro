@@ -1,0 +1,71 @@
+<!-- partials/kalender.html — HTML halaman kalender + modal milik modul kalender (id/class dipertahankan) -->
+<div id="kalender-page" class="page">
+  <div class="page-body">
+    <div class="card">
+      <div class="card-title" style="flex-wrap:wrap;gap:8px">
+        <div style="display:flex;align-items:center;gap:8px">
+          <button class="abtn abtn-b" style="padding:6px 10px;font-size:12px" data-action="prevKalMonth">◀</button>
+          <span style="font-size:14px;font-weight:900;min-width:140px;text-align:center" id="kal-month-label">—</span>
+          <button class="abtn abtn-b" style="padding:6px 10px;font-size:12px" data-action="nextKalMonth">▶</button>
+        </div>
+        <button class="abtn abtn-g" style="padding:7px 12px;font-size:11px" data-action="openModal" data-args='["modal-event-add"]'>+ Tambah Event</button>
+      </div>
+      <div class="kal-grid" id="kal-day-headers"></div>
+      <div style="margin-top:4px" class="kal-grid" id="kal-grid"></div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:10px;font-size:10px">
+        <span style="display:flex;align-items:center;gap:4px"><span style="width:10px;height:10px;border-radius:2px;background:var(--red);display:inline-block"></span>Libur</span>
+        <span style="display:flex;align-items:center;gap:4px"><span style="width:10px;height:10px;border-radius:2px;background:var(--amb);display:inline-block"></span>Ujian</span>
+        <span style="display:flex;align-items:center;gap:4px"><span style="width:10px;height:10px;border-radius:2px;background:var(--blu);display:inline-block"></span>Kegiatan</span>
+        <span style="display:flex;align-items:center;gap:4px"><span style="width:10px;height:10px;border-radius:2px;background:var(--pur);display:inline-block"></span>Rapat</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">📋 Daftar Event Mendatang</div>
+      <div id="kal-event-list">
+        <div class="empty-state"><span class="empty-icon">📅</span><span class="empty-text">Belum ada event terjadwal</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODALS -->
+<div id="modal-event-add" class="modal-bg">
+  <div class="sheet">
+    <div class="mhdr"><h2>📅 Tambah Event</h2><button class="mclose" data-action="closeModal" data-args='["modal-event-add"]'>✕</button></div>
+    <div class="msec">
+      <div class="fg" style="gap:10px">
+        <div class="inp-group fg-full">
+          <div class="fl">Judul Event*</div>
+          <input class="ti" id="event-judul-inp" placeholder="Ujian Tengah Semester, Rapat Guru..."/>
+        </div>
+        <div class="inp-group">
+          <div class="fl">Tanggal Mulai*</div>
+          <input class="ti" id="event-tgl-mulai" type="date"/>
+        </div>
+        <div class="inp-group">
+          <div class="fl">Tanggal Selesai</div>
+          <input class="ti" id="event-tgl-selesai" type="date"/>
+        </div>
+        <div class="inp-group">
+          <div class="fl">Tipe</div>
+          <select class="ts" id="event-tipe-inp">
+            <option value="kegiatan">Kegiatan</option>
+            <option value="ujian">Ujian</option>
+            <option value="libur">Hari Libur</option>
+            <option value="rapat">Rapat</option>
+            <option value="lain">Lainnya</option>
+          </select>
+        </div>
+        <div class="inp-group fg-full">
+          <div class="fl">Deskripsi</div>
+          <input class="ti" id="event-desc-inp" placeholder="Keterangan tambahan..."/>
+        </div>
+      </div>
+    </div>
+    <div class="mact">
+      <button class="mbtn mbtn-c" data-action="closeModal" data-args='["modal-event-add"]'>Batal</button>
+      <button class="mbtn mbtn-s" data-action="simpanEvent">✅ Simpan Event</button>
+    </div>
+  </div>
+</div>

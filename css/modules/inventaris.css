@@ -1,0 +1,19 @@
+/* ══════════════════════════════════════════════════════════
+   SEKOLAH PRO — MODUL INVENTARIS
+   Diekstrak dari index.html <style> — selektor tidak diubah.
+   ══════════════════════════════════════════════════════════ */
+/* ══ INVENTARIS ══ */
+.aset-card{background:var(--s1);border:1px solid var(--bdr);border-radius:var(--r2);padding:12px 14px;display:flex;gap:12px;align-items:start;cursor:pointer;transition:border-color .15s}
+.aset-card:active{border-color:var(--cyn)}
+.aset-icon{width:44px;height:44px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0}
+.aset-info{flex:1;min-width:0}
+.aset-nama{font-weight:800;font-size:13px}
+.aset-meta{font-size:10px;color:var(--t3);margin-top:2px;display:flex;gap:8px;flex-wrap:wrap}
+.aset-kondisi{font-size:10px;font-weight:700;padding:2px 8px;border-radius:8px;display:inline-block;margin-top:4px}
+.aset-baik{background:var(--grn-bg);color:var(--grn)}
+.aset-rusak-ringan{background:var(--yel-bg);color:var(--yel)}
+.aset-rusak-berat{background:var(--red-bg);color:var(--red)}
+.aset-hilang{background:rgba(255,255,255,.05);color:var(--t3)}
+.aset-nilai{font-size:13px;font-weight:900;color:var(--cyn);font-family:'Courier New',monospace;margin-top:4px}
+.inv-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
+@media(min-width:600px){.inv-grid{grid-template-columns:repeat(4,1fr)}}

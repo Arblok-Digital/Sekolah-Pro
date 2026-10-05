@@ -1,0 +1,106 @@
+<!-- partials/kelas.html — HTML halaman kelas + modal milik modul kelas (id/class dipertahankan) -->
+<div id="kelas-page" class="page">
+  <div class="page-body">
+
+    <!-- Header info jenjang -->
+    <div class="card" style="background:linear-gradient(135deg,#060d1a,#0a1628);border-color:rgba(38,198,218,.25)">
+      <div style="display:flex;align-items:center;gap:12px">
+        <div style="font-size:32px">🏫</div>
+        <div style="flex:1">
+          <div style="font-size:15px;font-weight:900;color:var(--cyn)">Manajemen Kelas</div>
+          <div style="font-size:10px;color:var(--t3);margin-top:2px">Atur struktur kelas sesuai jenjang sekolah</div>
+        </div>
+        <div id="kelas-jenjang-badge" style="padding:4px 12px;border-radius:20px;font-size:10px;font-weight:800;background:var(--cyn-bg);border:1px solid rgba(38,198,218,.3);color:var(--cyn)">SD</div>
+      </div>
+    </div>
+
+    <!-- Pilih Jenjang -->
+    <div class="card">
+      <div class="card-title">📐 Jenjang & Konfigurasi</div>
+      <div style="margin-bottom:12px">
+        <div class="fl" style="margin-bottom:8px">Jenjang Sekolah</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px" id="jenjang-selector">
+          <button class="jenjang-btn on" data-j="SD" data-action="setJenjang" data-args='["SD","@@this"]'>
+            <div style="font-size:20px">🏫</div>
+            <div style="font-size:12px;font-weight:800">SD / MI</div>
+            <div style="font-size:9px;opacity:.7">Kelas 1–6</div>
+          </button>
+          <button class="jenjang-btn" data-j="SMP" data-action="setJenjang" data-args='["SMP","@@this"]'>
+            <div style="font-size:20px">📚</div>
+            <div style="font-size:12px;font-weight:800">SMP / MTs</div>
+            <div style="font-size:9px;opacity:.7">Kelas 7–9</div>
+          </button>
+          <button class="jenjang-btn" data-j="SMA" data-action="setJenjang" data-args='["SMA","@@this"]'>
+            <div style="font-size:20px">🎓</div>
+            <div style="font-size:12px;font-weight:800">SMA / SMK</div>
+            <div style="font-size:9px;opacity:.7">Kelas 10–12</div>
+          </button>
+        </div>
+      </div>
+
+      <div style="margin-bottom:10px">
+        <div class="fl" style="margin-bottom:6px">Sub Kelas (Rombel)</div>
+        <div style="display:flex;gap:6px;flex-wrap:wrap" id="rombel-selector">
+          <button class="rombel-btn on" data-r="A" data-action="toggleRombel" data-args='["A","@@this"]'>A</button>
+          <button class="rombel-btn on" data-r="B" data-action="toggleRombel" data-args='["B","@@this"]'>B</button>
+          <button class="rombel-btn on" data-r="C" data-action="toggleRombel" data-args='["C","@@this"]'>C</button>
+          <button class="rombel-btn" data-r="D" data-action="toggleRombel" data-args='["D","@@this"]'>D</button>
+          <button class="rombel-btn" data-r="E" data-action="toggleRombel" data-args='["E","@@this"]'>E</button>
+          <button class="rombel-btn" data-r="F" data-action="toggleRombel" data-args='["F","@@this"]'>F</button>
+        </div>
+        <div style="font-size:9px;color:var(--t3);margin-top:5px">Klik untuk aktifkan/nonaktifkan sub kelas per tingkat</div>
+      </div>
+
+      <button data-action="saveKelasConfig" class="abtn abtn-g" style="width:100%;padding:11px;margin-top:4px">💾 Simpan Konfigurasi Kelas</button>
+    </div>
+
+    <!-- Daftar Kelas -->
+    <div class="card">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+        <div class="card-title" style="margin-bottom:0">📋 Daftar Kelas Aktif</div>
+        <button data-action="renderKelas" style="padding:5px 10px;border-radius:7px;background:var(--s2);border:1px solid var(--bdr2);color:var(--t3);font-size:10px;cursor:pointer">🔄 Refresh</button>
+      </div>
+      <div id="kelas-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:8px"></div>
+    </div>
+
+    <!-- Wali Kelas -->
+    <div class="card">
+      <div class="card-title">👩‍🏫 Penugasan Wali Kelas</div>
+      <div id="walikelas-list" style="display:flex;flex-direction:column;gap:6px"></div>
+      <button data-action="openModal" data-args='["modal-walikelas"]' class="abtn abtn-b" style="width:100%;padding:10px;margin-top:10px;font-size:12px">➕ Tugaskan Wali Kelas</button>
+    </div>
+
+    <!-- Statistik per kelas -->
+    <div class="card">
+      <div class="card-title">📊 Statistik Siswa per Kelas</div>
+      <div id="kelas-stat-list" style="display:flex;flex-direction:column;gap:5px"></div>
+    </div>
+
+  </div>
+</div>
+
+<!-- MODALS -->
+<div id="modal-walikelas" class="modal-bg">
+  <div class="sheet" style="max-width:420px">
+    <div class="mhdr">
+      <h2>👩‍🏫 Tugaskan Wali Kelas</h2>
+      <button class="mclose" data-action="closeModal" data-args='["modal-walikelas"]'>✕</button>
+    </div>
+    <div style="padding:14px 16px;display:flex;flex-direction:column;gap:10px">
+      <div class="inp-group">
+        <div class="fl">Kelas</div>
+        <select class="ts" id="wk-kelas-sel" style="width:100%"></select>
+      </div>
+      <div class="inp-group">
+        <div class="fl">Wali Kelas</div>
+        <select class="ts" id="wk-guru-sel" style="width:100%">
+          <option value="">-- Pilih Guru --</option>
+        </select>
+      </div>
+    </div>
+    <div class="mact">
+      <button class="mbtn mbtn-c" data-action="closeModal" data-args='["modal-walikelas"]'>Batal</button>
+      <button class="mbtn mbtn-s" data-action="simpanWaliKelas">💾 Simpan</button>
+    </div>
+  </div>
+</div>

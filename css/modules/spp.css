@@ -1,0 +1,94 @@
+/* ══════════════════════════════════════════════════════════
+   SEKOLAH PRO — MODUL SPP
+   Diekstrak dari index.html <style> — selektor tidak diubah.
+   ══════════════════════════════════════════════════════════ */
+/* ══ SPP LIST ══ */
+.siswa-card{background:var(--s1);border:1px solid var(--bdr);border-radius:var(--r2);padding:12px 14px;display:flex;align-items:center;gap:12px;transition:border-color .15s}
+.siswa-card:active{border-color:var(--grn)}
+.siswa-avatar{width:40px;height:40px;border-radius:50%;background:var(--s3);border:2px solid var(--bdr2);display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
+.siswa-info{flex:1;min-width:0}
+.siswa-nama{font-weight:700;font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.siswa-kelas{font-size:10px;color:var(--t3);margin-top:1px}
+.siswa-right{text-align:right;flex-shrink:0}
+.spp-status-ok{color:var(--grn);font-size:11px;font-weight:700}
+.spp-status-tg{color:var(--red);font-size:11px;font-weight:700}
+
+
+/* ══ INFAK ══ */
+.infak-item{display:flex;align-items:center;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--bdr)}
+.infak-item:last-child{border-bottom:none}
+.infak-left{display:flex;align-items:center;gap:8px}
+.infak-icon{font-size:18px}
+.infak-info{flex:1}
+.infak-nama{font-size:12px;font-weight:700}
+.infak-tgl{font-size:10px;color:var(--t3)}
+.infak-amt{font-size:14px;font-weight:900;color:var(--grn);font-family:'Courier New',monospace}
+
+
+/* ══ KARTU SPP ══ */
+.kartu-spp{background:#fff;color:#000;border-radius:8px;padding:16px;font-family:'Courier New',monospace;font-size:10px;border:2px solid #000;max-width:320px;margin:0 auto}
+.kartu-header{display:flex;gap:12px;align-items:center;border-bottom:1px dashed #999;padding-bottom:10px;margin-bottom:10px}
+.kartu-logo{font-size:28px}
+.kartu-school{flex:1}
+.kartu-school-name{font-size:12px;font-weight:900;letter-spacing:.5px}
+.kartu-school-sub{font-size:9px;color:#666;margin-top:2px}
+.kartu-siswa-name{font-size:14px;font-weight:900;margin:8px 0 4px}
+.kartu-grid{display:grid;grid-template-columns:1fr 1fr;gap:4px;margin:8px 0}
+.kartu-cell{background:#f5f5f5;padding:6px 8px;border-radius:4px}
+.kartu-cell-lbl{font-size:8px;color:#666;text-transform:uppercase;letter-spacing:.4px}
+.kartu-cell-val{font-size:11px;font-weight:900;margin-top:2px}
+.kartu-bulan-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:3px;margin-top:8px}
+.kartu-bulan{text-align:center;padding:4px 2px;border-radius:3px;border:1px solid #ddd;font-size:8px;font-weight:700}
+.kartu-bulan.lunas{background:#d4edda;border-color:#28a745;color:#155724}
+.kartu-bulan.belum{background:#f8d7da;border-color:#dc3545;color:#721c24}
+
+
+/* ══ KWITANSI / RECEIPT ══ */
+.kw-paper{background:white;color:#111;border-radius:10px;padding:22px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif}
+.kw-header{text-align:center;padding-bottom:12px;border-bottom:2px solid #111;margin-bottom:12px}
+.kw-school-name{font-size:15px;font-weight:900;letter-spacing:.2px;color:#111}
+.kw-school-addr{font-size:9px;color:#666;margin-top:2px;line-height:1.4}
+.kw-title{font-size:12px;font-weight:700;text-align:center;background:#111;color:white;padding:6px;border-radius:5px;margin:10px 0;letter-spacing:2px}
+.kw-no{font-size:10px;color:#888;text-align:center;margin-bottom:10px}
+.kw-row{display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px dashed #ddd;font-size:11px;gap:12px}
+.kw-row-key{color:#666;flex-shrink:0;min-width:110px}
+.kw-row-val{font-weight:600;color:#111;text-align:right;flex:1;word-break:break-word}
+.kw-amount{text-align:center;padding:12px;margin:12px 0;background:#f8f8f8;border:2px dashed #111;border-radius:6px}
+.kw-amount-label{font-size:9px;color:#888;text-transform:uppercase;letter-spacing:1px;margin-bottom:3px}
+.kw-amount-val{font-size:24px;font-weight:900;font-family:'Courier New',monospace;color:#111}
+.kw-amount-terbilang{font-size:10px;color:#555;margin-top:4px;font-style:italic}
+.kw-ttd-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:14px}
+.kw-ttd{text-align:center;font-size:10px}
+.kw-ttd-label{color:#888;margin-bottom:40px}
+.kw-ttd-line{border-top:1px solid #111;padding-top:4px;font-weight:600;color:#111}
+.kw-ttd-name{font-size:9px;color:#888}
+.kw-footer{text-align:center;margin-top:12px;padding-top:10px;border-top:1px solid #ddd;font-size:8px;color:#bbb;line-height:1.5}
+.kw-qr{display:flex;justify-content:center;margin:10px 0}
+.kw-valid{text-align:center;font-size:8px;color:#999;font-style:italic}
+.kw-logo-arblok{font-size:8px;color:#bbb;text-align:center;margin-top:4px}
+.kw-logo-arblok b{color:#00aa55}
+
+/* ── Print Area ── */
+#kw-print-area{display:none}
+
+
+/* ══ PRINT — KWITANSI DUAL LAYOUT ══ */
+@media print{
+  body > *:not(#kw-print-area){display:none!important}
+  #kw-print-area{display:block!important;position:static!important;background:white!important}
+  .modal-bg,.modal-actions,#notif,#nav,#hdr,#ticker-bar,#bottom-nav,#sidebar-wrap{display:none!important}
+  @page{size:A4 portrait;margin:15mm 20mm}
+  .kw-paper{box-shadow:none!important;border-radius:0!important;width:100%!important;page-break-inside:avoid}
+  .kw-school-name{font-size:18px!important}
+  .kw-amount-val{font-size:28px!important}
+  .kw-row{font-size:12px!important}
+}
+body.kw-thermal @media print{
+  @page{size:58mm auto;margin:3mm}
+  .kw-paper{max-width:52mm!important;padding:2mm!important}
+  .kw-school-name{font-size:11px!important}
+  .kw-amount-val{font-size:16px!important}
+  .kw-row{font-size:9px!important;padding:2px 0!important}
+  .kw-ttd-row{grid-template-columns:1fr!important}
+  #kw-qr-box canvas{width:60px!important;height:60px!important}
+}

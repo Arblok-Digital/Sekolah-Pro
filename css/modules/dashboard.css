@@ -1,0 +1,34 @@
+/* ══════════════════════════════════════════════════════════
+   SEKOLAH PRO — MODUL DASHBOARD
+   Diekstrak dari index.html <style> — selektor tidak diubah.
+   ══════════════════════════════════════════════════════════ */
+/* ══ STAT CARDS ══ */
+.stats-row{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+@media(min-width:600px){.stats-row{grid-template-columns:repeat(4,1fr)}}
+.sc{background:var(--s1);border:1px solid var(--bdr);border-radius:var(--r);padding:12px}
+.sc-l{font-size:10px;color:var(--t3);font-weight:700;text-transform:uppercase;letter-spacing:.4px;margin-bottom:3px}
+.sc-v{font-size:18px;font-weight:900;line-height:1}
+.sc-s{font-size:10px;color:var(--t3);margin-top:2px}
+.card{background:var(--s1);border:1px solid var(--bdr);border-radius:var(--r2);padding:14px}
+.card-title{font-weight:800;font-size:13px;margin-bottom:12px;display:flex;align-items:center;justify-content:space-between}
+
+
+/* ══ QUICK ACTIONS ══ */
+.qact-row{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+@media(max-width:359px){.qact-row{grid-template-columns:repeat(2,1fr)}}
+.qact{background:var(--s2);border:1px solid var(--bdr2);border-radius:var(--r);padding:12px 8px;display:flex;flex-direction:column;align-items:center;gap:6px;transition:all .12s}
+.qact:active{transform:scale(.94);border-color:var(--grn);background:var(--grn-bg)}
+.qact-icon{font-size:22px}
+.qact-lbl{font-size:10px;font-weight:700;color:var(--t2);text-align:center;line-height:1.2}
+
+
+/* ══ TIMELINE ══ */
+.timeline{display:flex;flex-direction:column;gap:0}
+.tl-item{display:flex;gap:12px;padding:10px 0;position:relative}
+.tl-item::before{content:'';position:absolute;left:15px;top:28px;bottom:-2px;width:1px;background:var(--bdr)}
+.tl-item:last-child::before{display:none}
+.tl-dot{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0;position:relative;z-index:1}
+.tl-content{flex:1;padding-top:4px}
+.tl-title{font-size:12px;font-weight:700}
+.tl-sub{font-size:10px;color:var(--t3);margin-top:2px}
+.tl-amt{font-size:13px;font-weight:900;font-family:'Courier New',monospace}

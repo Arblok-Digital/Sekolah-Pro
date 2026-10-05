@@ -1,0 +1,100 @@
+<!-- partials/radar.html — HTML halaman radar + modal milik modul radar (id/class dipertahankan) -->
+<div id="radar-page" class="page">
+  <div class="page-body">
+    <div class="card">
+      <div class="card-title">📡 Radar Kesehatan Sekolah</div>
+      <div class="health-grid">
+        <div class="score-big" id="health-score-wrap">
+          <div class="score-num" id="health-score-num" style="color:var(--grn)">--</div>
+          <div class="score-grade" id="health-grade" style="color:var(--grn)">SEHAT</div>
+          <div class="score-desc" id="health-desc">Hitung data terlebih dahulu</div>
+        </div>
+        <div class="health-meters" style="flex:1">
+          <div class="hm-row">
+            <div class="hm-label">
+              <span class="hm-lbl-t">💰 Total Pemasukan</span>
+              <span class="hm-lbl-v" id="hm-pemasukan">Rp 0</span>
+            </div>
+            <div class="bar-t"><div class="bar-f" id="hm-bar-1" style="width:0%;background:var(--grn)"></div></div>
+          </div>
+          <div class="hm-row">
+            <div class="hm-label">
+              <span class="hm-lbl-t">👨‍🏫 Total Gaji Guru</span>
+              <span class="hm-lbl-v" id="hm-gaji">Rp 0</span>
+            </div>
+            <div class="bar-t"><div class="bar-f" id="hm-bar-2" style="width:0%;background:var(--pur)"></div></div>
+          </div>
+          <div class="hm-row">
+            <div class="hm-label">
+              <span class="hm-lbl-t">🏦 Pengeluaran BOS</span>
+              <span class="hm-lbl-v" id="hm-bos">Rp 0</span>
+            </div>
+            <div class="bar-t"><div class="bar-f" id="hm-bar-3" style="width:0%;background:var(--amb)"></div></div>
+          </div>
+          <div class="hm-row">
+            <div class="hm-label">
+              <span class="hm-lbl-t">📊 Piutang SPP</span>
+              <span class="hm-lbl-v" id="hm-piutang">Rp 0</span>
+            </div>
+            <div class="bar-t"><div class="bar-f" id="hm-bar-4" style="width:0%;background:var(--red)"></div></div>
+          </div>
+          <div class="hm-row">
+            <div class="hm-label">
+              <span class="hm-lbl-t">🙏 Total Infak</span>
+              <span class="hm-lbl-v" id="hm-infak">Rp 0</span>
+            </div>
+            <div class="bar-t"><div class="bar-f" id="hm-bar-5" style="width:0%;background:var(--yel)"></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Detail Radar -->
+    <div class="grid2">
+      <div class="card">
+        <div class="card-title">📈 Rasio Keuangan</div>
+        <div id="radar-detail">
+          <div class="radar-item">
+            <div class="radar-row">
+              <span class="radar-name">Gaji / Pemasukan</span>
+              <span class="radar-val" id="r-ratio-1">--</span>
+            </div>
+            <div class="radar-bar"><div class="radar-bar-fill" id="rb-1" style="width:0%;background:var(--pur)"></div></div>
+          </div>
+          <div class="radar-item">
+            <div class="radar-row">
+              <span class="radar-name">Kolektibilitas SPP</span>
+              <span class="radar-val" id="r-ratio-2">--</span>
+            </div>
+            <div class="radar-bar"><div class="radar-bar-fill" id="rb-2" style="width:0%;background:var(--grn)"></div></div>
+          </div>
+          <div class="radar-item">
+            <div class="radar-row">
+              <span class="radar-name">Utilisasi BOS</span>
+              <span class="radar-val" id="r-ratio-3">--</span>
+            </div>
+            <div class="radar-bar"><div class="radar-bar-fill" id="rb-3" style="width:0%;background:var(--amb)"></div></div>
+          </div>
+          <div class="radar-item">
+            <div class="radar-row">
+              <span class="radar-name">Coverage Gaji</span>
+              <span class="radar-val" id="r-ratio-4">--</span>
+            </div>
+            <div class="radar-bar"><div class="radar-bar-fill" id="rb-4" style="width:0%;background:var(--blu)"></div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">💡 Rekomendasi</div>
+        <div id="rekomendasi-list" style="display:flex;flex-direction:column;gap:8px">
+          <div style="font-size:12px;color:var(--t3)">Tambahkan data untuk mendapat rekomendasi</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" style="text-align:center;padding:16px">
+      <button class="abtn abtn-g" style="width:100%;padding:14px;font-size:14px" data-action="hitungRadar">🔄 Hitung Ulang Radar</button>
+    </div>
+  </div>
+</div>

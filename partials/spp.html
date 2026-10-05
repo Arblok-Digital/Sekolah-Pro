@@ -1,0 +1,330 @@
+<!-- partials/spp.html — HTML halaman spp + modal milik modul spp (id/class dipertahankan) -->
+<div id="spp-page" class="page">
+  <div class="page-body">
+
+    <!-- Stats Row -->
+    <div class="stats-row">
+      <div class="sc">
+        <div class="sc-l">💰 Total Pemasukan</div>
+        <div class="sc-v" style="color:var(--grn)" id="stat-spp-total">Rp 0</div>
+        <div class="sc-s">Semua jenis biaya</div>
+      </div>
+      <div class="sc">
+        <div class="sc-l">⚠️ Total Piutang</div>
+        <div class="sc-v" style="color:var(--red)" id="stat-piutang-total">Rp 0</div>
+        <div class="sc-s">Belum lunas</div>
+      </div>
+      <div class="sc">
+        <div class="sc-l">🙏 Total Infak</div>
+        <div class="sc-v" style="color:var(--yel)" id="stat-infak-total">Rp 0</div>
+        <div class="sc-s">Keseluruhan</div>
+      </div>
+      <div class="sc">
+        <div class="sc-l">👥 Total Siswa</div>
+        <div class="sc-v" id="stat-siswa-2">0</div>
+        <div class="sc-s">Terdaftar</div>
+      </div>
+    </div>
+
+    <!-- Toolbar -->
+    <div style="display:flex;flex-direction:column;gap:6px;padding:0 2px">
+      <!-- Primary action -->
+      <button data-action="openModal" data-args='["modal-bayar-biaya"]' style="
+        display:flex;align-items:center;justify-content:center;gap:10px;
+        width:100%;padding:13px 14px;border-radius:12px;border:none;cursor:pointer;
+        background:linear-gradient(135deg,var(--grn),#00c853);color:#000;
+        font-weight:900;font-size:13px;letter-spacing:.2px;
+        box-shadow:0 3px 14px rgba(0,230,118,.22);transition:opacity .15s;
+      " onmouseover="this.style.opacity='.88'" onmouseout="this.style.opacity='1'">
+        <span style="font-size:19px">💳</span>
+        <span>Catat Pembayaran</span>
+      </button>
+      <!-- Secondary actions -->
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px">
+        <button data-action="openModal" data-args='["modal-tagihan-massal"]' style="
+          display:flex;flex-direction:column;align-items:center;gap:5px;
+          padding:10px 6px;border-radius:10px;cursor:pointer;
+          background:var(--cyn-bg);border:1.5px solid rgba(38,198,218,.35);
+          color:var(--cyn);font-weight:700;font-size:10px;transition:all .15s;
+        " onmouseover="this.style.borderColor='var(--cyn)'" onmouseout="this.style.borderColor='rgba(38,198,218,.35)'">
+          <span style="font-size:20px">📋</span>Tagihan Massal
+        </button>
+        <button data-action="openModal" data-args='["modal-infak"]' style="
+          display:flex;flex-direction:column;align-items:center;gap:5px;
+          padding:10px 6px;border-radius:10px;cursor:pointer;
+          background:var(--yel-bg);border:1.5px solid rgba(255,202,40,.35);
+          color:var(--yel);font-weight:700;font-size:10px;transition:all .15s;
+        " onmouseover="this.style.borderColor='var(--yel)'" onmouseout="this.style.borderColor='rgba(255,202,40,.35)'">
+          <span style="font-size:20px">🙏</span>Catat Infak
+        </button>
+        <button data-action="openModal" data-args='["modal-crm-add"]' style="
+          display:flex;flex-direction:column;align-items:center;gap:5px;
+          padding:10px 6px;border-radius:10px;cursor:pointer;
+          background:var(--blu-bg);border:1.5px solid rgba(68,138,255,.35);
+          color:var(--blu);font-weight:700;font-size:10px;transition:all .15s;
+        " onmouseover="this.style.borderColor='var(--blu)'" onmouseout="this.style.borderColor='rgba(68,138,255,.35)'">
+          <span style="font-size:20px">➕</span>+ Siswa
+        </button>
+      </div>
+    </div>
+
+    <!-- Jenis Biaya Filter Tabs -->
+    <div style="display:flex;gap:6px;overflow-x:auto;padding:0 12px;padding-bottom:2px">
+      <button class="fchip on" id="biaya-filter-semua" data-action="setBiayaFilter" data-args='["semua","@@this"]'>Semua</button>
+      <button class="fchip" id="biaya-filter-spp" data-action="setBiayaFilter" data-args='["SPP","@@this"]'>💳 SPP</button>
+      <button class="fchip" id="biaya-filter-bangunan" data-action="setBiayaFilter" data-args='["Bangunan","@@this"]'>🏗️ Bangunan</button>
+      <button class="fchip" id="biaya-filter-buku" data-action="setBiayaFilter" data-args='["Buku","@@this"]'>📚 Buku</button>
+      <button class="fchip" id="biaya-filter-seragam" data-action="setBiayaFilter" data-args='["Seragam","@@this"]'>👕 Seragam</button>
+      <button class="fchip" id="biaya-filter-akhirtahun" data-action="setBiayaFilter" data-args='["Akhir Tahun","@@this"]'>🎓 Akhir Tahun</button>
+      <button class="fchip" id="biaya-filter-pentas" data-action="setBiayaFilter" data-args='["Pentas Seni","@@this"]'>🎭 Pentas</button>
+      <button class="fchip" id="biaya-filter-rihlah" data-action="setBiayaFilter" data-args='["Rihlah","@@this"]'>🚌 Rihlah</button>
+    </div>
+
+    <!-- Ringkasan per Jenis Biaya -->
+    <div id="biaya-summary-cards" style="display:grid;grid-template-columns:repeat(2,1fr);gap:8px"></div>
+
+    <!-- Daftar Siswa & Status -->
+    <div class="card">
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px;flex-wrap:wrap">
+        <div class="card-title" style="margin-bottom:0">📋 Status Pembayaran Siswa</div>
+        <input class="ti" id="spp-search" placeholder="🔍 Cari nama..." style="width:160px;padding:6px 10px;font-size:12px" data-action="renderSPP"/>
+      </div>
+      <div id="siswa-list">
+        <div class="empty-state"><span class="empty-icon">👥</span><span class="empty-text">Belum ada data siswa</span></div>
+      </div>
+    </div>
+
+    <!-- Riwayat Pembayaran -->
+    <div class="card">
+      <div class="card-title">📜 Riwayat Pembayaran</div>
+      <div id="riwayat-biaya-list">
+        <div class="empty-state"><span class="empty-icon">📜</span><span class="empty-text">Belum ada riwayat</span></div>
+      </div>
+    </div>
+
+    <!-- Riwayat Infak -->
+    <div class="card">
+      <div class="card-title">🙏 Riwayat Infak Harian</div>
+      <div id="infak-list">
+        <div class="empty-state"><span class="empty-icon">🙏</span><span class="empty-text">Belum ada catatan infak</span></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- MODALS -->
+<div id="modal-kartu-spp" class="modal-bg">
+  <div class="sheet">
+    <div class="mhdr"><h2>🪪 Kartu SPP Siswa</h2><button class="mclose" data-action="closeModal" data-args='["modal-kartu-spp"]'>✕</button></div>
+    <div class="msec">
+      <div class="inp-group">
+        <div class="fl">Pilih Siswa</div>
+        <select class="ts" id="kartu-siswa-sel" style="width:100%" data-action="renderKartuSPP"></select>
+      </div>
+      <div class="inp-group">
+        <div class="fl">Tahun Ajaran</div>
+        <input class="ti" id="kartu-tahun" value="2024/2025" style="width:150px"/>
+      </div>
+    </div>
+    <div id="kartu-preview" style="padding:0 16px 12px"></div>
+    <div class="mact" style="gap:8px">
+      <button class="mbtn mbtn-c" data-action="closeModal" data-args='["modal-kartu-spp"]'>Tutup</button>
+      <button class="mbtn mbtn-s" data-action="printKartu">🖨️ Cetak Kartu</button>
+    </div>
+  </div>
+</div>
+<div id="modal-bayar-biaya" class="modal-bg">
+  <div class="sheet" style="max-width:520px">
+    <div class="mhdr"><h2>💳 Catat Pembayaran</h2><button class="mclose" data-action="closeModal" data-args='["modal-bayar-biaya"]'>✕</button></div>
+    <div class="msec">
+      <!-- Pilih Siswa -->
+      <div class="inp-group">
+        <div class="fl">Nama Siswa</div>
+        <select class="ts" id="biaya-siswa-sel" style="width:100%" data-action="updateBiayaInfo"></select>
+      </div>
+      <!-- Info piutang siswa -->
+      <div id="biaya-siswa-info" style="display:none;background:var(--s2);border-radius:9px;padding:10px 12px;margin-top:-4px;margin-bottom:4px;font-size:11px"></div>
+
+      <!-- Jenis Biaya -->
+      <div class="inp-group">
+        <div class="fl">Jenis Biaya</div>
+        <select class="ts" id="biaya-jenis-sel" style="width:100%" data-action="onBiayaJenisChange">
+          <option value="SPP">💳 SPP Bulanan</option>
+          <option value="Bangunan">🏗️ Bangunan / Infaq Tahunan</option>
+          <option value="Buku">📚 Buku</option>
+          <option value="Seragam">👕 Seragam</option>
+          <option value="Akhir Tahun">🎓 Biaya Akhir Tahun</option>
+          <option value="Pentas Seni">🎭 Pentas Seni</option>
+          <option value="Rihlah">🚌 Rihlah / Field Trip</option>
+          <option value="Lainnya">📌 Lainnya</option>
+        </select>
+      </div>
+
+      <!-- Periode (muncul hanya untuk SPP) -->
+      <div class="inp-group" id="biaya-periode-wrap">
+        <div class="fl">Periode / Bulan</div>
+        <input class="ti" id="biaya-periode" placeholder="Januari 2026"/>
+      </div>
+
+      <!-- Jumlah -->
+      <div class="inp-group">
+        <div class="fl">Jumlah Bayar (Rp)</div>
+        <input class="ti" id="biaya-jumlah" type="number" placeholder="0" data-action="updateBiayaPreview"/>
+      </div>
+
+      <!-- Metode Bayar -->
+      <div class="inp-group">
+        <div class="fl">Metode Pembayaran</div>
+        <select class="ts" id="biaya-metode" style="width:100%" data-action="updateBiayaMetode">
+          <option value="Tunai">💵 Tunai</option>
+          <option value="Transfer">🏦 Transfer Bank</option>
+          <option value="QRIS">📱 QRIS</option>
+          <option value="Dicicil">📅 Dicicil</option>
+          <option value="Deposit">🔵 Gunakan Deposit Siswa</option>
+        </select>
+      </div>
+      <!-- Info deposit jika dipilih -->
+      <div id="biaya-deposit-info" style="display:none;background:rgba(0,230,118,.08);border:1px solid rgba(0,230,118,.2);border-radius:9px;padding:8px 12px;font-size:11px;color:var(--t2)"></div>
+
+      <!-- Keterangan -->
+      <div class="inp-group">
+        <div class="fl">Keterangan (opsional)</div>
+        <input class="ti" id="biaya-ket" placeholder="Catatan pembayaran..."/>
+      </div>
+
+      <!-- Preview total -->
+      <div id="biaya-preview" style="background:var(--grn-bg);border:1px solid rgba(0,230,118,.2);border-radius:9px;padding:10px 14px;display:flex;justify-content:space-between;align-items:center">
+        <span style="font-size:12px;color:var(--t2)">Total diterima:</span>
+        <span style="font-size:16px;font-weight:900;color:var(--grn);font-family:'Courier New',monospace" id="biaya-preview-total">Rp 0</span>
+      </div>
+    </div>
+    <div class="mact">
+      <button class="mbtn mbtn-c" data-action="closeModal" data-args='["modal-bayar-biaya"]'>Batal</button>
+      <button class="mbtn mbtn-s" data-action="catatPembayaranBiaya">✅ Catat Pembayaran</button>
+    </div>
+  </div>
+</div>
+<div id="modal-tagihan-massal" class="modal-bg">
+  <div class="sheet" style="max-width:520px">
+    <div class="mhdr"><h2>📋 Buat Tagihan Massal</h2><button class="mclose" data-action="closeModal" data-args='["modal-tagihan-massal"]'>✕</button></div>
+    <div class="msec">
+      <div style="font-size:12px;color:var(--t2);margin-bottom:12px">Tambahkan tagihan ke <b>semua siswa</b> atau per kelas sekaligus.</div>
+
+      <div class="inp-group">
+        <div class="fl">Jenis Tagihan</div>
+        <select class="ts" id="tagihan-jenis" style="width:100%">
+          <option value="SPP">💳 SPP Bulanan</option>
+          <option value="Bangunan">🏗️ Bangunan / Infaq Tahunan</option>
+          <option value="Buku">📚 Buku</option>
+          <option value="Seragam">👕 Seragam</option>
+          <option value="Akhir Tahun">🎓 Biaya Akhir Tahun</option>
+          <option value="Pentas Seni">🎭 Pentas Seni</option>
+          <option value="Rihlah">🚌 Rihlah / Field Trip</option>
+          <option value="Lainnya">📌 Lainnya</option>
+        </select>
+      </div>
+      <div class="inp-group">
+        <div class="fl">Nominal Tagihan (Rp)</div>
+        <input class="ti" id="tagihan-nominal" type="number" placeholder="0"/>
+      </div>
+      <div class="inp-group">
+        <div class="fl">Keterangan / Periode</div>
+        <input class="ti" id="tagihan-ket" placeholder="contoh: Januari 2026 / Buku Semester 1"/>
+      </div>
+      <div class="inp-group">
+        <div class="fl">Target</div>
+        <select class="ts" id="tagihan-target" style="width:100%">
+          <option value="semua">👥 Semua Siswa Aktif</option>
+          <option value="1">Kelas 1</option>
+          <option value="2">Kelas 2</option>
+          <option value="3">Kelas 3</option>
+          <option value="4">Kelas 4</option>
+          <option value="5">Kelas 5</option>
+          <option value="6">Kelas 6</option>
+        </select>
+      </div>
+      <div id="tagihan-preview-box" style="background:var(--yel-bg);border:1px solid rgba(255,202,40,.2);border-radius:9px;padding:10px 12px;font-size:11px;color:var(--t2)">
+        💡 Tagihan akan ditambahkan ke piutang siswa. Belum mengurangi saldo.
+      </div>
+    </div>
+    <div class="mact">
+      <button class="mbtn mbtn-c" data-action="closeModal" data-args='["modal-tagihan-massal"]'>Batal</button>
+      <button class="mbtn mbtn-s" data-action="buatTagihanSPPMassal">📋 Buat Tagihan</button>
+    </div>
+  </div>
+</div>
+<div id="modal-spp" class="modal-bg">
+  <div class="sheet">
+    <div class="mhdr"><h2>💳 Bayar SPP</h2><button class="mclose" data-action="closeModal" data-args='["modal-spp"]'>✕</button></div>
+    <div class="msec">
+      <div class="inp-group">
+        <div class="fl">Pilih Siswa</div>
+        <select class="ts" id="spp-siswa-sel" style="width:100%"></select>
+      </div>
+      <div class="inp-group">
+        <div class="fl">Jumlah (Rp)</div>
+        <input class="ti" id="spp-jumlah" type="number" placeholder="0"/>
+      </div>
+      <div class="inp-group">
+        <div class="fl">Bulan</div>
+        <input class="ti" id="spp-bulan" placeholder="Januari 2026"/>
+      </div>
+      <div class="inp-group">
+        <div class="fl">Catatan</div>
+        <input class="ti" id="spp-catatan" placeholder="Opsional"/>
+      </div>
+    </div>
+    <div class="mact">
+      <button class="mbtn mbtn-c" data-action="closeModal" data-args='["modal-spp"]'>Batal</button>
+      <button class="mbtn mbtn-s" data-action="bayarSPP">✅ Bayar</button>
+    </div>
+  </div>
+</div>
+<div id="modal-infak" class="modal-bg">
+  <div class="sheet">
+    <div class="mhdr"><h2>🙏 Catat Infak</h2><button class="mclose" data-action="closeModal" data-args='["modal-infak"]'>✕</button></div>
+    <div class="msec">
+      <div class="fg">
+        <div class="fg-full">
+          <div class="mlbl">Nama / Keterangan</div>
+          <input class="ti" id="infak-nama-inp" placeholder="Nama atau kelompok..." />
+        </div>
+        <div>
+          <div class="mlbl">Jumlah (Rp)</div>
+          <input class="ti" id="infak-jumlah-inp" type="number" placeholder="0"/>
+        </div>
+        <div>
+          <div class="mlbl">Kategori</div>
+          <select class="ts" id="infak-kat-inp">
+            <option>Infak Harian</option>
+            <option>Infak Jumat</option>
+            <option>Sedekah Jariyah</option>
+            <option>Donasi</option>
+            <option>Lainnya</option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <div class="mact">
+      <button class="mbtn mbtn-c" data-action="closeModal" data-args='["modal-infak"]'>Batal</button>
+      <button class="mbtn mbtn-s" data-action="catatInfak">✅ Catat</button>
+    </div>
+  </div>
+</div>
+<div id="modal-kwitansi" class="modal-bg">
+  <div class="sheet" style="max-width:520px">
+    <div class="mhdr">
+      <h2 id="kw-modal-title">🧾 Preview Kwitansi</h2>
+      <button class="mclose" data-action="closeModal" data-args='["modal-kwitansi"]'>✕</button>
+    </div>
+    <!-- Kwitansi paper di sini -->
+    <div id="kw-preview-content" style="padding:16px"></div>
+    <!-- Action buttons -->
+    <div style="padding:12px 16px;border-top:1px solid var(--bdr);display:flex;gap:8px;position:sticky;bottom:0;background:var(--s1)">
+      <button data-action="cetakKwitansi" data-args='["a4"]' style="flex:1;padding:10px;border-radius:9px;background:var(--grn);border:none;color:#000;font-size:12px;font-weight:800;cursor:pointer">🖨️ Cetak A4</button>
+      <button data-action="cetakKwitansi" data-args='["thermal"]' style="flex:1;padding:10px;border-radius:9px;background:var(--blu-bg);border:1px solid rgba(68,138,255,.3);color:var(--blu);font-size:12px;font-weight:800;cursor:pointer">📱 Thermal</button>
+      <button data-action="simpanKwitansiPDF" style="flex:1;padding:10px;border-radius:9px;background:var(--s2);border:1px solid var(--bdr2);color:var(--t2);font-size:12px;font-weight:700;cursor:pointer">💾 PDF</button>
+    </div>
+  </div>
+</div>

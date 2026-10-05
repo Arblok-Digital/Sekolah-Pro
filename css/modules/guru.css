@@ -1,0 +1,79 @@
+/* ══════════════════════════════════════════════════════════
+   SEKOLAH PRO — MODUL GURU
+   Diekstrak dari index.html <style> — selektor tidak diubah.
+   ══════════════════════════════════════════════════════════ */
+/* ══ GURU CARD ══ */
+.guru-card{background:var(--s1);border:1px solid var(--bdr);border-radius:var(--r2);padding:12px 14px}
+.guru-top{display:flex;align-items:center;gap:12px;margin-bottom:10px}
+.guru-avatar{width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,var(--pur-bg),var(--blu-bg));border:2px solid rgba(192,132,252,.3);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+.guru-nama{font-weight:800;font-size:13px}
+.guru-jabatan{font-size:10px;color:var(--t3);margin-top:2px}
+.guru-gaji-row{display:flex;justify-content:space-between;font-size:12px;padding:4px 0;border-bottom:1px solid var(--bdr)}
+.guru-gaji-row:last-child{border-bottom:none}
+.guru-total{background:var(--grn-bg);border:1px solid rgba(0,230,118,.2);border-radius:8px;padding:8px 12px;margin-top:8px;display:flex;justify-content:space-between;align-items:center}
+.guru-total-lbl{font-size:11px;color:var(--t2);font-weight:600}
+.guru-total-val{font-size:16px;font-weight:900;color:var(--grn);font-family:'Courier New',monospace}
+
+
+/* ══ JAM INPUT ══ */
+.jam-ctrl{display:flex;align-items:center;gap:6px}
+.jbtn{width:34px;height:34px;border-radius:9px;border:1px solid var(--bdr2);background:var(--s2);color:var(--t1);font-size:18px;font-weight:700;display:flex;align-items:center;justify-content:center}
+.jbtn:active{background:var(--grn-bg);border-color:var(--grn);color:var(--grn)}
+.jinp{width:55px;height:34px;text-align:center;font-weight:900;font-size:14px;background:var(--s2);border:1px solid var(--bdr2);border-radius:8px;color:var(--t1);outline:none;font-family:'Courier New',monospace}
+
+
+/* ══ PAYROLL PRO ══ */
+.payroll-card{background:var(--s1);border:1.5px solid var(--bdr);border-radius:var(--r2);overflow:hidden;transition:all .15s}
+.payroll-card:hover{border-color:var(--pur)}
+.payroll-card-header{display:flex;align-items:center;gap:12px;padding:13px 14px;border-bottom:1px solid var(--bdr);cursor:pointer}
+.payroll-avatar{width:46px;height:46px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:900;flex-shrink:0;border:2px solid}
+.payroll-info{flex:1;min-width:0}
+.payroll-nama{font-weight:800;font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.payroll-jabatan{font-size:10px;color:var(--t3);margin-top:2px}
+.payroll-status-badge{font-size:10px;font-weight:700;padding:3px 10px;border-radius:10px;display:inline-flex;align-items:center;gap:4px;margin-top:4px}
+.payroll-status-lunas{background:rgba(0,230,118,.12);color:var(--grn);border:1px solid rgba(0,230,118,.25)}
+.payroll-status-belum{background:rgba(255,82,82,.12);color:var(--red);border:1px solid rgba(255,82,82,.25)}
+.payroll-netto{font-size:16px;font-weight:900;font-family:'Courier New',monospace;text-align:right}
+.payroll-body{padding:12px 14px;background:var(--s2)}
+.payroll-line{display:flex;justify-content:space-between;align-items:center;padding:5px 0;border-bottom:1px solid rgba(255,255,255,.04);font-size:12px}
+.payroll-line:last-child{border-bottom:none}
+.payroll-line-lbl{color:var(--t3)}
+.payroll-line-val{font-family:'Courier New',monospace;font-weight:700}
+.payroll-line.plus .payroll-line-val{color:var(--grn)}
+.payroll-line.minus .payroll-line-val{color:var(--red)}
+.payroll-line.total-line{border-top:1px solid var(--bdr);padding-top:8px;margin-top:3px}
+.payroll-line.total-line .payroll-line-lbl{font-weight:900;color:var(--t1);font-size:13px}
+.payroll-line.total-line .payroll-line-val{font-size:16px;color:var(--pur)}
+.payroll-actions{display:flex;gap:6px;padding:10px 14px;background:var(--s1);border-top:1px solid var(--bdr)}
+.kasbon-badge{background:var(--yel-bg);border:1px solid rgba(255,202,40,.3);border-radius:8px;padding:4px 10px;font-size:10px;font-weight:700;color:var(--yel);display:inline-flex;align-items:center;gap:4px}
+/* Slip Gaji */
+.slip-wrap{background:#fff;color:#000;font-family:'Courier New',monospace;font-size:10px;max-width:520px;margin:0 auto;border:1px solid #ddd;overflow:hidden}
+.slip-header{background:linear-gradient(135deg,#0a0f1a,#1a2234);color:#fff;padding:14px 18px;display:flex;align-items:center;gap:12px}
+.slip-header-logo{font-size:26px}
+.slip-header-school-name{font-size:13px;font-weight:900;letter-spacing:.5px}
+.slip-header-sub{font-size:9px;color:#8ba3c7;margin-top:2px}
+.slip-month-badge{background:rgba(0,230,118,.2);border:1px solid rgba(0,230,118,.4);border-radius:6px;padding:4px 10px;font-size:10px;font-weight:900;color:#00e676;white-space:nowrap;flex-shrink:0}
+.slip-guru-row{display:flex;background:#f8f8f8;border-bottom:2px solid #ddd;flex-wrap:wrap}
+.slip-guru-cell{flex:1;padding:8px 14px;min-width:120px}
+.slip-guru-label{font-size:8px;color:#888;text-transform:uppercase;letter-spacing:.5px;margin-bottom:2px}
+.slip-guru-value{font-size:11px;font-weight:700}
+.slip-section{padding:10px 16px}
+.slip-section-title{font-size:10px;font-weight:900;text-transform:uppercase;letter-spacing:.8px;color:#555;border-bottom:1px solid #e0e0e0;padding-bottom:4px;margin-bottom:8px}
+.slip-row{display:flex;justify-content:space-between;padding:3px 0;font-size:10px}
+.slip-row-lbl{color:#666;flex:1}
+.slip-row-val{font-weight:700;text-align:right}
+.slip-row.plus .slip-row-val{color:#00a040}
+.slip-row.minus .slip-row-val{color:#cc0000}
+.slip-total-box{background:#0a0f1a;color:#fff;padding:12px 16px;display:flex;justify-content:space-between;align-items:center}
+.slip-total-label{font-size:12px;font-weight:700;color:#8ba3c7}
+.slip-total-value{font-size:20px;font-weight:900;color:#00e676;font-family:'Courier New',monospace}
+.slip-footer{padding:10px 16px;background:#f5f5f5;display:flex;justify-content:space-between;font-size:8px;color:#888;border-top:1px solid #e0e0e0;flex-wrap:wrap;gap:4px}
+/* Arsip table */
+.arsip-tbl{width:100%;border-collapse:collapse;font-size:11px}
+.arsip-tbl th{background:var(--s2);padding:8px 10px;text-align:left;font-size:9px;font-weight:700;color:var(--t3);text-transform:uppercase;border-bottom:1px solid var(--bdr);position:sticky;top:0}
+.arsip-tbl td{padding:8px 10px;border-bottom:1px solid var(--bdr);color:var(--t2)}
+.arsip-tbl tr:last-child td{border-bottom:none}
+.arsip-tbl tr:hover td{background:rgba(255,255,255,.02)}
+/* guru filter chips */
+.fchip{padding:5px 12px;border-radius:20px;border:1px solid var(--bdr2);background:transparent;color:var(--t3);font-size:11px;font-weight:700;white-space:nowrap;transition:all .15s;flex-shrink:0;cursor:pointer}
+.fchip.on{background:var(--cyn-bg);border-color:var(--cyn);color:var(--cyn)}

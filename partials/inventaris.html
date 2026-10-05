@@ -1,0 +1,99 @@
+<!-- partials/inventaris.html — HTML halaman inventaris + modal milik modul inventaris (id/class dipertahankan) -->
+<div id="inventaris-page" class="page">
+  <div class="page-body">
+    <div class="inv-grid">
+      <div class="sc"><div class="sc-l">📦 Total Aset</div><div class="sc-v" id="inv-stat-total">0</div><div class="sc-s">Item</div></div>
+      <div class="sc"><div class="sc-l">✅ Kondisi Baik</div><div class="sc-v" style="color:var(--grn)" id="inv-stat-baik">0</div><div class="sc-s">Item</div></div>
+      <div class="sc"><div class="sc-l">⚠️ Perlu Perbaikan</div><div class="sc-v" style="color:var(--yel)" id="inv-stat-rusak">0</div><div class="sc-s">Item</div></div>
+      <div class="sc"><div class="sc-l">💰 Total Nilai</div><div class="sc-v" style="color:var(--cyn);font-size:14px" id="inv-stat-nilai">Rp 0</div><div class="sc-s">Keseluruhan</div></div>
+    </div>
+
+    <div class="card">
+      <div class="toolbar" style="gap:8px;flex-wrap:wrap">
+        <button class="abtn abtn-g" data-action="openModal" data-args='["modal-aset-add"]'>+ Tambah Aset</button>
+        <div class="filter-chips" style="flex:1">
+          <button class="fchip on" data-action="setInvFilter" data-args='["all","@@this"]'>Semua</button>
+          <button class="fchip" data-action="setInvFilter" data-args='["Elektronik","@@this"]'>💻 Elektronik</button>
+          <button class="fchip" data-action="setInvFilter" data-args='["Furnitur","@@this"]'>🪑 Furnitur</button>
+          <button class="fchip" data-action="setInvFilter" data-args='["Olahraga","@@this"]'>⚽ Olahraga</button>
+          <button class="fchip" data-action="setInvFilter" data-args='["Perpustakaan","@@this"]'>📚 Perpustakaan</button>
+          <button class="fchip" data-action="setInvFilter" data-args='["Lainnya","@@this"]'>📌 Lainnya</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="inv-aset-list">
+      <div class="empty-state"><span class="empty-icon">📦</span><span class="empty-text">Belum ada data aset</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- MODALS -->
+<div id="modal-aset-add" class="modal-bg">
+  <div class="sheet">
+    <div class="mhdr"><h2>📦 Tambah Aset</h2><button class="mclose" data-action="closeModal" data-args='["modal-aset-add"]'>✕</button></div>
+    <div class="msec">
+      <div class="fg" style="gap:10px">
+        <div class="inp-group fg-full">
+          <div class="fl">Nama Aset*</div>
+          <input class="ti" id="aset-nama-inp" placeholder="Laptop Guru, Proyektor..."/>
+        </div>
+        <div class="inp-group">
+          <div class="fl">Kategori</div>
+          <select class="ts" id="aset-kat-inp">
+            <option>Elektronik</option><option>Furnitur</option><option>Olahraga</option>
+            <option>Perpustakaan</option><option>Laboratorium</option><option>Lainnya</option>
+          </select>
+        </div>
+        <div class="inp-group">
+          <div class="fl">Jumlah</div>
+          <input class="ti" id="aset-jumlah-inp" type="number" placeholder="1" min="1"/>
+        </div>
+        <div class="inp-group">
+          <div class="fl">Nilai Perolehan (Rp)</div>
+          <input class="ti" id="aset-nilai-inp" type="number" placeholder="0"/>
+        </div>
+        <div class="inp-group">
+          <div class="fl">Kondisi</div>
+          <select class="ts" id="aset-kondisi-inp">
+            <option value="baik">Baik</option>
+            <option value="rusak-ringan">Rusak Ringan</option>
+            <option value="rusak-berat">Rusak Berat</option>
+            <option value="hilang">Hilang</option>
+          </select>
+        </div>
+        <div class="inp-group">
+          <div class="fl">Lokasi</div>
+          <input class="ti" id="aset-lokasi-inp" placeholder="Kelas 1A, Gudang..."/>
+        </div>
+        <div class="inp-group">
+          <div class="fl">Tahun Perolehan</div>
+          <input class="ti" id="aset-tahun-inp" type="number" placeholder="2024"/>
+        </div>
+        <div class="inp-group fg-full">
+          <div class="fl">Nomor Inventaris</div>
+          <input class="ti" id="aset-noinv-inp" placeholder="INV-001..."/>
+        </div>
+        <div class="inp-group fg-full">
+          <div class="fl">Keterangan</div>
+          <input class="ti" id="aset-ket-inp" placeholder="Catatan tambahan..."/>
+        </div>
+      </div>
+    </div>
+    <div class="mact">
+      <button class="mbtn mbtn-c" data-action="closeModal" data-args='["modal-aset-add"]'>Batal</button>
+      <button class="mbtn mbtn-s" data-action="simpanAset">✅ Simpan Aset</button>
+    </div>
+  </div>
+</div>
+<div id="modal-aset-detail" class="modal-bg">
+  <div class="sheet">
+    <div class="mhdr"><h2 id="aset-detail-title">Detail Aset</h2><button class="mclose" data-action="closeModal" data-args='["modal-aset-detail"]'>✕</button></div>
+    <div id="aset-detail-content" style="padding:16px"></div>
+    <div class="mact" style="gap:8px">
+      <button class="mbtn mbtn-c" data-action="closeModal" data-args='["modal-aset-detail"]'>Tutup</button>
+      <button class="mbtn mbtn-s" style="background:var(--yel-bg);color:var(--yel);border:1px solid var(--yel)" data-action="editKondisiAset">✏️ Update Kondisi</button>
+      <button class="mbtn mbtn-s" style="background:var(--red-bg);color:var(--red);border:1px solid var(--red);flex:0 0 auto;padding:12px 16px" data-action="hapusAset">🗑️</button>
+    </div>
+  </div>
+</div>

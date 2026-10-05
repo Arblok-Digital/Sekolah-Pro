@@ -1,0 +1,319 @@
+<!-- partials/guru.html — HTML halaman guru + modal milik modul guru (id/class dipertahankan) -->
+<div id="guru-page" class="page">
+  <div class="page-body">
+
+    <!-- Payroll Dashboard Hero -->
+    <div style="background:linear-gradient(135deg,#060d1a,#0d1a2e,#080f1c);border:1px solid rgba(192,132,252,.3);border-radius:var(--r2);padding:18px;position:relative;overflow:hidden;margin-bottom:0">
+      <div style="position:absolute;inset:0;background:radial-gradient(ellipse at 80% 20%,rgba(192,132,252,.1) 0%,transparent 60%),radial-gradient(ellipse at 10% 80%,rgba(0,230,118,.06) 0%,transparent 50%);pointer-events:none"></div>
+      <div style="position:relative;z-index:1;display:flex;align-items:start;justify-content:space-between;gap:12px;flex-wrap:wrap">
+        <div>
+          <div style="font-size:10px;color:var(--t3);font-weight:700;text-transform:uppercase;letter-spacing:.6px;margin-bottom:4px">💸 PAYROLL PRO</div>
+          <div style="font-size:24px;font-weight:900;color:var(--pur);font-family:'Courier New',monospace;letter-spacing:-1px;line-height:1" id="payroll-total-display">Rp 0</div>
+          <div style="font-size:11px;color:var(--t2);margin-top:4px">Total pengeluaran gaji bulan ini</div>
+          <div style="display:flex;gap:12px;margin-top:8px;flex-wrap:wrap;font-size:10px;color:var(--t3)">
+            <span>✅ Lunas: <b style="color:var(--grn)" id="payroll-lunas-count">0</b> guru</span>
+            <span>⏳ Belum: <b style="color:var(--red)" id="payroll-belum-count">0</b> guru</span>
+            <span>💼 Kasbon: <b style="color:var(--yel)" id="payroll-kasbon-total">Rp 0</b></span>
+          </div>
+        </div>
+        <div style="text-align:right;flex-shrink:0">
+          <div style="font-size:10px;color:var(--t3);margin-bottom:3px">Sisa Kas</div>
+          <div style="font-size:18px;font-weight:900;font-family:'Courier New',monospace" id="payroll-saldo-display">Rp 0</div>
+          <div style="margin-top:6px">
+            <div id="payroll-saldo-bar-wrap" style="width:120px;height:6px;background:var(--s2);border-radius:3px;overflow:hidden;margin-left:auto">
+              <div id="payroll-saldo-bar" style="height:100%;background:var(--grn);border-radius:3px;width:100%;transition:width .6s"></div>
+            </div>
+            <div style="font-size:9px;color:var(--t3);margin-top:3px" id="payroll-ratio-lbl">Saldo vs Gaji</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Stats Row -->
+    <div class="stats-row">
+      <div class="sc">
+        <div class="sc-l">👨‍🏫 Total Guru</div>
+        <div class="sc-v" id="stat-guru-total">0</div>
+        <div class="sc-s">Terdaftar</div>
+      </div>
+      <div class="sc">
+        <div class="sc-l">💸 Total Bruto</div>
+        <div class="sc-v" style="color:var(--pur)" id="stat-gaji-total">Rp 0</div>
+        <div class="sc-s">Sebelum potongan</div>
+      </div>
+      <div class="sc">
+        <div class="sc-l">✂️ Total Potongan</div>
+        <div class="sc-v" style="color:var(--red)" id="stat-potongan-total">Rp 0</div>
+        <div class="sc-s">BPJS+Kasbon+Lain</div>
+      </div>
+      <div class="sc">
+        <div class="sc-l">💰 Net Take-Home</div>
+        <div class="sc-v" style="color:var(--grn)" id="stat-netto-total">Rp 0</div>
+        <div class="sc-s">Yang diterima guru</div>
+      </div>
+    </div>
+
+    <!-- Toolbar -->
+    <div class="card">
+      <div class="toolbar" style="gap:8px;flex-wrap:wrap">
+        <button class="abtn abtn-p" data-action="openModal" data-args='["modal-guru"]'>+ Tambah Guru</button>
+        <button class="abtn abtn-g" data-action="bayarSemuaGuru">✅ Bayar Semua</button>
+        <button class="abtn abtn-b" data-action="openModal" data-args='["modal-payroll-config"]'>⚙️ Master Potongan</button>
+        <button class="abtn abtn-a" data-action="openPayrollArsip">🗄️ Arsip Gaji</button>
+        <button class="abtn" style="background:linear-gradient(135deg,var(--cyn),var(--blu));color:#fff;border:none" data-action="openSmartImport" data-args='["guru"]'>📥 Import</button>
+      </div>
+    </div>
+
+    <!-- Filter Tabs -->
+    <div style="display:flex;gap:6px;padding:0 12px">
+      <button class="fchip on" id="guru-filter-all" data-action="setGuruFilter" data-args='["all","@@this"]'>Semua</button>
+      <button class="fchip" id="guru-filter-belum" data-action="setGuruFilter" data-args='["belum","@@this"]'>⏳ Belum Dibayar</button>
+      <button class="fchip" id="guru-filter-lunas" data-action="setGuruFilter" data-args='["lunas","@@this"]'>✅ Sudah Transfer</button>
+      <button class="fchip" id="guru-filter-kasbon" data-action="setGuruFilter" data-args='["kasbon","@@this"]'>💼 Ada Kasbon</button>
+    </div>
+
+    <!-- Guru Payroll List -->
+    <div id="guru-list">
+      <div class="empty-state" style="padding:40px;color:var(--t3)"><span class="empty-icon">👨‍🏫</span><br><span class="empty-text">Belum ada data guru</span></div>
+    </div>
+
+  </div>
+</div>
+
+<!-- MODALS -->
+<div id="modal-slip-gaji" class="modal-bg">
+  <div class="sheet" style="max-width:600px">
+    <div class="mhdr"><h2>🧾 Slip Gaji</h2><button class="mclose" data-action="closeModal" data-args='["modal-slip-gaji"]'>✕</button></div>
+    <div style="padding:10px 16px;border-bottom:1px solid var(--bdr);display:flex;gap:8px;flex-wrap:wrap" class="no-print">
+      <button class="abtn abtn-g" data-action="cetakSlipGaji">🖨️ Cetak / PDF</button>
+      <button class="abtn abtn-b" data-action="shareSlipWA">📱 Share WA</button>
+    </div>
+    <div style="padding:16px;max-height:68vh;overflow-y:auto">
+      <div id="slip-gaji-content"></div>
+    </div>
+  </div>
+</div>
+<div id="modal-kasbon" class="modal-bg">
+  <div class="sheet">
+    <div class="mhdr"><h2>💼 Input Kasbon</h2><button class="mclose" data-action="closeModal" data-args='["modal-kasbon"]'>✕</button></div>
+    <div class="msec">
+      <div id="kasbon-guru-info" style="display:flex;align-items:center;gap:10px;margin-bottom:12px"></div>
+      <div class="inp-group">
+        <div class="fl">Jumlah Kasbon (Rp)</div>
+        <input class="ti" id="kasbon-jumlah-inp" type="number" placeholder="0" data-action="updateKasbonPreview"/>
+      </div>
+      <div class="inp-group">
+        <div class="fl">Tanggal Kasbon</div>
+        <input class="ti" id="kasbon-tgl-inp" type="date"/>
+      </div>
+      <div class="inp-group">
+        <div class="fl">Keterangan</div>
+        <input class="ti" id="kasbon-ket-inp" placeholder="Keperluan kasbon..."/>
+      </div>
+      <div class="inp-group">
+        <div class="fl">Potong dalam berapa bulan?</div>
+        <select class="ts" id="kasbon-cicil-inp">
+          <option value="1">1 bulan (lunas bulan ini)</option>
+          <option value="2">2 bulan cicilan</option>
+          <option value="3">3 bulan cicilan</option>
+          <option value="6">6 bulan cicilan</option>
+        </select>
+      </div>
+      <div id="kasbon-preview-box" style="background:var(--yel-bg);border:1px solid rgba(255,202,40,.2);border-radius:9px;padding:10px 12px;margin-top:4px;display:none">
+        <div style="font-size:11px;color:var(--t2)">Potongan per bulan: <b style="color:var(--yel);font-family:'Courier New',monospace" id="kasbon-cicil-preview">Rp 0</b></div>
+        <div style="font-size:10px;color:var(--t3);margin-top:2px">Otomatis dipotong dari gaji bulanan sampai lunas.</div>
+      </div>
+    </div>
+    <input type="hidden" id="kasbon-guru-id"/>
+    <div class="mact">
+      <button class="mbtn mbtn-c" data-action="closeModal" data-args='["modal-kasbon"]'>Batal</button>
+      <button class="mbtn mbtn-s" data-action="simpanKasbon">✅ Input Kasbon</button>
+    </div>
+  </div>
+</div>
+<div id="modal-payroll-config" class="modal-bg">
+  <div class="sheet">
+    <div class="mhdr"><h2>⚙️ Master Potongan & Komponen</h2><button class="mclose" data-action="closeModal" data-args='["modal-payroll-config"]'>✕</button></div>
+    <div class="msec">
+      <div class="mlbl">Tarif Potongan Default</div>
+      <div class="fg" style="gap:10px">
+        <div class="inp-group">
+          <div class="fl">BPJS Kesehatan Default (Rp)</div>
+          <input class="ti" id="cfg-bpjs-kes" type="number" placeholder="50000"/>
+        </div>
+        <div class="inp-group">
+          <div class="fl">BPJS Ketenagakerjaan (Rp)</div>
+          <input class="ti" id="cfg-bpjs-tk" type="number" placeholder="25000"/>
+        </div>
+        <div class="inp-group">
+          <div class="fl">Uang Makan Default/Hari</div>
+          <input class="ti" id="cfg-makan" type="number" placeholder="15000"/>
+        </div>
+        <div class="inp-group">
+          <div class="fl">Transport Default/Hari</div>
+          <input class="ti" id="cfg-transport" type="number" placeholder="10000"/>
+        </div>
+        <div class="inp-group">
+          <div class="fl">Hari Kerja/Bulan Default</div>
+          <input class="ti" id="cfg-hari-kerja" type="number" placeholder="22"/>
+        </div>
+      </div>
+      <div style="background:var(--blu-bg);border:1px solid rgba(68,138,255,.2);border-radius:9px;padding:10px 12px;font-size:11px;color:var(--t2);margin-top:4px">
+        💡 Nilai default ini dipakai saat <b>Attendance Sync</b> menghitung uang makan & transport otomatis berdasarkan jumlah hari hadir guru.
+      </div>
+    </div>
+    <div class="mact">
+      <button class="mbtn mbtn-c" data-action="closeModal" data-args='["modal-payroll-config"]'>Batal</button>
+      <button class="mbtn mbtn-s" data-action="simpanPayrollConfig">💾 Simpan Konfigurasi</button>
+    </div>
+  </div>
+</div>
+<div id="modal-arsip-gaji" class="modal-bg">
+  <div class="sheet" style="max-width:640px">
+    <div class="mhdr"><h2>🗄️ Arsip Riwayat Gaji</h2><button class="mclose" data-action="closeModal" data-args='["modal-arsip-gaji"]'>✕</button></div>
+    <div style="padding:10px 16px;border-bottom:1px solid var(--bdr);display:flex;gap:8px;flex-wrap:wrap;align-items:center">
+      <select class="ts" id="arsip-filter-guru" style="flex:1" data-action="renderArsipGaji">
+        <option value="">Semua Guru</option>
+      </select>
+      <select class="ts" id="arsip-filter-tahun" data-action="renderArsipGaji">
+        <option value="">Semua Tahun</option>
+      </select>
+      <button class="abtn abtn-b" style="padding:8px 12px;font-size:11px" data-action="eksporArsipGaji">📊 Export CSV</button>
+    </div>
+    <div style="padding:12px 16px;max-height:60vh;overflow-y:auto">
+      <div id="arsip-gaji-list"></div>
+    </div>
+    <div style="padding:10px 16px;border-top:1px solid var(--bdr);display:flex;justify-content:space-between;align-items:center;font-size:11px;color:var(--t3)">
+      <span>Total Arsip: <b id="arsip-count" style="color:var(--t1)">0</b> transaksi</span>
+      <span>Grand Total: <b id="arsip-grand-total" style="color:var(--pur);font-family:'Courier New',monospace">Rp 0</b></span>
+    </div>
+  </div>
+</div>
+<div id="modal-guru-detail" class="modal-bg">
+  <div class="sheet" style="max-width:600px">
+    <div class="mhdr"><h2 id="guru-detail-title">Detail Guru</h2><button class="mclose" data-action="closeModal" data-args='["modal-guru-detail"]'>✕</button></div>
+    <div id="guru-detail-profil-header" style="background:linear-gradient(135deg,#0a1628,#0f1f3a);padding:16px;border-bottom:1px solid var(--bdr)"></div>
+    <!-- Tab strip -->
+    <div class="modal-tabs">
+      <button class="mtab-btn on" data-action="switchGuruTab" data-args='["profil","@@this"]'>👤 Profil</button>
+      <button class="mtab-btn" data-action="switchGuruTab" data-args='["komponen","@@this"]'>💰 Komponen</button>
+      <button class="mtab-btn" data-action="switchGuruTab" data-args='["kasbon","@@this"]'>💼 Kasbon</button>
+      <button class="mtab-btn" data-action="switchGuruTab" data-args='["history","@@this"]'>📋 Riwayat</button>
+    </div>
+    <div id="guru-tab-profil" class="modal-tab-pane on" style="padding:12px 16px"></div>
+    <div id="guru-tab-komponen" class="modal-tab-pane" style="padding:12px 16px"></div>
+    <div id="guru-tab-kasbon" class="modal-tab-pane" style="padding:12px 16px"></div>
+    <div id="guru-tab-history" class="modal-tab-pane" style="padding:12px 16px"></div>
+    <input type="hidden" id="guru-detail-id"/>
+  </div>
+</div>
+<div id="modal-guru" class="modal-bg">
+  <div class="sheet" style="max-width:580px">
+    <div class="mhdr"><h2>👨‍🏫 Data Guru & Komponen Gaji</h2><button class="mclose" data-action="closeModal" data-args='["modal-guru"]'>✕</button></div>
+    <input type="hidden" id="guru-edit-id"/>
+
+    <!-- Identitas -->
+    <div class="msec">
+      <div class="mlbl">👤 Identitas Guru</div>
+      <div class="fg" style="gap:10px">
+        <div class="fg-full inp-group">
+          <div class="fl">Nama Lengkap*</div>
+          <input class="ti" id="guru-nama-inp" placeholder="Nama lengkap..."/>
+        </div>
+        <div class="inp-group">
+          <div class="fl">Jabatan / Mapel</div>
+          <input class="ti" id="guru-jabatan-inp" placeholder="Wali Kelas, Guru IPA..."/>
+        </div>
+        <div class="inp-group">
+          <div class="fl">No. Rekening Bank</div>
+          <input class="ti" id="guru-rekening-inp" placeholder="1234567890 / BRI"/>
+        </div>
+        <div class="inp-group">
+          <div class="fl">No. BPJS</div>
+          <input class="ti" id="guru-bpjs-no-inp" placeholder="No. BPJS Ketenagakerjaan"/>
+        </div>
+      </div>
+    </div>
+
+    <!-- Komponen Penghasilan -->
+    <div class="msec">
+      <div class="mlbl">📈 Komponen Penghasilan (Tambah)</div>
+      <div class="fg" style="gap:10px">
+        <div class="inp-group">
+          <div class="fl">Gaji Pokok (Rp)</div>
+          <input class="ti" id="guru-gaji-inp" type="number" placeholder="0"/>
+        </div>
+        <div class="inp-group">
+          <div class="fl">Honor/Jam (Rp)</div>
+          <input class="ti" id="guru-honor-inp" type="number" placeholder="0"/>
+        </div>
+        <div class="inp-group">
+          <div class="fl">Tunjangan Jabatan (Rp)</div>
+          <input class="ti" id="guru-tunjangan-inp" type="number" placeholder="0"/>
+        </div>
+        <div class="inp-group">
+          <div class="fl">Uang Makan/Hari (Rp)</div>
+          <input class="ti" id="guru-makan-inp" type="number" placeholder="0"/>
+        </div>
+        <div class="inp-group">
+          <div class="fl">Transport/Hari (Rp)</div>
+          <input class="ti" id="guru-transport-inp" type="number" placeholder="0"/>
+        </div>
+        <div class="inp-group">
+          <div class="fl">Insentif Tetap (Rp)</div>
+          <input class="ti" id="guru-insentif-inp" type="number" placeholder="0"/>
+        </div>
+      </div>
+    </div>
+
+    <!-- Komponen Potongan Tetap -->
+    <div class="msec">
+      <div class="mlbl">✂️ Potongan Tetap (per bulan)</div>
+      <div class="fg" style="gap:10px">
+        <div class="inp-group">
+          <div class="fl">BPJS Kesehatan (Rp/%) </div>
+          <input class="ti" id="guru-bpjs-kes-inp" type="number" placeholder="0"/>
+        </div>
+        <div class="inp-group">
+          <div class="fl">BPJS Ketenagakerjaan</div>
+          <input class="ti" id="guru-bpjs-tk-inp" type="number" placeholder="0"/>
+        </div>
+        <div class="inp-group">
+          <div class="fl">Potongan Lain-lain (Rp)</div>
+          <input class="ti" id="guru-potongan-lain-inp" type="number" placeholder="0"/>
+        </div>
+      </div>
+    </div>
+
+    <div class="mact">
+      <button class="mbtn mbtn-c" data-action="__seq" data-args='[[["closeModal",["modal-guru"]],["resetGuruForm",[]]]]'>Batal</button>
+      <button class="mbtn mbtn-s" data-action="tambahGuru">✅ Simpan Data Guru</button>
+    </div>
+  </div>
+</div>
+<div id="modal-jam" class="modal-bg">
+  <div class="sheet">
+    <div class="mhdr"><h2>⏰ Input Jam Mengajar</h2><button class="mclose" data-action="closeModal" data-args='["modal-jam"]'>✕</button></div>
+    <div class="msec">
+      <div style="font-size:14px;font-weight:700;margin-bottom:12px" id="jam-guru-nama">—</div>
+      <div class="mlbl">Jam Mengajar Bulan Ini</div>
+      <div class="jam-ctrl">
+        <button class="jbtn" data-action="adjustJam" data-args='[-5]'>−5</button>
+        <button class="jbtn" data-action="adjustJam" data-args='[-1]'>−</button>
+        <input class="jinp" id="jam-inp" type="number" value="0" min="0" max="300"/>
+        <button class="jbtn" data-action="adjustJam" data-args='[1]'>+</button>
+        <button class="jbtn" data-action="adjustJam" data-args='[5]'>+5</button>
+      </div>
+      <div style="margin-top:12px;padding:12px;background:var(--grn-bg);border:1px solid rgba(0,230,118,.2);border-radius:9px">
+        <div style="font-size:11px;color:var(--t2);margin-bottom:4px">Total Gaji Diterima:</div>
+        <div style="font-size:22px;font-weight:900;color:var(--grn);font-family:'Courier New',monospace" id="jam-preview-total">Rp 0</div>
+        <div style="font-size:10px;color:var(--t3);margin-top:4px" id="jam-preview-detail">Gaji Pokok + Honor</div>
+      </div>
+    </div>
+    <input type="hidden" id="jam-guru-id"/>
+    <div class="mact">
+      <button class="mbtn mbtn-c" data-action="closeModal" data-args='["modal-jam"]'>Batal</button>
+      <button class="mbtn mbtn-s" data-action="simpanJam">✅ Simpan & Hitung</button>
+    </div>
+  </div>
+</div>
