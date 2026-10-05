@@ -1,0 +1,11 @@
+{
+  "name": "sekolah-pro",
+  "private": true,
+  "type": "module",
+  "description": "Sekolah Pro — PWA offline-first. package.json ini ada untuk: (1) ESM check via node --check, (2) script verify anti-halusinasi.",
+  "scripts": {
+    "verify": "node scripts/verify.mjs",
+    "verify:strict": "node scripts/verify.mjs --strict",
+    "build:sw": "node scripts/gen-precache.mjs"
+  }
+}
