@@ -4897,7 +4897,14 @@ function loadDB() {
   } catch { return JSON.parse(JSON.stringify(DEFAULT_DATA)); }
 }
 function saveDB() {
-  localStorage.setItem('sekolah_pro_db', JSON.stringify(DB));
+  try {
+    localStorage.setItem('sekolah_pro_db', JSON.stringify(DB));
+  } catch (e) {
+    // Quota localStorage penuh / private mode — JANGAN lanjut queue sync
+    // (data belum tersimpan, sync akan kirim data basi)
+    console.error('[SP] Gagal simpan ke localStorage:', e && e.name, e && e.message);
+    return;
+  }
   // Queue background sync to Firestore if available
   if (typeof _fbSyncQueue === 'function') _fbSyncQueue();
 }
@@ -11354,8 +11361,12 @@ async function pullFromFirestore() {
       }
     }
 
-    localStorage.setItem('sekolah_pro_db', JSON.stringify(DB));
-    localStorage.setItem('sp_last_pull', new Date().toISOString());
+    try {
+      localStorage.setItem('sekolah_pro_db', JSON.stringify(DB));
+      localStorage.setItem('sp_last_pull', new Date().toISOString());
+    } catch (e) {
+      console.error('[SP] Pull: gagal simpan ke localStorage:', e && e.name);
+    }
 
     // Reload ads juga
     _ADS_ACTIVE = (d.broadcasts || []);
@@ -13521,6 +13532,15 @@ window.saveDB = function() {
 };
 
 
+</script>
+
+<!-- Module Integration — Sekolah Pro Refactor -->
+<script type="module">
+  // Scaffold refactor modular — dynamic import supaya gak melempar error
+  // di console saat export belum lengkap (modul masih placeholder).
+  import('./modules/index.js')
+    .then(function () { console.log('[SekolahPro] modules scaffold dimuat'); })
+    .catch(function (e) { console.warn('[SekolahPro] modules scaffold dilewati:', e && e.message); });
 </script>
 </body>
 </html>
